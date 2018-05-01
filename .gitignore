@@ -25,17 +25,3 @@ hs_err_pid*
 *.iws
 *.iml
 *.ipr
-
-peacetrue-arithmetic
-peacetrue-backend
-peacetrue-configuration
-peacetrue-demo
-peacetrue-exception
-peacetrue-hibernate
-peacetrue-log
-peacetrue-log-sample
-peacetrue-operation
-peacetrue-random
-peacetrue-security
-peacetrue-spring_backup
-peacetrue-tree

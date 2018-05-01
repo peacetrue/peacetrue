@@ -24,20 +24,20 @@ v1.0, 2018-04-29: SNAPSHOT
 .被关联类
 [source%nowrap,java,linenums]
 ----
-include::{testsourcedir}/org/freedom/associate/Associated.java[tags=*]
+include::{testsourcedir}/com/github/peacetrue/associate/Associated.java[tags=*]
 ----
 
 .关联类（通过实体对象关联）
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/Associate.java[tags=class;associatedProperty]
+include::{testsourcedir}/com/github/peacetrue/associate/Associate.java[tags=class;associatedProperty]
 ----
 ``Associate``通过``associated``关联至``Associated``，使用实体对象作为关联属性。
 
 .关联类（通过实体对象主键关联）
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/Associate.java[tags=class;associatedIdProperty]
+include::{testsourcedir}/com/github/peacetrue/associate/Associate.java[tags=class;associatedIdProperty]
 ----
 ``Associate``通过``associatedId``关联至``Associated``，使用实体对象主键作为关联属性。
 此情况下，如果我们在获取``Associate``时，还想获取``Associated.name``，会怎么做呢？
@@ -56,7 +56,7 @@ NOTE: 示例代码均省略getter/setter
 .关联类
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/Associate.java[tags=*]
+include::{testsourcedir}/com/github/peacetrue/associate/Associate.java[tags=*]
 ----
 下面的示例会以此为基础进行讲解。
 
@@ -90,56 +90,56 @@ include::{testsourcedir}/org/freedom/associate/Associate.java[tags=*]
 .设置``associate.associated``
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setSingleAssociatedObjectForSingleAssociate]
+include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setSingleAssociatedObjectForSingleAssociate]
 ----
 
 === 为单一实体设置集合对象
 .设置``associate.associateds``
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setCollectionAssociatedObjectForSingleAssociate]
+include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setCollectionAssociatedObjectForSingleAssociate]
 ----
 
 === 为单一实体设置单一属性
 .设置``associate.associatedName``
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setSingleAssociatedNameForSingleAssociate]
+include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setSingleAssociatedNameForSingleAssociate]
 ----
 
 === 为单一实体设置集合属性
 .设置``associate.associatedNames``
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setCollectionAssociatedNameForSingleAssociate]
+include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setCollectionAssociatedNameForSingleAssociate]
 ----
 
 === 为集合实体设置单一对象
 .设置``associates.associated``
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setCollectionAssociatedObjectForCollectionAssociate]
+include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setCollectionAssociatedObjectForCollectionAssociate]
 ----
 
 === 为集合实体设置集合对象
 .设置``associates.associateds``
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setSingleAssociatedNameForCollectionAssociate]
+include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setSingleAssociatedNameForCollectionAssociate]
 ----
 
 === 为集合实体设置单一属性
 .设置``associates.associatedName``
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setSingleAssociatedNameForCollectionAssociate]
+include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setSingleAssociatedNameForCollectionAssociate]
 ----
 
 === 为集合实体设置集合属性
 .设置``associates.associatedNames``
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setCollectionAssociatedNameForCollectionAssociate]
+include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setCollectionAssociatedNameForCollectionAssociate]
 ----
 
 === 总结
@@ -159,13 +159,13 @@ JpaObjectCollectionAssociatedSource::
 当关联扩展属性为实体对象时使用，例如：
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setAssociatedObject]
+include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setAssociatedObject]
 ----
 JpaPropertyCollectionAssociatedSource::
 当关联扩展属性为实体对象的属性时使用，例如：
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setAssociatedName]
+include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setAssociatedName]
 ----
 JpaTemplateCollectionAssociatedSource::
 当关联扩展属性为对象的格式化属性时使用，格式化属性指取出多个属性，按模板格式化后输出。
@@ -173,7 +173,7 @@ JpaTemplateCollectionAssociatedSource::
 我们可以使用下面的方式实现：
 [source%nowrap,java]
 ----
-include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setAssociatedFormatName]
+include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setAssociatedFormatName]
 ----
 
 == 引用依赖

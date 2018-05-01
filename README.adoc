@@ -1,4 +1,4 @@
-= freedom
+= peacetrue
 xiayx <xiayouxue@hotmail.com>
 v1.0, 2018-03-25: SNAPSHOT
 :doctype: docbook
@@ -11,10 +11,16 @@ v1.0, 2018-03-25: SNAPSHOT
 :source-highlighter: coderay
 :coderay-linenums-mode: inline
 
+Provides various components in java web development process.
 
-https://peachtrue.github.io/freedom.html[查看详细介绍^]
+== run environment
+* jdk1.8
+* gradle4.6
+
+== associate component
+see https://peachtrue.github.io/peacetrue-associate.html[associate component^]
 
 // asciidoctor README.adoc
-// asciidoctor README_ACUTAL.adoc -o ../xiayx.github.io/freedom.html
-// asciidoctor peacetrue-associate/README.adoc -o ../xiayx.github.io/peacetrue-associate.html
+// asciidoctor README_ACTUAL.adoc -o ../peacetrue.github.io/peacetrue.html
+// asciidoctor peacetrue-associate/README.adoc -o ../peacetrue.github.io/peacetrue-associate.html
 
