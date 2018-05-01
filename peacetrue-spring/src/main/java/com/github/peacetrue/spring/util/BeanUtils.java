@@ -32,7 +32,14 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
     /** a common judgment that an property value is not blank */
     public static final BiPredicate<String, Object> NOT_EMPTY_PROPERTY_VALUE = EMPTY_PROPERTY_VALUE.negate();
 
-    /** exclude {@link Object#getClass()} */
+    /**
+     * similar to {@link org.springframework.beans.BeanUtils#getPropertyDescriptors(Class)},
+     * but exclude {@link Object#getClass()}
+     *
+     * @param clazz the Class to retrieve the PropertyDescriptors for
+     * @return an array of {@code PropertyDescriptors} for the given class
+     * @throws BeansException if PropertyDescriptor look fails
+     */
     public static PropertyDescriptor[] getPropertyDescriptors(Class<?> clazz) throws BeansException {
         return excludeGetClass(org.springframework.beans.BeanUtils.getPropertyDescriptors(clazz));
     }
@@ -42,7 +49,15 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         return Arrays.stream(descriptors).filter(descriptor -> !descriptor.getReadMethod().equals(GET_CLASS_METHOD)).toArray(PropertyDescriptor[]::new);
     }
 
-    /** similar to {@link #getPropertyDescriptor(Class, String)}, but the return value is required */
+    /**
+     * similar to {@link #getPropertyDescriptor(Class, String)},
+     * but the return value is required
+     *
+     * @param clazz        the Class to retrieve the PropertyDescriptor for
+     * @param propertyName the name of the property
+     * @return the corresponding PropertyDescriptor
+     * @throws BeansException if PropertyDescriptor lookup fails
+     */
     public static PropertyDescriptor getRequiredPropertyDescriptor(Class<?> clazz, String propertyName) throws BeansException {
         PropertyDescriptor propertyDescriptor = getPropertyDescriptor(clazz, propertyName);
         if (propertyDescriptor == null) throwPropertyNotFoundException(clazz, propertyName);
@@ -53,19 +68,38 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         throw new IllegalArgumentException("can't found property['" + propertyName + "'] on class[" + entityClass.getName() + "]");
     }
 
-    /** get all property name of a class */
+    /**
+     * get all property name of a class
+     *
+     * @param clazz the Class to retrieve the property name for
+     * @return an array of property name
+     * @throws BeansException if PropertyDescriptor lookup fails
+     */
     public static String[] getPropertyNames(Class<?> clazz) throws BeansException {
         return Arrays.stream(getPropertyDescriptors(clazz)).map(FeatureDescriptor::getName).toArray(String[]::new);
     }
 
-    /** get property value of a bean by property name, property name must be valid */
+    /**
+     * get property value of a bean by property name,
+     * property name must be valid
+     *
+     * @param bean         a bean
+     * @param propertyName a property name which must be valid
+     * @return the property value of the special property name
+     */
     @Nullable
     public static Object getPropertyValue(Object bean, String propertyName) {
         PropertyDescriptor propertyDescriptor = getRequiredPropertyDescriptor(bean.getClass(), propertyName);
         return ReflectionUtils.invokeMethod(propertyDescriptor.getReadMethod(), bean);
     }
 
-    /** set property value of a bean by property name, property name must be valid */
+    /**
+     * set property value of a bean by property name, property name must be valid
+     *
+     * @param bean          a java bean
+     * @param propertyName  a property name which must be valid
+     * @param propertyValue the property value of the special property name
+     */
     public static void setPropertyValue(Object bean, String propertyName, @Nullable Object propertyValue) {
         PropertyDescriptor propertyDescriptor = getRequiredPropertyDescriptor(bean.getClass(), propertyName);
         ReflectionUtils.invokeMethod(propertyDescriptor.getWriteMethod(), bean, propertyValue);
@@ -77,7 +111,7 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
      * @param bean                a java bean
      * @param includePropertyName used to filter property by name,
      *                            return true means include, otherwise means exclude, null means all
-     * @return a map properties, maybe null
+     * @return a map properties
      * @see #map(Object, BiPredicate)
      */
     public static Map<String, Object> map(Object bean, @Nullable Predicate<String> includePropertyName) {
@@ -93,7 +127,15 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         return properties;
     }
 
-    /** similar to {@link #map(Object, Predicate)}, but {@code includeProperty} use property name and value to test */
+    /**
+     * similar to {@link #map(Object, Predicate)},
+     * but {@code includeProperty} use property name and value to test
+     *
+     * @param bean            a java bean
+     * @param includeProperty used to filter property by name,
+     *                        return true means include, otherwise means exclude, null means all
+     * @return a map properties
+     */
     public static Map<String, Object> map(Object bean, BiPredicate<String, Object> includeProperty) {
         Map<String, Object> properties = new HashMap<>();
         String propertyName;
@@ -109,19 +151,43 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         return properties;
     }
 
-    /** similar to {@link #map(Object, Predicate)}, but include all properties */
+    /**
+     * similar to {@link #map(Object, Predicate)}, but include all properties
+     *
+     * @param bean a java bean
+     * @return a map properties
+     */
     public static Map<String, Object> map(Object bean) {
         return map(bean, (Predicate<String>) null);
     }
 
-    /** similar to {@link EnumUtils#map(Enum[], String, String)}, but support object collection */
+    /**
+     * similar to {@link EnumUtils#map(Enum[], String, String)},
+     * but support object collection
+     *
+     * @param beans         a java bean collection
+     * @param keyProperty   a property in bean as key of map
+     * @param valueProperty a property in bean as value of map
+     * @param <K>           the type of keyProperty'value
+     * @param <V>           the type of valueProperty'value
+     * @return the converted map
+     */
     public static <K, V> Map<K, V> map(Collection<?> beans, String keyProperty, String valueProperty) {
         return EnumUtils._map(beans, keyProperty, Objects.requireNonNull(valueProperty));
     }
 
-    /** similar to {@link #map(Collection, String, String)}, but the map value is element of {@code beans} */
-    public static <I, V> Map<I, V> map(Collection<V> beans, String propertyName) {
-        return EnumUtils._map(beans, propertyName, null);
+    /**
+     * similar to {@link #map(Collection, String, String)},
+     * but the map value is the element of {@code beans}
+     *
+     * @param beans       a java bean collection
+     * @param keyProperty a property in bean as key of map
+     * @param <K>         the type of keyProperty'value
+     * @param <V>         the type of valueProperty'value
+     * @return the converted map
+     */
+    public static <K, V> Map<K, V> map(Collection<V> beans, String keyProperty) {
+        return EnumUtils._map(beans, keyProperty, null);
     }
 
 

@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
+ * for associated template property
+ *
  * @author xiayx
  */
 public class JpaTemplateCollectionAssociatedSource<I> extends JpaCollectionAssociatedSource<I, Object[], String> implements CollectionAssociatedSource<I, Object[], String> {

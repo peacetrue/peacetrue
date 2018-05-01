@@ -13,7 +13,13 @@ import java.util.List;
  */
 public abstract class QueryUtils {
 
-    /** when use {@link Query#getSingleResult()}, avoid {@link NoResultException} or {@link NonUniqueResultException} */
+    /**
+     * similar to {@link Query#getSingleResult()},
+     * but avoid {@link NoResultException} or {@link NonUniqueResultException}
+     *
+     * @param query a query
+     * @return a single result
+     */
     @Nullable
     @SuppressWarnings("unchecked")
     public static <T> T getSingleResult(Query query) {

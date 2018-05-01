@@ -42,6 +42,7 @@ public abstract class EnumUtils {
      * @param enums         enum array
      * @param keyProperty   a property in enum as key of map
      * @param valueProperty a property in enum as value of map
+     * @param <E>           the type of enum
      * @param <K>           the type of keyProperty'value
      * @param <V>           the type of valueProperty'value
      * @return the converted map

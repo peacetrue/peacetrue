@@ -5,4 +5,5 @@ dependencies {
     compile "com.google.code.findbugs:jsr305"
     testCompile 'org.hibernate:hibernate-core'
     testCompile 'com.h2database:h2'
+    testCompile project(':peacetrue-util')
 }

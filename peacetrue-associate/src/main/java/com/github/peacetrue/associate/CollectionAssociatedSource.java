@@ -39,7 +39,12 @@ public interface CollectionAssociatedSource<I, D, R> extends AssociatedSource<I,
      */
     I resolveId(D data);
 
-    /** {@link #format(D)} for collection */
+    /**
+     * similar to {@link AssociatedSource#format} for collection
+     *
+     * @param data associated data
+     * @return associated value
+     */
     default Collection<R> format(Collection<D> data) {
         return data.stream().map(this::format).collect(Collectors.toList());
     }

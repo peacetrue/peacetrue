@@ -1,13 +1,15 @@
 package com.github.peacetrue.associate.jpa;
 
-import com.github.peacetrue.jpa.MetamodelUtils;
 import com.github.peacetrue.associate.CollectionAssociatedSource;
+import com.github.peacetrue.jpa.MetamodelUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
 
 /**
+ * a jpa implement for {@link CollectionAssociatedSource}
+ *
  * @author xiayx
  */
 @SuppressWarnings("unchecked")
@@ -36,6 +38,12 @@ public abstract class JpaCollectionAssociatedSource<I, D, R> implements Collecti
         return entityManager.createQuery(qlString).setParameter(1, ids).getResultList();
     }
 
+    /**
+     * get select statement
+     *
+     * @param entityAlias the alias of entity
+     * @return select statement
+     */
     protected String getSelect(String entityAlias) {
         return entityAlias;
     }

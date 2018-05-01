@@ -6,6 +6,8 @@ import com.github.peacetrue.spring.util.BeanUtils;
 import javax.persistence.EntityManager;
 
 /**
+ * for associated object
+ *
  * @author xiayx
  */
 public class JpaObjectCollectionAssociatedSource<I, R> extends JpaCollectionAssociatedSource<I, R, R> implements SameCollectionAssociatedSource<I, R> {

@@ -11,7 +11,7 @@ public class ForAssociateName extends JpaPropertyCollectionAssociatedSource<Long
 
     public ForAssociateName() {
         setEntityClass(Associated.class);
-        setAssociatedProperty("name");
+        setExtendProperty("name");
     }
 
 }

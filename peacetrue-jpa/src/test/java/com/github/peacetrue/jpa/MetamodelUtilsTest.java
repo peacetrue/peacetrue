@@ -23,10 +23,9 @@
  */
 package com.github.peacetrue.jpa;
 
+import com.github.peacetrue.util.AssertUtils;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.function.Supplier;
 
 
 /**
@@ -62,15 +61,7 @@ public class MetamodelUtilsTest extends JpaTest {
         Assert.assertEquals(UnNamed.class.getSimpleName(), entityName);
         entityName = MetamodelUtils.getEntityName(entityManagerFactory.getMetamodel(), Named.class);
         Assert.assertEquals(Named.TABLE_NAME, entityName);
-        assertException(() -> MetamodelUtils.getRequiredEntityName(entityManagerFactory.getMetamodel(), MetamodelUtilsTest.class));
+        AssertUtils.assertException(() -> MetamodelUtils.getRequiredEntityName(entityManagerFactory.getMetamodel(), MetamodelUtilsTest.class));
     }
 
-    public static void assertException(Supplier supplier) {
-        try {
-            supplier.get();
-        } catch (Exception e) {
-            return;
-        }
-        Assert.fail();
-    }
 }

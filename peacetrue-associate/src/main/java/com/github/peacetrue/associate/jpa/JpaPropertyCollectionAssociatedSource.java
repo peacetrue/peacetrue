@@ -5,12 +5,14 @@ import com.github.peacetrue.associate.CollectionAssociatedSource;
 import javax.persistence.EntityManager;
 
 /**
+ * for associated property
+ *
  * @author xiayx
  */
 public class JpaPropertyCollectionAssociatedSource<I, R> extends JpaCollectionAssociatedSource<I, Object[], R> implements CollectionAssociatedSource<I, Object[], R> {
 
     private String idProperty = "id";
-    private String associatedProperty;
+    private String extendProperty;
 
     public JpaPropertyCollectionAssociatedSource() {
     }
@@ -23,15 +25,15 @@ public class JpaPropertyCollectionAssociatedSource<I, R> extends JpaCollectionAs
         super(entityManager, entityClass);
     }
 
-    public JpaPropertyCollectionAssociatedSource(EntityManager entityManager, Class<?> entityClass, String idProperty, String associatedProperty) {
+    public JpaPropertyCollectionAssociatedSource(EntityManager entityManager, Class<?> entityClass, String idProperty, String extendProperty) {
         super(entityManager, entityClass);
         this.idProperty = idProperty;
-        this.associatedProperty = associatedProperty;
+        this.extendProperty = extendProperty;
     }
 
     @Override
     protected String getSelect(String entityAlias) {
-        return entityAlias + "." + idProperty + ", " + entityAlias + "." + associatedProperty;
+        return entityAlias + "." + idProperty + ", " + entityAlias + "." + extendProperty;
     }
 
     @SuppressWarnings("unchecked")
@@ -52,11 +54,11 @@ public class JpaPropertyCollectionAssociatedSource<I, R> extends JpaCollectionAs
         this.idProperty = idProperty;
     }
 
-    public String getAssociatedProperty() {
-        return associatedProperty;
+    public String getExtendProperty() {
+        return extendProperty;
     }
 
-    public void setAssociatedProperty(String associatedProperty) {
-        this.associatedProperty = associatedProperty;
+    public void setExtendProperty(String extendProperty) {
+        this.extendProperty = extendProperty;
     }
 }

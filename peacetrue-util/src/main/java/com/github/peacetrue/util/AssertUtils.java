@@ -9,13 +9,22 @@ import org.junit.Assert;
  */
 public abstract class AssertUtils {
 
-    /** no arg no return differ from {@link java.util.function.Consumer} or {@link java.util.function.Supplier} */
+    /**
+     * no arg no return ,
+     * differ from {@link java.util.function.Consumer}
+     * or {@link java.util.function.Supplier}
+     */
     public interface Executor {
         /** Performs this operation */
         void execute();
     }
 
-    /** assert there will be a exception in {@link Executor} with the given message. */
+    /**
+     * assert there will be a exception in {@link Executor} with the given message.
+     *
+     * @param executor the test content need to execute
+     * @param message  the identifying message for the {@link AssertionError} (<code>null</code> okay)
+     */
     public static void assertException(Executor executor, String message) {
         try {
             executor.execute();
@@ -25,7 +34,11 @@ public abstract class AssertUtils {
         Assert.fail(message);
     }
 
-    /** assert there will be a exception in {@link Executor} */
+    /**
+     * assert there will be a exception in {@link Executor}
+     *
+     * @param executor the test content need to execute
+     */
     public static void assertException(Executor executor) {
         assertException(executor, null);
     }

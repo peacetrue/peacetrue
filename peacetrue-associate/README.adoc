@@ -178,7 +178,7 @@ include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setAs
 
 == 引用依赖
 === 源码方式
-``checkout https://github.com/xiayx/freedom.git``
+``git clone https://github.com/peacetrue/peacetrue.git``
 
 === JAR方式
 .gradle

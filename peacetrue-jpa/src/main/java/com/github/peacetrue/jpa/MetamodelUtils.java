@@ -1,3 +1,4 @@
+
 package com.github.peacetrue.jpa;
 
 
@@ -15,9 +16,11 @@ import java.util.Optional;
 public abstract class MetamodelUtils {
 
     /**
-     * get entity class by entity name with {@link String#equalsIgnoreCase}
-     * <p>
-     * NOTE: same entity name (ignore case) will make trouble, you should avoid that
+     * get entity class by entity name
+     *
+     * @param metamodel  a metamodel
+     * @param entityName a case sensitive entity name
+     * @return a entity class matched for entity name
      */
     @Nullable
     public static Class getEntityClass(Metamodel metamodel, String entityName) {
@@ -26,13 +29,25 @@ public abstract class MetamodelUtils {
                 .findAny().map(Type::getJavaType).orElse(null);
     }
 
-    /** get entity name by entity class with {@link Class#equals(Object)} */
+    /**
+     * get entity name by entity class
+     *
+     * @param metamodel   a metamodel
+     * @param entityClass a entity class
+     * @return a entity name matched for entity class
+     */
     @Nullable
     public static String getEntityName(Metamodel metamodel, Class<?> entityClass) {
         return _getEntityName(metamodel, entityClass).orElse(null);
     }
 
-    /** get entity name by entity class with {@link Class#equals(Object)} */
+    /**
+     * get entity name by entity class with {@link Class#equals(Object)}
+     *
+     * @param metamodel   a metamodel
+     * @param entityClass a entity class
+     * @return a entity name matched for entity class
+     */
     public static String getRequiredEntityName(Metamodel metamodel, Class<?> entityClass) {
         return _getEntityName(metamodel, entityClass).orElseThrow(() -> new IllegalArgumentException(entityClass.getName() + " is a invalid entity class"));
     }
