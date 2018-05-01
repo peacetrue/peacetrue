@@ -18,7 +18,7 @@ Provides various components in java web development process.
 * gradle4.6
 
 == associate component
-see https://peachtrue.github.io/peacetrue-associate.html[associate component^]
+see https://peacetrue.github.io/peacetrue-associate.html[associate component^]
 
 // asciidoctor README.adoc
 // asciidoctor README_ACTUAL.adoc -o ../peacetrue.github.io/peacetrue.html
