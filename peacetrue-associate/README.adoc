@@ -1,0 +1,197 @@
+= 关联组件
+//tag::meta[]
+xiayx <xiayouxue@hotmail.com>
+v1.0, 2018-04-29: SNAPSHOT
+:doctype: docbook
+:toc: left
+:numbered:
+:imagesdir: assets/images
+:sourcedir: src/main/java
+:resourcesdir: src/main/resources
+:testsourcedir: src/test/java
+:source-highlighter: highlightjs
+:coderay-linenums-mode: inline
+//end::meta[]
+
+关联组件用于为实体对象设置**关联扩展值**。
+何为**关联扩展值**，下面会详细说明。
+
+== 概念说明
+实体类C1通过一个属性P1关联至实体类C2，
+此时我们称实体类C1为**关联类**，实体类C2为**被关联类**，属性P1为**关联属性**。
+关联属性可以是C2或C2的主键，以下结合代码具体分析：
+
+.被关联类
+[source%nowrap,java,linenums]
+----
+include::{testsourcedir}/org/freedom/associate/Associated.java[tags=*]
+----
+
+.关联类（通过实体对象关联）
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/Associate.java[tags=class;associatedProperty]
+----
+``Associate``通过``associated``关联至``Associated``，使用实体对象作为关联属性。
+
+.关联类（通过实体对象主键关联）
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/Associate.java[tags=class;associatedIdProperty]
+----
+``Associate``通过``associatedId``关联至``Associated``，使用实体对象主键作为关联属性。
+此情况下，如果我们在获取``Associate``时，还想获取``Associated.name``，会怎么做呢？
+可以在``Associate``中添加一个``associatedName``属性，
+然后通过``Associate.associatedId``查出``Associated.name``，
+最后设值给``Associate.associatedName``。
+``Associate.associatedName``被称为**关联扩展属性**
+（即**关联属性**之外的源自于被关联对象的数据）
+``Associate.associatedName``的值被称为**关联扩展值**。
+关联组件就是用于在此场景下设置实体对象的关联扩展值。
+
+NOTE: 示例代码均省略getter/setter
+
+完整的``Associate``代码如下：
+
+.关联类
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/Associate.java[tags=*]
+----
+下面的示例会以此为基础进行讲解。
+
+== 支持特性
+. 为实体对象设置关联扩展值
+
+实体对象可为以下2种类型：
+
+* 单一对象，如``Associate associate``
+* 集合对象，如``Collection<Associate> associates``
+
+关联扩展值可为以下2种类型：
+
+* 单一值，如``Associate.associated``
+* 集合值，如``Associate.associateds``
+
+关联扩展值可为以下2种形式：
+
+* 对象，如``Associate.associated``
+* 对象的属性，如``Associate.associatedName``
+
+
+
+== 使用说明
+假设我们从数据库取出``Associate associate``和``List<Associate> associates``，
+此时``Associate.associatedId``和``Associate.associatedIds``有值，其他关联扩展属性均无值。
+以下将结合代码详细说明，如何使用关联组件为``associate``和``associates``设置关联扩展值。
+示例使用jpa实现，读者需根据自身项目情况选择合适的实现方式。
+
+=== 为单一实体设置单一对象
+.设置``associate.associated``
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setSingleAssociatedObjectForSingleAssociate]
+----
+
+=== 为单一实体设置集合对象
+.设置``associate.associateds``
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setCollectionAssociatedObjectForSingleAssociate]
+----
+
+=== 为单一实体设置单一属性
+.设置``associate.associatedName``
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setSingleAssociatedNameForSingleAssociate]
+----
+
+=== 为单一实体设置集合属性
+.设置``associate.associatedNames``
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setCollectionAssociatedNameForSingleAssociate]
+----
+
+=== 为集合实体设置单一对象
+.设置``associates.associated``
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setCollectionAssociatedObjectForCollectionAssociate]
+----
+
+=== 为集合实体设置集合对象
+.设置``associates.associateds``
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setSingleAssociatedNameForCollectionAssociate]
+----
+
+=== 为集合实体设置单一属性
+.设置``associates.associatedName``
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setSingleAssociatedNameForCollectionAssociate]
+----
+
+=== 为集合实体设置集合属性
+.设置``associates.associatedNames``
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setCollectionAssociatedNameForCollectionAssociate]
+----
+
+=== 总结
+以上方法共计8(2*2*2)种，来至于实体对象类型、关联扩展值类型、关联扩展值形式的交叉组合。
+其中，会使用到两种数据源：
+
+* AssociatedSource：单一被关联数据源
+* CollectionAssociatedSource：集合被关联数据源（``AssociatedSource``的子类）
+
+只有为单一实体设置单一关联扩展值时，才会使用单一被关联数据源，以上8种方法中只有2种使用到了。
+
+== 被关联数据源
+被关联数据源用于提供被关联的数据。
+关联组件默认实现了基于jpa的被关联数据源。
+
+JpaObjectCollectionAssociatedSource::
+当关联扩展属性为实体对象时使用，例如：
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setAssociatedObject]
+----
+JpaPropertyCollectionAssociatedSource::
+当关联扩展属性为实体对象的属性时使用，例如：
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setAssociatedName]
+----
+JpaTemplateCollectionAssociatedSource::
+当关联扩展属性为对象的格式化属性时使用，格式化属性指取出多个属性，按模板格式化后输出。
+假设``Associate.associatedFormatName``需要包含``Associated.code``和``Associated.name``，
+我们可以使用下面的方式实现：
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/associate/ForREADME.java[tag=setAssociatedFormatName]
+----
+
+== 引用依赖
+=== 源码方式
+``checkout https://github.com/xiayx/freedom.git``
+
+=== JAR方式
+.gradle
+``com.github.peacetrue:peacetrue-associate:1.0-SNAPSHOT``
+
+.maven
+[source%nowrap,maven]
+----
+<dependency>
+    <groupId>com.github.peacetrue</groupId>
+    <artifactId>peacetrue-associate</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+----
+
+

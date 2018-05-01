@@ -1,0 +1,11 @@
+group 'com.github.peacetrue'
+
+dependencies {
+
+    compile project(':peacetrue-util')
+    compile "com.google.code.findbugs:jsr305"
+    compile "org.springframework:spring-beans"
+    testCompile "org.apache.commons:commons-lang3"
+    testCompile "org.projectlombok:lombok"
+
+}

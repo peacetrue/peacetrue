@@ -1,0 +1,8 @@
+group 'com.github.peacetrue'
+
+dependencies {
+    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api"
+    compile "com.google.code.findbugs:jsr305"
+    testCompile 'org.hibernate:hibernate-core'
+    testCompile 'com.h2database:h2'
+}

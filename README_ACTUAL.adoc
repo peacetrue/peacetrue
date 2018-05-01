@@ -11,10 +11,12 @@ v1.0, 2018-03-25: SNAPSHOT
 :source-highlighter: coderay
 :coderay-linenums-mode: inline
 
+记录在开发过程中所需的各种组件。
 
-https://peachtrue.github.io/freedom.html[查看详细介绍^]
+== 运行环境
+* jdk1.8
+* gradle4.6
 
-// asciidoctor README.adoc
-// asciidoctor README_ACUTAL.adoc -o ../xiayx.github.io/freedom.html
-// asciidoctor peacetrue-associate/README.adoc -o ../xiayx.github.io/peacetrue-associate.html
+include::peacetrue-associate/README.adoc[leveloffset=1,tags=**;!meta]
+
 

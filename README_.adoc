@@ -1,0 +1,551 @@
+= freedom
+xiayx <xiayouxue@hotmail.com>
+v1.0, 2018-03-25: SNAPSHOT
+:doctype: docbook
+:toc: left
+:numbered:
+:imagesdir: assets/images
+:sourcedir: src/main/java
+:resourcesdir: src/main/resources
+:testsourcedir: src/test/java
+:source-highlighter: highlightjs
+
+记录各种在开发过程中所需要的组件。
+
+== 操作组件
+
+=== 需求
+项目中，新增、查看、修改时，会跳到同一个详情页。
+在详情页上，需要根据具体操作，进行针对性的处理。
+提供操作组件，为详情页的开发提供便利。
+
+=== 设计
+根据请求路径，解析出具体的操作，再将操作存储在请求属性中，页面上再根据此属性进行针对性处理。
+
+=== 实现
+* OperationInterceptor: 拦截请求
+* OperationParser: 从请求中解析出操作
+** OperationParserImpl: 默认的解析器实现
+* OperationProperties: 操作配置属性
+* OperationAutoConfiguration: 支持spring-boot的自动配置
+* Operation: 操作信息
+
+=== 待解决
+[qanda]
+使用``@ConfigurationProperties``获取属性后，属性中的部分字符被自动过滤，例如：/、* 等？:: &nbsp;
+
+
+== 关联组件
+用于设置关联对象。
+
+=== 需求
+项目中会有这种情况，一个**主实体类**通过一个**关联主键**关联一个**关联实体类**，
+数据库中记录着**关联主键**的值，实际使用时需要通过**关联主键**取得**关联对象**。
+
+.主实体类（省略getter/setter）
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/backend/associate/Main.java[tags=entity]
+----
+
+.关联实体类（省略getter/setter）
+[source%nowrap,java]
+----
+include::{testsourcedir}/org/freedom/backend/associate/Associate.java[tags=entity]
+----
+
+当从数据库查询**主实体类**时，只取出了**关联主键**，我们可以通过**关联组件**辅助设置**关联对象**。
+
+=== 设计
+.主流程：
+* 取得关联对象
+* 为主实体对象设置关联对象
+
+.关联对象取得方式：
+* 由调用者自行提供
+* 通过关联主键查询取得
+
+.主实体对象的表现形式：
+* 单一对象
+* 集合对象
+
+.关联对象的表现形式：
+* 单一对象
+* 集合对象
+
+
+=== 实现
+* AssociateUtils：工具类提供通用的设置方法，设置方法一共8个（主实体对象表现形式[2]*关联对象表现形式[2]*关联对象取得方式[2]=8）
+** setAssociate：关联对象为单一对象的情况
+** setCollectionAssociate：关联对象为集合对象的情况
+* AssociateSource：关联对象源，用于提供单一关联对象
+* CollectionAssociateSource：集合关联对象源，用于提供集合关联对象
+
+=== 待完善
+* AssociateService，提供更加简单易用的接口
+** 根据关联对象属性推测关联主键属性
+** 设置默认的主键属性
+
+== 日志组件
+
+=== 需求
+公司领导想要知道数据的历史变迁情况，
+什么人在什么时候操作过这个数据，
+发现数据有异常时，可以准确定位到相关负责人。
+
+=== 设计
+开发一个日志组件，记录系统中重要的操作信息。
+
+==== 我们需要记录哪些操作呢？
+主要考虑针对所有模块都有效的、常见而通用的一些操作，
+包括新增、修改和删除，模块特异性的一些操作，比如用户登录、用户退出等，也先不考虑。
+
+==== 日志需要包含哪些信息呢？
+参考记叙文六要素：时间、地址、人物、起因、经过和结果，
+我们需要有操作时间、操作人、具体操作、操作模块、操作记录标识、操作记录详情和操作结果。
+当操作失败时，操作记录不会产生变化，此时可以不记录日志；
+我们的侧重点在于数据的变化，而非用户的操作，如果需要分析用户的操作习惯，则另当别论；
+先只考虑成功的执行方法，异常的执行方法不记录日志，操作结果也就不需要了。
+
+==== 我们要怎样记日志呢？
+通常包括三个典型的步骤：
+
+. 拦截执行方法
+. 构建日志信息
+. 保存日志信息
+
+.拦截执行方法
+在spring项目中，使用spring aop拦截执行方法；
+在非spring项目中，使用aspectj拦截执行方法。
+介于目前项目都是基于spring的，先考虑使用spring aop的方式。
+我们在执行方法正常完成后，拦截执行方法，异常情况下不拦截。
+
+.构建日志信息
+操作时间是当前时间，操作人是当前登录用户。
+具体操作通常由执行方法决定，但也有些方法包含多种操作，比如保存就同时包含新增和修改。
+操作模块通常可以根据操作记录类型取得；操作记录是指操作涉及的数据记录，
+比如新增用户，操作记录就是用户，操作记录类型就是用户类，操作模块就是用户模块；
+有时候没有操作记录，比如根据主键删除，此时通常需要根据执行方法所在类判断，
+比如通过用户服务新增用户时，可以根据用户服务类判断出是用户模块。
+操作模块和操作记录标识可以定位到具体的操作记录，操作记录标识通常使用主键，但不局限于主键，只要是唯一的就行。
+操作记录详情可以根据操作记录取得，新增和删除是操作记录，修改是变化的属性（需要根据原操作记录和当前操作记录比较得出）。
+操作结果通常可以根据当前操作是否异常来判断；如果执行方法返回了指示操作结果的信息，那么可以根据返回值来判断。
+
+.保存日志信息
+保存日志信息比较简单，只需要注意以下一点。
+保存日志信息是一个日志模块的新增操作，
+拦截执行方法时千万不能拦截到日志新增方法，否则会导致死循环。
+
+NOTE: 记录日志是一个辅助功能，应该丝毫不影响执行方法。
+记录日志如果发生异常，不应该影响执行方法；性能上也不应该影响执行方法。
+
+=== 实现
+实现共分为三部分：
+
+. 保存日志信息
+. 构建日志信息
+. 拦截执行方法
+
+==== 保存日志信息
+保存日志信息是最基础的部分，也是稳定性最高的部分。
+
+===== 抽象日志信息
+因为日志信息中有些属性的类型不确定，
+所以只能提供抽象日志信息。
+
+T::
+表示类型不确定，由实际项目决定。
+
+.抽象日志信息
+|===
+|名称 |描述 |类型 |必须
+
+|id
+|主键
+|T
+|是
+
+|operatorId
+|操作者标识
+|T
+|是
+
+|operateTime
+|操作时间
+|T
+|是
+
+|operateCode
+|操作编码
+|字符串
+|是
+
+|moduleCode
+|模块编码
+|字符串
+|是
+
+|recordId
+|记录标识
+|T
+|是
+
+|recordName
+|记录名称
+|字符串
+|否
+
+|recordDetail
+|记录详情
+|字符串
+|否
+
+|success
+|是否操作成功
+|布尔
+|否
+
+|failReason
+|失败原因
+|字符串
+|否
+|===
+
+操作时间::
+一个日期，通常是：``Date`` or ``LocalDate``(in java 8)
+操作编码::
+使用字符串类型的操作编码表示操作。
+标准操作编码为：<<_标准操作编码>>，
+没有使用枚举，相比于枚举，字符串更具扩展性，
+//你也可以不使用标准操作编码。
+模块编码::
+可以定位到具体模块。
+记录标识::
+联合模块编码，可以定位到具体记录。
+记录名称::
+记录的一个人性化称呼，通过一个名称可以识别出一条记录，
+比如新增用户【张三】、修改用户【李四】，【张三】、【李四】就是记录名称。
+非必须，可由记录详情代为表述，没有记录名称简介直观。
+记录详情::
+记录数据的详细信息，可以直接记录在此属性中，也可以记录在下面的模块中。
+
+.记录详情信息
+|===
+|名称 |描述 |类型 |必须
+
+|id
+|主键
+|T
+|是
+
+|logId
+|日志主键
+|T
+|是
+
+|name
+|属性名
+|字符串
+|是
+
+|value
+|属性值
+|字符串
+|是
+|===
+
+.记录变更信息
+|===
+|名称 |描述 |类型 |必须
+
+|id
+|主键
+|T
+|是
+
+|logId
+|日志主键
+|T
+|是
+
+|name
+|属性名
+|字符串
+|是
+
+|oldValue
+|原属性值
+|字符串
+|否
+
+|newValue
+|新属性值
+|字符串
+|否
+|===
+
+===== 标准操作编码
+//* 查询：query
+* 新增：add
+//* 查看：view
+* 修改：modify
+* 删除：delete
+
+
+===== 日志提供者
+因为日志是抽象的，所以需要一个接口提供它的具体实现对象。
+
+.反射的日志提供者
+日志提供者的反射实现。
+通过配置属性``freedom.log.concreteClass``指定抽象日志的具体实现类，
+再通过类反射实例化获得日志对象。
+
+===== 抽象日志服务
+.方法
+* 新增日志
+
+.JdbcTemplate抽象日志服务实现
+为了避免在拦截时，可能会拦截到抽象日志服务的新增方法而导致死循环，
+提供了基于``JdbcTemplate``的实现，``JdbcTemplate``使用``PreparedStatement.executeUpdate``实现新增方法；
+拦截方法时，不会拦截``PreparedStatement.executeUpdate``，因而可以完全避免死循环的情况。
+
+.JdbcTemplate抽象日志服务的配置属性
+|===
+|名称 |描述 |类型 |默认值 |必须
+
+|freedom.log.tableName
+|表名
+|字符串
+|LOG
+|是
+
+|freedom.log.columnNames
+|列名
+|数组
+|id, operator_id, operate_time, operate_code, module_code, record_id, record_name, record_detail, success, fail_reason
+|是
+
+|freedom.log.columnNames.*
+|列名对应的属性名
+|字符串
+|-
+|否
+|===
+.抽象日志：列名 -> 属性名 映射
+* id -> id
+* operator_id -> operatorId
+* operate_time -> operateTime
+* operate_code -> operateCode
+* module_code -> moduleCode
+* record_id -> recordId
+* record_name -> recordName
+* record_detail -> recordDetail
+* success -> success
+* fail_reason -> failReason
+
+==== 构建日志信息
+===== 操作者主键和操作时间
+操作者主键和操作时间比较简单，可以在<<_反射的日志提供者>>或者<<_抽象日志服务>>中设置。
+
+===== 操作编码
+
+==== 拦截执行方法
+通过spring aop拦截执行方法，
+目前实现了mybatis和CrudRepository两种拦截方式。
+
+===== mybatis
+拦截mybatis中``*Mapper``的以下方法：
+
+* int insert(T record);
+* int insertSelective(T record);
+* int updateByPrimaryKey(T record);
+* int updateByPrimaryKeySelective(T record);
+* int deleteByPrimaryKey(T id);
+
+``*Mapper``不包含``LogMapper``，``LogMapper``的新增方法不需要被拦截。
+``LogMapper``的名称是固定的，不支持自定义。
+//TODO 可以配置LogMapper的名字。
+
+如果依赖中包含``org.mybatis:mybatis:*``，就会自动启用mybatis拦截。
+可以通过``freedom.log.aspects={!mybatis}``禁用mybatis拦截，{!mybatis}是一个不包含mybatis的值。
+
+===== CrudRepository
+拦截``CrudRepository``子类的以下方法：
+
+* <S extends T> S save(S entity);
+* void delete(T entity);
+
+``CrudRepository``中其他的方法，最终也需要调用上面的两个方法。
+
+如果依赖中包含``org.springframework.data:spring-data-jpa:*``，就会自动启用CrudRepository拦截。
+可以通过``freedom.log.aspects={!CrudRepository}``禁用CrudRepository拦截，{!CrudRepository}是一个不包含CrudRepository的值。
+不应该使用``LogRepository.save``保存日志，会导致死循环。
+
+=== 使用
+日志组件依赖于``spring-boot:1.4.1``。
+
+==== 引用类库
+下载源码，上传到本地私服，通过构建工具引用。
+
+.通过gradle引用
+``compile 'com.github.peacetrue:peacetrue-log:1.0-SNAPSHOT'``
+
+==== 配置属性
+通过``freedom.log.concreteClass``指定日志的具体实现类，
+例如：freedom.log.concreteClass=com.github.peacetrue.log.mybatis.log.Log。
+
+==== 实现扩展
+.实现``AbstractLogService``
+为``AbstractLog``设置操作者主键和操作时间，
+如果不提供``AbstractLogService``的实现，默认使用``JdbcTemplateAbstractLogService``。
+
+==== 查看演示
+
+
+
+=== 示例
+参考
+
+==== 附录
+.具体属性列表
+&nbsp;
+
+
+
+=== 分析
+从常见示例中抽象总结，以用户模块进行分析。
+
+.保存操作日志
+新增用户::
+* 用户名：
+* 用户昵称：
+修改用户::
+* 用户名：原值->变更值
+* 用户昵称：原值->变更值
+删除用户::
+* 用户名：
+* 用户昵称：
+查询用户::
+* 查询属性：
+* 查询条件：
+* 排序方式：
+
+考虑主要的基本操作，查询比较复杂先不考虑，具体业务操作先不考虑。
+
+.展示操作日志
+简单版::
+* 【操作者】在【操作时间】新增了【用户昵称】用户
+* 【操作者】在【操作时间】修改了【用户昵称】用户
+* 【操作者】在【操作时间】修改了【用户昵称】用户
+* 【操作者】在【操作时间】删除了【用户昵称】用户
+详细版::
+* 【操作者】在【操作时间】新增了【用户昵称】用户。用户名：【用户名】，用户昵称：【用户昵称】
+* 【操作者】在【操作时间】修改了【用户昵称】用户。用户名：【原值】-> 【新值】，用户昵称：【原值】-> 【新值】
+* 【操作者】在【操作时间】修改了【用户昵称】用户。用户名：【原值】-> 【新值】，用户昵称：【原值】-> 【新值】
+* 【操作者】在【操作时间】删除了【用户昵称】用户。用户名：【用户名】，用户昵称：【用户昵称】
+
+新增、删除操作只有一条，修改操作可能会有多条。修改时，只记录有变化的属性。
+
+模块的人性化标识::
+上例中【用户昵称】就是用户模块的人性化标识，
+人性化标识是人可以直接区分一个模块的标识。
+
+简单版可以以文本方式记录人性化标识，详细版需要记录具体属性信息。
+
+.基本概念
+发现在这些基本操作中，包含'操作日志'和'操作信息'两部分内容。
+操作信息如果简单记录可以直接使用文本描述，
+可以先实现操作日志，再实现操作信息。
+
+.操作分析
+新增::
+新增后，操作日志中保存用户主键，用户表保存着用户数据，
+修改:: 修改后，操作日志中保存用户主键，
+
+.关于操作信息
+* 全量操作信息
+* 增量操作信息
+* 操作信息的展示
+
+[qanda]
+执行失败的操作，是否进行记录?:: &nbsp;
+
+.日志类别
+* 结果类别
+** 所有
+** 成功
+* 详情类别
+** 无
+** 字段
+** 表
+
+
+
+
+==== 标准模式
+.UserService
+* add(User)
+* modify(User)
+* delete(User)
+
+模式+执行情况+详情
+
+
+
+* 执行成功，并且不记录详情
+*
+
+
+
+==== CrudRepository模式
+
+==== EntityManager模式
+
+
+
+=== 概念
+.操作日志
+* 主键
+* 操作者
+* 操作时间
+* 操作行为：新增|修改|删除|其他业务特定行为
+* 操作模块
+* 操作数据
+* 备注
+
+.操作详细数据
+* 主键
+* 操作日志主键
+* 属性名
+* 属性值
+
+.操作变更数据
+* 主键
+* 操作日志主键
+* 属性名
+* 旧属性值
+* 新属性值
+
+一个操作日志关联多个操作数据。
+
+=== 实现
+.日志服务
+* AbstractLog
+* LogService
+.解析器
+* OperateCodeResolver
+* ModuleCodeResolver
+* RecordResolver
+.切面
+* 拦截：aop无能为力
+* JoinPointLogService
+** AroundJoinPointLogService
+*** ProceedingJoinPointLogResolver
+* JoinPointRecordResolver
+
+=== 使用
+* 引入类库
+* 配置切面
+
+
+=== 待解决

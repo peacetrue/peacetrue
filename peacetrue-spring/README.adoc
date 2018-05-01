@@ -1,0 +1,98 @@
+= peacetrue-spring
+xiayx <xiayouxue@hotmail.com>
+2017-09-01
+:jbake-type: page
+:toc: left
+:numbered:
+:sourcedir: ../src/main/java
+:testsourcedir: ../src/test/java
+:resourcesdir: ../src/test/resources
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+
+== data
+=== support CriteriaQuery.select in Specification
+[source%nowrap,java]
+----
+demoRepository.findAll((root, query, cb) -> {
+    query.multiselect(cb.construct(Demo.class, root.<Long>get("id"), root.<String>get("name"))); // <1>
+    return null;
+});
+----
+<1> 默认情况下，此语句是无效的，具体原因，请看下面
+
+.SimpleJpaRepository
+[source%nowrap,java]
+----
+protected <S extends T> TypedQuery<S> getQuery(Specification<S> spec, Class<S> domainClass, Sort sort) {
+
+    CriteriaBuilder builder = em.getCriteriaBuilder();
+    CriteriaQuery<S> query = builder.createQuery(domainClass);
+
+    Root<S> root = applySpecificationToCriteria(spec, domainClass, query);
+    query.select(root); // <1>
+
+    if (sort != null) {
+        query.orderBy(toOrders(sort, root, builder));
+    }
+
+    return applyRepositoryMethodMetadata(em.createQuery(query));
+}
+----
+<1> spring在实现时，设置了查询整个对象，会覆盖我们设置的值，所以我稍微改动了一下这个地方，请看下面
+
+.SupportSelectRepository
+[source%nowrap,java]
+----
+protected <S extends T> TypedQuery<S> getQuery(Specification<S> spec, Class<S> domainClass, Sort sort) {
+    CriteriaBuilder builder = em.getCriteriaBuilder();
+    CriteriaQuery<S> query = builder.createQuery(domainClass);
+
+    Root<S> root = applySpecificationToCriteria(spec, domainClass, query);
+
+    if (query.getSelection() == null) {
+        query.select(root); // <1>
+    }
+
+    if (sort != null) {
+        query.orderBy(toOrders(sort, root, builder));
+    }
+
+    return applyRepositoryMethodMetadata(em.createQuery(query));
+}
+----
+<1> 添加了一个判断，当我们没有设置值时，才设置搜索整个对象。
+
+我想了一下，为什么spring自己不加上这个判断呢，这样不是更灵活么，个人以为有两点原因：
+
+* Specification接口的职责就是用来做条件筛选的，设置查询对象已经超出了它的职责范围。
+你可能需要的是一个类似QueryProcessor接口，可以让你处理整个查询过程，可惜的是spring没有提供
+* 统一输入输出泛型
+
+.JpaSpecificationExecutor
+[source%nowrap,java]
+----
+    T findOne(Specification<T> spec); //<1>
+	List<T> findAll(Specification<T> spec); //<2>
+	Page<T> findAll(Specification<T> spec, Pageable pageable); //<3>
+	List<T> findAll(Specification<T> spec, Sort sort); //<4>
+----
+<1>,<2>,<3>,<4> 输入泛型和输出泛型是一致的，如果允许你手动设置查询，你可能会把它玩坏
+//TODO <1>,<2>,<3>,<4> 并列怎么写
+
+你只需要在使用时，做如下配置就可以了
+[source%nowrap,java]
+----
+@EnableJpaRepositories(repositoryBaseClass = SupportSelectRepository.class)
+----
+
+
+== web
+=== HandlerMethodArgumentResolver
+spring会自动解析HandlerMethod上的参数，将请求参数组装成HandlerMethod参数，
+但需要HandlerMethod参数是一个具体类型，这样spring才能将其实例化。
+有时候，我希望spring能够解析任意类型，根据不同的请求选择不同的子类进行实例化，
+这就是'由请求决定的参数解析器'
+
+.determined by the request
+.decision
