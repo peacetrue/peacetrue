@@ -182,7 +182,6 @@ include::{testsourcedir}/com/github/peacetrue/associate/ForREADME.java[tag=setAs
 ----
 repositories {
     mavenCentral()
-    maven { url "https://oss.sonatype.org/content/groups/public" }
 }
 
 dependencies {
@@ -193,12 +192,6 @@ dependencies {
 .maven
 [source%nowrap,maven]
 ----
-<repositories>
-    <repository>
-        <id>OSSRH</id>
-        <url>https://oss.sonatype.org/content/groups/public</url>
-    </repository>
-</repositories>
 <dependencies>
     <dependency>
         <groupId>com.github.peacetrue</groupId>
