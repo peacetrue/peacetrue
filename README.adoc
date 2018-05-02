@@ -41,7 +41,9 @@ used to support custom form, dynamic property.
 
 == Contact
 . you can send email to <xiayouxue@hotmal.com>
-. focus WeChat image:qrcode.jpg[]
+. focus WeChat
+
+image::qrcode.jpg[]
 
 == License
 The Peacetrue is released under version 2.0 of the http://www.apache.org/licenses/LICENSE-2.0[Apache License].
