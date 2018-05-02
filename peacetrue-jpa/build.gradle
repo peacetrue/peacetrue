@@ -1,4 +1,4 @@
-group 'com.github.peacetrue'
+description 'An extension module of JPA'
 
 dependencies {
     compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api"

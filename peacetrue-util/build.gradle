@@ -1,4 +1,4 @@
-group 'com.github.peacetrue'
+description 'A util module'
 
 dependencies {
     compile "com.google.code.findbugs:jsr305"

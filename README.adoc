@@ -1,4 +1,4 @@
-= peacetrue
+= Peacetrue
 xiayx <xiayouxue@hotmail.com>
 v1.0, 2018-03-25: SNAPSHOT
 :doctype: docbook
@@ -11,16 +11,18 @@ v1.0, 2018-03-25: SNAPSHOT
 :source-highlighter: coderay
 :coderay-linenums-mode: inline
 
-Provides various components in java web development process.
+Provides various components for java web development.
 
-== run environment
-* jdk1.8
-* gradle4.6
+== Requirement
+. http://www.oracle.com/technetwork/java/javase/downloads/index.html[JDK 1.8] or later
 
-== associate component
-see https://peacetrue.github.io/peacetrue-associate.html[associate component^]
+== Main Components
+https://peacetrue.github.io/peacetrue-associate.html[associate component^]::
+used to set associated extend property value.
 
-// asciidoctor README.adoc
-// asciidoctor README_ACTUAL.adoc -o ../peacetrue.github.io/peacetrue.html
-// asciidoctor peacetrue-associate/README.adoc -o ../peacetrue.github.io/peacetrue-associate.html
+== Components in the Attic
+https://peacetrue.github.io/peacetrue-log.html[log component^]::
+used to record history information in database for common add, modify, delete operation.
 
+== License
+The Peacetrue is released under version 2.0 of the http://www.apache.org/licenses/LICENSE-2.0[Apache License].

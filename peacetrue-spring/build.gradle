@@ -1,7 +1,6 @@
-group 'com.github.peacetrue'
+description 'An extension module of Spring'
 
 dependencies {
-
     compile project(':peacetrue-util')
     compile "com.google.code.findbugs:jsr305"
     compile "org.springframework:spring-beans"

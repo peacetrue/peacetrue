@@ -18,6 +18,7 @@ public abstract class QueryUtils {
      * but avoid {@link NoResultException} or {@link NonUniqueResultException}
      *
      * @param query a query
+     * @param <T>   the type of return result
      * @return a single result
      */
     @Nullable

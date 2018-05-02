@@ -1,4 +1,4 @@
-group 'com.github.peacetrue'
+description 'used to set associated extend property value'
 
 dependencies {
     compile project(':peacetrue-jpa')

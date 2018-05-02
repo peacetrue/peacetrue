@@ -16,8 +16,10 @@ configure(allprojects) {
     apply plugin: 'propdeps-idea'
 }
 
+description 'an parent module for peacetrue'
 
-subprojects {
+allprojects {
+
     apply plugin: 'io.spring.dependency-management'
     dependencyManagement {
         imports {
@@ -46,25 +48,101 @@ subprojects {
     }
 
     group 'com.github.peacetrue'
-    version '1.0-SNAPSHOT'
+    version '1.0-RELEASE'
 
     apply plugin: 'java'
     sourceCompatibility = 1.8
 
     repositories {
-        if (getGradle().repository_public == null) {
+        if (gradle.hasProperty("repository_url")) {
+            //use local repository in ~/.gradle/init.d
+            maven { url gradle.repository_url }
+        } else {
             mavenCentral()
             maven { url "https://repo.spring.io/libs-release" }
             maven { url "https://repo.spring.io/snapshot" }
             maven { url "https://dl.bintray.com/rabbitmq/maven-milestones" }
             maven { url "https://plugins.gradle.org/m2/" }
-        } else {
-            //use local repository in ~/.gradle/init.d
-            maven { url getGradle().repository_public }
+            maven { url "https://oss.sonatype.org/content/groups/public" }
+            maven { url "https://oss.sonatype.org/content/groups/staging" }
         }
     }
 
     dependencies {
         testCompile 'junit:junit'
     }
+
+    apply plugin: 'maven'
+    apply plugin: 'signing'
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from javadoc
+    }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    artifacts {
+        archives javadocJar, sourcesJar
+    }
+
+    signing {
+        sign configurations.archives
+    }
+
+    def repository_snapshots = gradle.hasProperty("repository_snapshots") ? gradle.repository_snapshots : 'https://oss.sonatype.org/repositories/snapshots/'
+    def repository_releases = gradle.hasProperty("repository_releases") ? gradle.repository_releases : 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+    def repository_username = gradle.hasProperty("repository_username") ? gradle.repository_username : '你仓库的用户名'
+    def repository_password = gradle.hasProperty("repository_password") ? gradle.repository_password : '你仓库的密码'
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: repository_releases) {
+                    authentication(userName: repository_username, password: repository_password)
+                }
+
+                snapshotRepository(url: repository_snapshots) {
+                    authentication(userName: repository_username, password: repository_password)
+                }
+
+                pom.project {
+                    name project.name
+                    packaging 'jar'
+                    groupId project.group
+//                    version project.version
+                    // optionally artifactId can be defined here
+                    description project.description
+                    url 'https://github.com/peacetrue/peacetrue'
+
+                    scm {
+                        url 'https://github.com/peacetrue/peacetrue'
+                        connection 'https://github.com/peacetrue/peacetrue.git'
+                        developerConnection 'https://github.com/peacetrue/peacetrue.git'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'xiayouxue'
+                            name 'xiayouxue'
+                            email 'xiayouxue@hotmail.com'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
 }
