@@ -110,13 +110,14 @@ allprojects {
                     authentication(userName: repository_username, password: repository_password)
                 }
 
+                println(project.description)
                 pom.project {
                     name project.name
                     packaging 'jar'
                     groupId project.group
 //                    version project.version
                     // optionally artifactId can be defined here
-                    description project.description
+                    description project.description //TODO when this be applied, project.description have't be init
                     url 'https://github.com/peacetrue/peacetrue'
 
                     scm {

@@ -21,8 +21,27 @@ https://peacetrue.github.io/peacetrue-associate.html[associate component^]::
 used to set associated extend property value.
 
 == Components in the Attic
-https://peacetrue.github.io/peacetrue-log.html[log component^]::
+//https://peacetrue.github.io/peacetrue-log.html[log component^]::
+log component::
 used to record history information in database for common add, modify, delete operation.
+
+//https://peacetrue.github.io/peacetrue-tree.html[tree component^]::
+tree component::
+used to support tree structure, there are so many tree structure data, e.g. organization, dictionary, region address etc.
+
+query component::
+used to support custom conditional queries.
+
+//https://peacetrue.github.io/peacetrue-import.html[import component^]::
+import component::
+used to support import data from excel or other source.
+
+form component::
+used to support custom form, dynamic property.
+
+== Contact
+. you can send email to <xiayouxue@hotmal.com>
+. focus WeChat image:qrcode.jpg[]
 
 == License
 The Peacetrue is released under version 2.0 of the http://www.apache.org/licenses/LICENSE-2.0[Apache License].
