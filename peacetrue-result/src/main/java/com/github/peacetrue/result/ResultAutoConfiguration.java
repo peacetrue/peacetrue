@@ -1,5 +1,6 @@
 package com.github.peacetrue.result;
 
+import com.github.peacetrue.result.exception.GenericExceptionHandler;
 import com.github.peacetrue.result.exception.converters.*;
 import com.github.peacetrue.result.printer.ClassPrinter;
 import com.github.peacetrue.result.printer.MessageSourceClassPrinter;
@@ -37,6 +38,7 @@ public class ResultAutoConfiguration {
         this.resultProperties = resultProperties;
     }
 
+
     @Bean
     @ConditionalOnMissingBean(ResultBuilder.class)
     public ResultBuilder resultBuilder() {
@@ -52,6 +54,12 @@ public class ResultAutoConfiguration {
         MessageSourceClassPrinter printer = new MessageSourceClassPrinter();
         printer.setPrefix(resultProperties.getClassPrefix());
         return printer;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(name = "genericExceptionHandler")
+    public GenericExceptionHandler genericExceptionHandler() {
+        return new GenericExceptionHandler();
     }
 
     @Bean
