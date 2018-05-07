@@ -6,15 +6,20 @@ import com.github.peacetrue.result.printer.ClassPrinter;
 import com.github.peacetrue.result.printer.MessageSourceClassPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.Ordered;
+import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -141,6 +146,21 @@ public class ResultAutoConfiguration {
 
         @Autowired
         private ResultProperties resultProperties;
+
+        /** copy from {@link WebMvcAutoConfigurationAdapter#viewResolver(BeanFactory)} */
+        @Bean
+        @ConditionalOnBean(ViewResolver.class)
+        @ConditionalOnMissingBean(name = "viewResolver", value = ContentNegotiatingViewResolver.class)
+        public ContentNegotiatingViewResolver viewResolver(BeanFactory beanFactory) {
+            ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
+            resolver.setContentNegotiationManager(
+                    beanFactory.getBean(ContentNegotiationManager.class));
+            // ContentNegotiatingViewResolver uses all the other view resolvers to locate
+            // a view so it should have a high precedence
+            resolver.setOrder(Ordered.HIGHEST_PRECEDENCE);
+            return resolver;
+        }
+
 
         @Autowired
         public void setContentNegotiatingViewResolver(ContentNegotiatingViewResolver viewResolver) {
