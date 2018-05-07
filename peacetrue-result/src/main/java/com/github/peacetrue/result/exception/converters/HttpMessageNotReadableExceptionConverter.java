@@ -1,8 +1,11 @@
 package com.github.peacetrue.result.exception.converters;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.github.peacetrue.result.ErrorType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+
+import java.util.stream.Collectors;
 
 /**
  * for {@link HttpMessageNotReadableException}
@@ -16,11 +19,15 @@ public class HttpMessageNotReadableExceptionConverter extends AbstractExceptionC
         if (exception.getCause() instanceof InvalidFormatException) {
             InvalidFormatException invalidFormatException = (InvalidFormatException) exception.getCause();
             FieldErrorBean fieldErrorBean = new FieldErrorBean();
-            fieldErrorBean.setPropertyPath(invalidFormatException.getPathReference());
+            fieldErrorBean.setPropertyPath(invalidFormatException.getPath().stream().map(this::getFieldName).collect(Collectors.joining(".")));
             fieldErrorBean.setInvalidValue(invalidFormatException.getValue());
             return fieldErrorBean;
         }
         return null;
+    }
+
+    private String getFieldName(JsonMappingException.Reference reference) {
+        return reference.getIndex() == -1 ? reference.getFieldName() : (reference.getFieldName() + "[" + reference.getIndex() + "]");
     }
 
     @Override

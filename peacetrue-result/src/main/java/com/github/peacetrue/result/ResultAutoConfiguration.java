@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -147,7 +146,7 @@ public class ResultAutoConfiguration {
         @Autowired
         private ResultProperties resultProperties;
 
-        /** copy from {@link WebMvcAutoConfigurationAdapter#viewResolver(BeanFactory)} */
+        //copy from {@link WebMvcAutoConfigurationAdapter#viewResolver(BeanFactory)}
         @Bean
         @ConditionalOnBean(ViewResolver.class)
         @ConditionalOnMissingBean(name = "viewResolver", value = ContentNegotiatingViewResolver.class)

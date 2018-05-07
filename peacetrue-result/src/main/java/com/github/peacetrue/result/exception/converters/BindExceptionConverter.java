@@ -49,7 +49,8 @@ public class BindExceptionConverter implements ExceptionConverter<BindException>
             fieldErrorBean.setInvalidValue(fieldError.getRejectedValue());
             return new DataResultImpl<>(resultCodeResolver.resolve(fieldError.getCode()), fieldError.getDefaultMessage(), fieldErrorBean);
         } else {
-            return new DataResultImpl<>(resultCodeResolver.resolve(objectError.getCode()), objectError.getDefaultMessage(), objectError.getObjectName());
+            //no data available
+            return new ResultImpl(resultCodeResolver.resolve(objectError.getCode()), objectError.getDefaultMessage());
         }
     }
 

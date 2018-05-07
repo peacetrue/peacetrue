@@ -1,5 +1,7 @@
 package com.github.peacetrue.result;
 
+import com.github.peacetrue.result.UserIdentityValidator;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;
