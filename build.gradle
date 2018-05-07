@@ -31,7 +31,7 @@ allprojects {
             dependency 'com.google.guava:guava:24.1-jre'
             dependency 'org.projectlombok:lombok:1.16.20'
             dependency "javax.json:javax.json-api:1.1"
-            dependency 'com.fasterxml.jackson.module:jackson-module-parameter-names:2.4.1'
+//            dependency 'com.fasterxml.jackson.module:jackson-module-parameter-names:2.4.1'
             dependency 'org.reflections:reflections:0.9.9-RC1'
             dependency 'org.aspectj:aspectjweaver:1.8.9'
             dependency 'mysql:mysql-connector-java:5.1.39'
@@ -144,6 +144,4 @@ allprojects {
             }
         }
     }
-
-
 }

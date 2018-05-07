@@ -1,0 +1,35 @@
+= 响应结果设计文档
+xiayx <xiayouxue@hotmail.com>
+v1.0, 2018-03-25: SNAPSHOT
+:doctype: docbook
+:toc: left
+:numbered:
+:imagesdir: assets/images
+:sourcedir: src/main/java
+:resourcesdir: src/main/resources
+:testsourcedir: src/test/java
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+
+== 异常处理
+
+=== MethodArgumentTypeMismatchException
+方法参数类型不匹配，
+例如：``Controller.method(Long id)``，当接收一个非数值型id参数时，会导致此异常。
+
+=== BindException
+使用BeanValidation验证参数无效时，会导致此异常。
+
+== 参数属性发生异常时，属性路径如何表述？
+通常来说，方法只有一个验证参数，但不排除有多个验证参数的场景，
+理论上来说，一个属性应该只归属于一个参数，但也不排除多个参数含有相同属性的情况，此情况不考虑。
+即参数属性路径排除根节点。
+
+
+== 参数类型验证失败后如何将数据返回页面
+进入修改页面，修改数据后，发生异常，重新回到修改页面，展示之前填写的数据，并提示异常信息。
+之前填写的数据，可以从参数中获取，但是在
+
+回带数据，必须转换成功，必须转换成功，可以使用全字符串类型参数的模拟对象。
+params取值，spring的链式参数名称，单个时有效，多个时无效。
+

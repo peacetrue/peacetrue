@@ -19,6 +19,8 @@ Provides various components for java web development.
 == Main Components
 https://peacetrue.github.io/peacetrue-associate.html[associate component^]::
 used to set associated extend property value.
+https://peacetrue.github.io/peacetrue-result.html[result component^]::
+Used to encapsulate response results, allowing developers to focus on business processes.
 
 == Components in the Attic
 //https://peacetrue.github.io/peacetrue-log.html[log component^]::
@@ -40,7 +42,7 @@ form component::
 used to support custom form, dynamic property.
 
 == Contact
-. you can send email to <xiayouxue@hotmal.com>
+. you can send email to {email}
 . focus WeChat
 
 image::qrcode.jpg[]

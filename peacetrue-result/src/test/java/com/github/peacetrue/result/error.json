@@ -1,0 +1,8 @@
+{
+  "code": "argument_type_mismatch",
+  "message": "参数\"id\"的值\"a\"无法被转换成\"数值\"类型",
+  "data": {
+    "propertyPath": "id",
+    "invalidValue": "a"
+  }
+}

@@ -85,8 +85,14 @@ public abstract class EnumUtils {
         return descriptor.getReadMethod();
     }
 
-    /** @see Collectors#throwingMerger() */
-    private static <T> BinaryOperator<T> throwingMerger() {
+    /**
+     * throwing merger
+     *
+     * @param <T> the type of argument
+     * @return the BinaryOperator
+     * @see Collectors#throwingMerger()
+     */
+    public static <T> BinaryOperator<T> throwingMerger() {
         return (u, v) -> {
             throw new IllegalStateException(String.format("Duplicate key %s", u));
         };

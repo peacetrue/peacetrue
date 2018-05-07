@@ -1,0 +1,332 @@
+= 结果组件
+xiayx <xiayouxue@hotmail.com>
+v1.0, 2018-05-07: SNAPSHOT
+:doctype: docbook
+:toc: left
+:numbered: 5
+:imagesdir: assets/images
+:sourcedir: src/main/java
+:resourcesdir: src/main/resources
+:testsourcedir: src/test/java
+:testresourcesdir: src/test/resources
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+
+用于封装响应结果，使开发者可以专注于业务处理。
+
+== 概念说明
+**响应结果**是指服务端向客户端输出的信息，以下简称**结果**。
+结果有形式和类型之分。
+
+结果形式包括：
+
+* 页面
+* 数据
+
+结果类型包括：
+
+* 成功
+* 失败
+
+== 特性支持
+确定的内容在不同形式下返回不同的结果::
+组件会自动根据客户端可接收的媒体类型，决定输出页面或数据。
+
+确定的内容在不同类型下返回不同的结果::
+组件会自动根据服务端异常情况，决定输出成功或者失败。
+
+== 依赖
+. https://docs.spring.io/spring-boot/docs/1.4.1.RELEASE/reference/htmlsingle/[spring boot 1.4.1^]
+.. ``org.springframework.boot:spring-boot-starter-web``
+.. ``org.springframework.boot:spring-boot-starter-validation``
+. https://docs.jboss.org/hibernate/validator/5.2/reference/en-US/html_single/[Hibernate Validator 5.4^]
+
+
+读者需要对以上组件有所了解，以便于更好的阅读本文。
+
+== 使用
+
+=== 引入依赖
+.gradle
+[source%nowrap,gradle]
+----
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.github.peacetrue:peacetrue-result:1.1-RELEASE'
+}
+----
+
+.maven
+[source%nowrap,maven]
+----
+<dependencies>
+    <dependency>
+        <groupId>com.github.peacetrue</groupId>
+        <artifactId>peacetrue-result</artifactId>
+        <version>1.1-RELEASE</version>
+    </dependency>
+</dependencies>
+----
+
+=== 配置编码和描述
+指定你对外展示的编码：
+
+.application.properties（可以覆盖默认值）
+[source%nowrap,properties]
+----
+include::{resourcesdir}/result.application.properties[]
+----
+
+指定你对外展示的描述：
+
+.messages.properties（可以覆盖默认值）
+[source%nowrap,properties]
+----
+Result.success=请求成功
+Result.error=请求失败
+Result.errors=共有{0}个错误
+Result.argument_type_mismatch=参数"{0}"的值"{1}"无法被转换成"{2}"类型
+----
+
+[[validation_code]]
+.ValidationMessages.properties（可以覆盖默认值）
+[source%nowrap,properties]
+----
+javax.validation.constraints.AssertFalse.message     = 只能为false
+javax.validation.constraints.AssertTrue.message      = 只能为true
+javax.validation.constraints.DecimalMax.message      = 必须小于或等于{value}
+javax.validation.constraints.DecimalMin.message      = 必须大于或等于{value}
+javax.validation.constraints.Digits.message          = 数字的值超出了允许范围(只允许在{integer}位整数和{fraction}位小数范围内)
+javax.validation.constraints.Email.message           = 不是一个合法的电子邮件地址
+javax.validation.constraints.Future.message          = 需要是一个将来的时间
+javax.validation.constraints.FutureOrPresent.message = 需要是一个将来或现在的时间
+javax.validation.constraints.Max.message             = 最大不能超过{value}
+javax.validation.constraints.Min.message             = 最小不能小于{value}
+javax.validation.constraints.Negative.message        = 必须是负数
+javax.validation.constraints.NegativeOrZero.message  = 必须是负数或零
+javax.validation.constraints.NotBlank.message        = 不能为空
+javax.validation.constraints.NotEmpty.message        = 不能为空
+javax.validation.constraints.NotNull.message         = 不能为null
+javax.validation.constraints.Null.message            = 必须为null
+javax.validation.constraints.Past.message            = 需要是一个过去的时间
+javax.validation.constraints.PastOrPresent.message   = 需要是一个过去或现在的时间
+javax.validation.constraints.Pattern.message         = 需要匹配正则表达式"{regexp}"
+javax.validation.constraints.Positive.message        = 必须是正数
+javax.validation.constraints.PositiveOrZero.message  = 必须是正数或零
+javax.validation.constraints.Size.message            = 个数必须在{min}和{max}之间
+
+org.hibernate.validator.constraints.CreditCardNumber.message        = 不合法的信用卡号码
+org.hibernate.validator.constraints.Currency.message                = 不合法的货币 (必须是{value}其中之一)
+org.hibernate.validator.constraints.EAN.message                     = 不合法的{type}条形码
+org.hibernate.validator.constraints.Length.message                  = 长度需要在{min}和{max}之间
+org.hibernate.validator.constraints.CodePointLength.message         = 长度需要在{min}和{max}之间
+org.hibernate.validator.constraints.LuhnCheck.message               = ${validatedValue}的校验码不合法, Luhn模10校验和不匹配
+org.hibernate.validator.constraints.Mod10Check.message              = ${validatedValue}的校验码不合法, 模10校验和不匹配
+org.hibernate.validator.constraints.Mod11Check.message              = ${validatedValue}的校验码不合法, 模11校验和不匹配
+org.hibernate.validator.constraints.ModCheck.message                = ${validatedValue}的校验码不合法, ${modType}校验和不匹配
+org.hibernate.validator.constraints.ParametersScriptAssert.message  = 执行脚本表达式"{script}"没有返回期望结果
+org.hibernate.validator.constraints.Range.message                   = 需要在{min}和{max}之间
+org.hibernate.validator.constraints.SafeHtml.message                = 可能有不安全的HTML内容
+org.hibernate.validator.constraints.ScriptAssert.message            = 执行脚本表达式"{script}"没有返回期望结果
+org.hibernate.validator.constraints.URL.message                     = 需要是一个合法的URL
+
+org.hibernate.validator.constraints.time.DurationMax.message        = 必须小于${inclusive == true ? '或等于' : ''}${days == 0 ? '' : days += '天'}${hours == 0 ? '' : hours += '小时'}${minutes == 0 ? '' : minutes += '分钟'}${seconds == 0 ? '' : seconds += '秒'}${millis == 0 ? '' : millis += '毫秒'}${nanos == 0 ? '' : nanos += '纳秒'}
+org.hibernate.validator.constraints.time.DurationMin.message        = 必须大于${inclusive == true ? '或等于' : ''}${days == 0 ? '' : days += '天'}${hours == 0 ? '' : hours += '小时'}${minutes == 0 ? '' : minutes += '分钟'}${seconds == 0 ? '' : seconds += '秒'}${millis == 0 ? '' : millis += '毫秒'}${nanos == 0 ? '' : nanos += '纳秒'}
+----
+
+=== 使用自定义编码
+经常会遇到根据主键查询实体记录的场景，
+当实体记录不存在时，我们想要将该信息返回给客户端，
+使用自定义编码该如何实现呢？以下进行详细讲解：
+
+定义编码::
+定义一个编码，任意编码都可以，只要是唯一的，假设为**6666**
+配置描述::
+在``messages.properties``中配置描述：``Result.6666=标识为{0}的{1}不存在``，此处需要接收两个参数。
+配置类型::
+在``messages.properties``中配置描述：``Class.com.github.peacetrue.result.User=用户``
+抛出异常::
+在代码中抛出异常：``throw new ResultException(resultBuilder.build("6666", new Object[]{id, User.class}));``，
+``new Object[]{id, User.class}``对应描述中的占位符。
+
+假设请求``/user/view?id=10``发生异常，上面的示例将返回如下结果：
+[source%nowrap,javascript]
+----
+{
+    "code": "6666",
+    "message": "标识为10的用户不存在"
+}
+----
+
+=== 使用约束规则
+.为验证源添加约束规则
+[source%nowrap,java]
+----
+include::{testsourcedir}/com/github/peacetrue/result/User.java[tags=class]
+----
+. name不能为``Null``，并且字符长度在4~255之间
+. password不能为``Null``，并且字符长度在4~255之间
+
+=== 转换第三方异常
+第三方异常是由依赖类库所抛出的，我们需要将其转换成响应结果。
+可以使用``ExceptionConverter``进行转换，
+``ExceptionConverter``的泛型参数对应你需要处理的具体异常。
+
+== 示例分析
+以用户查看为例说明：
+
+.用户实体类
+[source%nowrap,java]
+----
+include::{testsourcedir}/com/github/peacetrue/result/User.java[tags=class]
+----
+
+.用户控制器
+[source%nowrap,java]
+----
+include::{testsourcedir}/com/github/peacetrue/result/UserController.java[tags=class]
+----
+
+=== 请求成功
+当访问地址``/user/view?id=1``时，
+会请求成功并返回如下结构数据：
+
+[[user1]]
+.用户数据
+[source%nowrap,javascript]
+----
+include::{testsourcedir}/com/github/peacetrue/result/user.json[]
+----
+<1> 你可以自定义``code``的值**success**，参考<<_自定义编码>>
+<2> 你可以自定义``message``的值**请求成功**，参考<<_自定义描述>>
+
+==== 返回数据
+如果是通过Ajax访问，
+请求头包含``Accept: application/json``，
+会直接返回上述<<user1>>。
+
+==== 跳转页面
+如果是通过浏览器访问，
+请求头包含``Accept: text/html``，
+会返回``/user/detail``页面。
+你可以在页面上，使用上述<<user1>>。
+如下所示：
+
+[source%nowrap,html]
+----
+include::{testresourcesdir}/templates/user/detail.html[]
+----
+
+
+
+=== 请求失败
+当访问地址``/user/view?id=a``时，
+会请求失败并返回如下结构数据：
+
+[[error]]
+.错误信息
+[source%nowrap,javascript]
+----
+include::{testsourcedir}/com/github/peacetrue/result/error.json[]
+----
+``data``中包含具体的错误详情，方便开发者做自定义处理。
+
+==== 返回数据
+如果是通过Ajax访问，
+请求头包含``Accept: application/json``，
+会直接返回上述<<error>>。
+
+==== 跳转页面
+如果是通过浏览器访问，请求头包含``Accept: text/html``，
+会返回到统一的异常页面，默认为``/error``，
+你可以通过``peacetrue.result.error-page``更改地址。
+如果你需要根据不同的请求跳转不同的错误页，需要实现``ErrorPageResolver``接口。
+
+== 编码
+编码是一个由开发者制定的唯一标识结果类型的字符串。
+
+image::code-framework.gif[编码体系结构]
+
+.编码分为：
+* 标准编码， 由组件提供
+** 结果组件标准编码，由结果组件提供
+** 验证组件标准编码，由Hibernate Validator提供
+* 自定义编码，由使用者提供
+
+.结果组件标准编码包括：
+* success：成功
+* error：失败
+* errors：失败组，其中包含多项具体失败
+* argument_type_mismatch：参数类型不匹配
+
+.验证组件标准编码包括：
+* AssertFalse：只能为false
+* AssertTrue：只能为true
+* DecimalMax：必须小于或等于{value}
+* DecimalMin：必须大于或等于{value}
+* Digits：数字的值超出了允许范围(只允许在{integer}位整数和{fraction}位小数范围内)
+* Email：不是一个合法的电子邮件地址
+* Future：需要是一个将来的时间
+* FutureOrPresent：需要是一个将来或现在的时间
+* Max：最大不能超过{value}
+* Min：最小不能小于{value}
+* Negative：必须是负数
+* NegativeOrZero：必须是负数或零
+* NotBlank：不能为空
+* NotEmpty：不能为空
+* NotNull：不能为null
+* Null：必须为null
+* Past：需要是一个过去的时间
+* PastOrPresent：需要是一个过去或现在的时间
+* Pattern：需要匹配正则表达式"{regexp}"
+* Positive：必须是正数
+* PositiveOrZero：必须是正数或零
+* Size：个数必须在{min}和{max}之间
+* CreditCardNumber：不合法的信用卡号码
+* Currency：不合法的货币 (必须是{value}其中之一)
+* EAN：不合法的{type}条形码
+* Email：不是一个合法的电子邮件地址
+* Length：长度需要在{min}和{max}之间
+* CodePointLength：长度需要在{min}和{max}之间
+* LuhnCheck：${validatedValue}的校验码不合法, Luhn模10校验和不匹配
+* Mod10Check：${validatedValue}的校验码不合法, 模10校验和不匹配
+* Mod11Check：${validatedValue}的校验码不合法, 模11校验和不匹配
+* ModCheck：${validatedValue}的校验码不合法, ${modType}校验和不匹配
+* ParametersScriptAssert：执行脚本表达式"{script}"没有返回期望结果
+* Range：需要在{min}和{max}之间
+* SafeHtml：可能有不安全的HTML内容
+* ScriptAssert：执行脚本表达式"{script}"没有返回期望结果
+* URL：需要是一个合法的URL
+* DurationMax：必须小于${inclusive == true ? '或等于' : ''}${days == 0 ? '' : days += '天'}${hours == 0 ? '' : hours += '小时'}${minutes == 0 ? '' : minutes += '分钟'}${seconds == 0 ? '' : seconds += '秒'}${millis == 0 ? '' : millis += '毫秒'}${nanos == 0 ? '' : nanos += '纳秒'}
+* DurationMin：必须大于${inclusive == true ? '或等于' : ''}${days == 0 ? '' : days += '天'}${hours == 0 ? '' : hours += '小时'}${minutes == 0 ? '' : minutes += '分钟'}${seconds == 0 ? '' : seconds += '秒'}${millis == 0 ? '' : millis += '毫秒'}${nanos == 0 ? '' : nanos += '纳秒'}
+
+
+=== 自定义编码
+默认情况下，所有标准编码的自定义编码等于标准编码；
+你可以通过``peacetrue.result.codes.{code}``为标准编码指定自定义编码，``{code}``对应标准编码。
+例如：想要指定成功编码为**200**，可使用``peacetrue.result.codes.success=success200``。
+
+=== 自定义描述
+你需要在``messages.properties``中配置编码的描述。
+配置规则为：``{prefix}.{code}=描述``，
+``{prefix}``可通过``peacetrue.result.code-prefix``指定，默认为``Result``。
+//TODO 可以不指定前缀么
+例如：请求成功时，想要指定描述为**干的漂亮**，可以使用``Result.success=干得漂亮``；
+如果使用了自定义编码，假设为**200**，则使用``Result.200=干得漂亮``。
+
+
+// asciidoctor peacetrue-result/README.adoc -o ../peacetrue.github.io/peacetrue-result.html
+// peacetrue\.result\.codes\.(.+)=  peacetrue.result.codes.$1=$1$1
+
+
+
+
+
+
+
+
+
+

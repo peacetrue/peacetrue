@@ -4,4 +4,5 @@ include 'peacetrue-util'
 include 'peacetrue-jpa'
 include 'peacetrue-spring'
 include 'peacetrue-associate'
+include 'peacetrue-result'
 
