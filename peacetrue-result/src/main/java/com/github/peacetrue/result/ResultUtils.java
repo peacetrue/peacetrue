@@ -24,7 +24,7 @@ public abstract class ResultUtils {
      * bind data to model
      *
      * @param model the model
-     * @param data  the {@link Result}
+     * @param data  the data
      */
     public static void bind(Model model, Object data) {
         model.addAllAttributes(BeanUtils.map(resultBuilder.build(data)));
@@ -34,7 +34,7 @@ public abstract class ResultUtils {
      * bind data to modelMap
      *
      * @param modelMap the modelMap
-     * @param data     the {@link Result}
+     * @param data     the data
      */
     public static void bind(ModelMap modelMap, Object data) {
         modelMap.addAllAttributes(BeanUtils.map(resultBuilder.build(data)));
@@ -45,7 +45,7 @@ public abstract class ResultUtils {
      * bind data to request
      *
      * @param request the request
-     * @param data    the {@link Result}
+     * @param data    the data
      */
     public static void bind(HttpServletRequest request, Object data) {
         BeanUtils.map(resultBuilder.build(data)).forEach(request::setAttribute);
@@ -55,7 +55,7 @@ public abstract class ResultUtils {
      * wrap result
      *
      * @param result the result
-     * @return the result
+     * @return the wrapped result
      */
     public static Result wrap(Result result) {
         return result instanceof DataResult ? new DataResultImpl<>(result) : new ResultImpl(result);

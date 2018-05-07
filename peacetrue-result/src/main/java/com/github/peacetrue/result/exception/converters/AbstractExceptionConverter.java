@@ -17,13 +17,14 @@ import java.util.Locale;
 public abstract class AbstractExceptionConverter<T extends Exception, D> implements ExceptionConverter<T> {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
-    protected ResultBuilder standardCodeResultBuilder;
+    protected ResultBuilder resultBuilder;
 
     @Override
     public Result convert(T exception, @Nullable Locale locale) {
+        logger.info("convert {} to Result", exception.getClass().getName());
         D data = resolveData(exception);
         Object[] arguments = resolveArguments(exception, data);
-        return standardCodeResultBuilder.build(getCode(), arguments, data, locale);
+        return resultBuilder.build(getCode(), arguments, data, locale);
     }
 
     /**
@@ -51,7 +52,7 @@ public abstract class AbstractExceptionConverter<T extends Exception, D> impleme
     protected abstract Object[] resolveArguments(T exception, D data);
 
     @Autowired
-    public void setStandardCodeResultBuilder(ResultBuilder standardCodeResultBuilder) {
-        this.standardCodeResultBuilder = standardCodeResultBuilder;
+    public void setResultBuilder(ResultBuilder resultBuilder) {
+        this.resultBuilder = resultBuilder;
     }
 }

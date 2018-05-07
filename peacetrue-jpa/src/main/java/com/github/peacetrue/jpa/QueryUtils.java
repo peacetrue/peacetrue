@@ -17,9 +17,9 @@ public abstract class QueryUtils {
      * similar to {@link Query#getSingleResult()},
      * but avoid {@link NoResultException} or {@link NonUniqueResultException}
      *
-     * @param query a query
+     * @param query the query
      * @param <T>   the type of return result
-     * @return a single result
+     * @return the single result
      */
     @Nullable
     @SuppressWarnings("unchecked")

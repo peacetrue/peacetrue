@@ -27,6 +27,13 @@ public class BindExceptionConverter implements ExceptionConverter<BindException>
         return convert((BindingResult) exception, locale);
     }
 
+    /**
+     * convert BindingResult to Result
+     *
+     * @param bindingResult the bindingResult
+     * @param locale        the locale
+     * @return the Result
+     */
     protected Result convert(BindingResult bindingResult, Locale locale) {
         List<ObjectError> errors = bindingResult.getAllErrors();
         if (errors.size() == 1) return map(errors.get(0));
@@ -34,6 +41,12 @@ public class BindExceptionConverter implements ExceptionConverter<BindException>
         return resultBuilder.build(code, new Object[]{bindingResult.getErrorCount()}, results, locale);
     }
 
+    /**
+     * convert objectError to Result
+     *
+     * @param objectError the objectError
+     * @return the Result
+     */
     protected Result map(ObjectError objectError) {
 //        ConstraintViolation violation = objectError.unwrap(ConstraintViolation.class);
 //        FieldErrorBean fieldErrorBean = new FieldErrorBean();

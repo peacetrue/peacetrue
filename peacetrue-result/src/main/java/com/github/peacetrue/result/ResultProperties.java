@@ -27,19 +27,6 @@ public class ResultProperties {
     private Map<String, String> codes = new HashMap<>();
 
 
-    @PostConstruct
-    public void init() {
-        Arrays.stream(ResultType.values()).forEach(resultType -> {
-            if (!codes.containsKey(resultType.name()))
-                codes.put(resultType.name(), resultType.name());
-        });
-
-        Arrays.stream(ErrorType.values()).forEach(resultType -> {
-            if (!codes.containsKey(resultType.name()))
-                codes.put(resultType.name(), resultType.name());
-        });
-    }
-
     public String getCodePrefix() {
         return codePrefix;
     }

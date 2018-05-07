@@ -24,6 +24,7 @@ public class GenericExceptionConverter
         return ExceptionConverter.class;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Result convert(Exception exception, Locale locale) {
         Optional<ExceptionConverter> converter = find(exception.getClass());

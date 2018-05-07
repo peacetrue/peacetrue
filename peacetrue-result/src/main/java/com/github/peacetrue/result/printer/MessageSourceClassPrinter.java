@@ -17,16 +17,16 @@ import java.util.stream.Collectors;
  */
 public class MessageSourceClassPrinter implements ClassPrinter {
 
-    private String prefix = "Class";
+    private String prefix;
     private MessageSource messageSource;
 
     @Override
-    public String print(Class object) throws NoSuchMessageException {
+    public String print(Class object) {
         return print(object, LocaleContextHolder.getLocale());
     }
 
     @Override
-    public String print(Class object, Locale locale) throws NoSuchMessageException {
+    public String print(Class object, Locale locale) {
         String message;
         Class forClass = object;
         Set<String> codes = new LinkedHashSet<>();

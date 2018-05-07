@@ -39,9 +39,4 @@ public class DataResultImpl<T> extends ResultImpl implements DataResult<T> {
     public void setData(T data) {
         this.data = data;
     }
-
-    @Override
-    public String toString() {
-        return String.format("%s(%s) with data %s", getMessage(), getCode(), getData());
-    }
 }

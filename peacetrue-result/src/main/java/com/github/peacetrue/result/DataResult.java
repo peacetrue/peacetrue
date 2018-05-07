@@ -8,9 +8,6 @@ package com.github.peacetrue.result;
  */
 public interface DataResult<T> extends Result {
 
-    /** the property name of {@link #getData()} */
-    String DATA_PROPERTY = "data";
-
     /**
      * get result data
      *

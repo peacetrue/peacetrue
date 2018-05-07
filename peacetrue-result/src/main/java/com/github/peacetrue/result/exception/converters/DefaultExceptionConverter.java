@@ -19,7 +19,6 @@ import java.util.Locale;
 public class DefaultExceptionConverter implements ExceptionConverter<Exception> {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
-    /** the custom result code */
     private String code;
     private ResultBuilder resultBuilder;
 

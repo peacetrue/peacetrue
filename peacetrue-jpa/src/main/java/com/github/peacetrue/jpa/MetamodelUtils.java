@@ -44,8 +44,8 @@ public abstract class MetamodelUtils {
     /**
      * get entity name by entity class with {@link Class#equals(Object)}
      *
-     * @param metamodel   a metamodel
-     * @param entityClass a entity class
+     * @param metamodel   the metamodel
+     * @param entityClass the entity class
      * @return a entity name matched for entity class
      */
     public static String getRequiredEntityName(Metamodel metamodel, Class<?> entityClass) {
