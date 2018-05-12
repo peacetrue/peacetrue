@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -18,20 +19,15 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.Ordered;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.GenericHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 import static org.springframework.context.support.AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME;
@@ -199,29 +195,15 @@ public class ResultAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(name = "resultJsonHttpMessageConverter")
-    public ResultJackson2HttpMessageConverter resultJsonHttpMessageConverter() {
-        return new ResultJackson2HttpMessageConverter();
+    @ConditionalOnMissingBean(name = "resultResponseBodyAdvice", value = ResponseBodyAdvice.class)
+    public ResultResponseBodyAdvice resultResponseBodyAdvice() {
+        return new ResultResponseBodyAdvice();
     }
 
     @Bean
-    public WebMvcConfigurer webMvcConfigurer(GenericHttpMessageConverter<?> resultJsonHttpMessageConverter) {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-                for (int i = 0; i < converters.size(); i++) {
-                    HttpMessageConverter<?> httpMessageConverter = converters.get(i);
-                    if (httpMessageConverter.getSupportedMediaTypes().contains(MediaType.APPLICATION_JSON)
-                            && httpMessageConverter instanceof GenericHttpMessageConverter) {
-                        if (resultJsonHttpMessageConverter instanceof ResultJackson2HttpMessageConverter) {
-                            ((ResultJackson2HttpMessageConverter) resultJsonHttpMessageConverter)
-                                    .setHttpMessageConverter((GenericHttpMessageConverter) httpMessageConverter);
-                        }
-                        converters.set(i, resultJsonHttpMessageConverter);
-                        break;
-                    }
-                }
-            }
-        };
+    @ConditionalOnMissingBean(name = "resultBeanPostProcessor", value = BeanPostProcessor.class)
+    public BeanPostProcessor resultBeanPostProcessor(ResultResponseBodyAdvice resultResponseBodyAdvice) {
+        return new ResultBeanPostProcessor(resultResponseBodyAdvice);
     }
+
 }

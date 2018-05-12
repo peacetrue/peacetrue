@@ -150,10 +150,19 @@ public class ResultTest {
         )
                 .andExpect(jsonPath("$.code").value(result.getCode()))
                 .andExpect(jsonPath("$.message").value(result.getMessage()))
-//                .andExpect(jsonPath("$.data.name").value(user.getName()))
-//                .andExpect(jsonPath("$.data.password").value(user.getPassword()))
+                .andExpect(jsonPath("$.data").isArray())
         ;
     }
 
+    @Test
+    public void returnVoid() throws Exception {
+        Result result = resultBuilder.build();
+        this.mockMvc.perform(post("/user/void")
+                .accept(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(jsonPath("$.code").value(result.getCode()))
+                .andExpect(jsonPath("$.message").value(result.getMessage()))
+        ;
+    }
 
 }
