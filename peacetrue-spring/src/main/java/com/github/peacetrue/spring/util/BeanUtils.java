@@ -161,6 +161,8 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         return map(bean, (Predicate<String>) null);
     }
 
+
+
     /**
      * similar to {@link EnumUtils#map(Enum[], String, String)},
      * but support object collection

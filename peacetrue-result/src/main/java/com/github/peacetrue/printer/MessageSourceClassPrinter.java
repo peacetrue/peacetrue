@@ -1,4 +1,4 @@
-package com.github.peacetrue.result.printer;
+package com.github.peacetrue.printer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -11,13 +11,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * a {@link ClassPrinter} implement by {@link MessageSource}
+ * a {@link ClassPrinter} implement by {@link MessageSource}.
+ * <p>
+ * Lookup code through the inheritance structure of the class.
  *
  * @author xiayx
  */
 public class MessageSourceClassPrinter implements ClassPrinter {
 
-    private String prefix;
+    public static final String DEFAULT_PREFIX = "Class";
+
+    private String prefix = DEFAULT_PREFIX;
     private MessageSource messageSource;
 
     @Override
@@ -29,14 +33,17 @@ public class MessageSourceClassPrinter implements ClassPrinter {
     public String print(Class object, Locale locale) {
         String message;
         Class forClass = object;
+        String prefix = this.prefix == null ? "" : (this.prefix + ".");
         Set<String> codes = new LinkedHashSet<>();
-        while (forClass != Object.class) {
-            String code = prefix + "." + forClass.getName();
+        while (true) {
+            String code = prefix + forClass.getName();
             message = print(code, locale);
             if (message != null) return message;
-            forClass = forClass.getSuperclass();
             codes.add(code);
+            if (forClass == Object.class) break;
+            forClass = forClass.getSuperclass();
         }
+
         throw new NoSuchMessageException(codes.stream().collect(Collectors.joining(",")), locale);
     }
 

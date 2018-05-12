@@ -1,6 +1,6 @@
 = 结果组件
 xiayx <xiayouxue@hotmail.com>
-v1.0, 2018-05-07: SNAPSHOT
+v1.1, 2018-05-07: RELEASE
 :doctype: docbook
 :toc: left
 :numbered: 5
@@ -35,7 +35,7 @@ v1.0, 2018-05-07: SNAPSHOT
 确定的内容在不同类型下返回不同的结果::
 组件会自动根据服务端异常情况，决定输出成功或者失败。
 
-== 依赖
+== 依赖关系
 . https://docs.spring.io/spring-boot/docs/1.4.1.RELEASE/reference/htmlsingle/[spring boot 1.4.1^]
 .. ``org.springframework.boot:spring-boot-starter-web``
 .. ``org.springframework.boot:spring-boot-starter-validation``
@@ -44,7 +44,7 @@ v1.0, 2018-05-07: SNAPSHOT
 
 读者需要对以上组件有所了解，以便于更好的阅读本文。
 
-== 使用
+== 使用说明
 
 === 引入依赖
 .gradle
@@ -221,15 +221,15 @@ image::code-framework.gif[编码体系结构]
 * 自定义编码，由使用者提供
 
 .结果组件标准编码：
-[source%nowrap,javascript]
+[source%nowrap,properties]
 ----
 include::{testresourcesdir}/doc/result.code.properties[]
 ----
 
 .验证组件标准编码：
-[source%nowrap,javascript]
+[source%nowrap,properties]
 ----
-include::{testresourcesdir}/doc/result.code.properties[]
+include::{testresourcesdir}/doc/validation.code.properties[]
 ----
 
 
@@ -245,7 +245,6 @@ include::{testresourcesdir}/doc/result.code.properties[]
 //TODO 可以不指定前缀么
 例如：请求成功时，想要指定描述为**干的漂亮**，可以使用``Result.success=干得漂亮``；
 如果使用了自定义编码，假设为**200**，则使用``Result.200=干得漂亮``。
-
 
 // asciidoctor peacetrue-result/README.adoc -o ../peacetrue.github.io/peacetrue-result.html
 // peacetrue\.result\.codes\.(.+)=  peacetrue.result.codes.$1=$1$1

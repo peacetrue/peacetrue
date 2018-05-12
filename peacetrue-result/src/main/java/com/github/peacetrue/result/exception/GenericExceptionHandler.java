@@ -2,6 +2,7 @@ package com.github.peacetrue.result.exception;
 
 import com.github.peacetrue.result.ErrorPageResolver;
 import com.github.peacetrue.result.Result;
+import com.github.peacetrue.result.ResultUtils;
 import com.github.peacetrue.result.exception.converters.ExceptionConverter;
 import com.github.peacetrue.spring.util.BeanUtils;
 import org.slf4j.Logger;

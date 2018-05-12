@@ -1,47 +1,42 @@
 package com.github.peacetrue.result.exception.converters;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.github.peacetrue.result.ErrorType;
+import com.github.peacetrue.result.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
-import java.util.stream.Collectors;
+import javax.annotation.Nullable;
+import java.util.Locale;
 
 /**
  * for {@link HttpMessageNotReadableException}
  *
  * @author xiayx
  */
-public class HttpMessageNotReadableExceptionConverter extends AbstractExceptionConverter<HttpMessageNotReadableException, FieldErrorBean> {
+public class HttpMessageNotReadableExceptionConverter extends AbstractExceptionConverter<HttpMessageNotReadableException, String> {
+
+    private ExceptionConverter<Exception> genericExceptionConverter;
 
     @Override
-    protected FieldErrorBean resolveData(HttpMessageNotReadableException exception) {
-        if (exception.getCause() instanceof InvalidFormatException) {
-            InvalidFormatException invalidFormatException = (InvalidFormatException) exception.getCause();
-            FieldErrorBean fieldErrorBean = new FieldErrorBean();
-            fieldErrorBean.setPropertyPath(invalidFormatException.getPath().stream().map(this::getFieldName).collect(Collectors.joining(".")));
-            fieldErrorBean.setInvalidValue(invalidFormatException.getValue());
-            return fieldErrorBean;
-        }
-        return null;
-    }
-
-    private String getFieldName(JsonMappingException.Reference reference) {
-        return reference.getIndex() == -1 ? reference.getFieldName() : (reference.getFieldName() + "[" + reference.getIndex() + "]");
-    }
-
-    @Override
-    protected Object[] resolveArguments(HttpMessageNotReadableException exception, FieldErrorBean data) {
-        if (exception.getCause() instanceof InvalidFormatException) {
-            InvalidFormatException invalidFormatException = (InvalidFormatException) exception.getCause();
-            return new Object[]{data.getPropertyPath(), data.getInvalidValue(), invalidFormatException.getTargetType()};
-        }
-        return null;
+    public Result convert(HttpMessageNotReadableException exception, @Nullable Locale locale) {
+        Exception cause = (Exception) exception.getCause();
+        if (cause == null || cause == exception) return super.convert(exception, locale);
+        return genericExceptionConverter.convert(cause, locale);
     }
 
     @Override
     protected String getCode() {
-        return ErrorType.argument_type_mismatch.name();
+        return ErrorType.argument_error.name();
     }
 
+    @Nullable
+    @Override
+    protected String resolveData(HttpMessageNotReadableException exception) {
+        return exception.getMessage();
+    }
+
+    @Autowired
+    public void setGenericExceptionConverter(ExceptionConverter<Exception> genericExceptionConverter) {
+        this.genericExceptionConverter = genericExceptionConverter;
+    }
 }

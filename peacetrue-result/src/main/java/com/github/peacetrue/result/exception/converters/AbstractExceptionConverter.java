@@ -2,6 +2,7 @@ package com.github.peacetrue.result.exception.converters;
 
 import com.github.peacetrue.result.Result;
 import com.github.peacetrue.result.ResultBuilder;
+import com.github.peacetrue.result.ResultCodeResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,14 @@ public abstract class AbstractExceptionConverter<T extends Exception, D> impleme
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     protected ResultBuilder resultBuilder;
+    protected ResultCodeResolver resultCodeResolver;
 
     @Override
     public Result convert(T exception, @Nullable Locale locale) {
         logger.info("convert {} to Result", exception.getClass().getName());
         D data = resolveData(exception);
         Object[] arguments = resolveArguments(exception, data);
-        return resultBuilder.build(getCode(), arguments, data, locale);
+        return resultBuilder.build(resultCodeResolver.resolve(getCode()), arguments, data, locale);
     }
 
     /**
@@ -40,7 +42,10 @@ public abstract class AbstractExceptionConverter<T extends Exception, D> impleme
      * @param exception the exception
      * @return the data
      */
-    protected abstract D resolveData(T exception);
+    @Nullable
+    protected D resolveData(T exception) {
+        return null;
+    }
 
     /**
      * resolve arguments
@@ -49,10 +54,18 @@ public abstract class AbstractExceptionConverter<T extends Exception, D> impleme
      * @param data      the data
      * @return the arguments
      */
-    protected abstract Object[] resolveArguments(T exception, D data);
+    @Nullable
+    protected Object[] resolveArguments(T exception, D data) {
+        return null;
+    }
 
     @Autowired
     public void setResultBuilder(ResultBuilder resultBuilder) {
         this.resultBuilder = resultBuilder;
+    }
+
+    @Autowired
+    public void setResultCodeResolver(ResultCodeResolver resultCodeResolver) {
+        this.resultCodeResolver = resultCodeResolver;
     }
 }

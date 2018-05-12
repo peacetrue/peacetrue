@@ -1,4 +1,4 @@
-package com.github.peacetrue.result.printer;
+package com.github.peacetrue.printer;
 
 import org.springframework.format.Printer;
 

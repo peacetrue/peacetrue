@@ -5,4 +5,7 @@ include 'peacetrue-jpa'
 include 'peacetrue-spring'
 include 'peacetrue-associate'
 include 'peacetrue-result'
+//include 'peacetrue-sign'
+//include 'peacetrue-sign:peacetrue-sign-client'
+//include 'peacetrue-sign:peacetrue-sign-server'
 

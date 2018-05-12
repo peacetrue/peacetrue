@@ -1,15 +1,18 @@
 
+sourceSets {
+    test {
+        resources {
+            srcDirs += "src/test/java"
+        }
+    }
+}
+
 dependencies {
     compile project(':peacetrue-spring')
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-validation'
-//    compile 'com.fasterxml.jackson.core:jackson-annotations'
-//    provided 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     optional "org.springframework.boot:spring-boot-configuration-processor"
 
-    testCompile "org.projectlombok:lombok"
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile 'org.springframework.boot:spring-boot-starter-thymeleaf'
-//    testCompile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-
 }

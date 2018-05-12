@@ -6,7 +6,7 @@ package com.github.peacetrue.result;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@UserIdentity(name = "admin", password = "admin")
+//@UserIdentity(name = "admin", password = "admin")
 //tag::class[]
 public class User {
 //end::class[]
@@ -14,15 +14,20 @@ public class User {
     //tag::class[]
     private Long id;
     @NotNull
-    @Size(min = 4, max = 255)
+    @Size(min = 4, max = 10)
     private String name;
     @NotNull
-    @Size(min = 4, max = 255)
+    @Size(min = 4, max = 10)
     private String password;
     //end::class[]
 
 
     public User() {
+    }
+
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
     }
 
     public User(Long id, String name, String password) {

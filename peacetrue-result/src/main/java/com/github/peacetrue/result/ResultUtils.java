@@ -58,7 +58,7 @@ public abstract class ResultUtils {
      * @return the wrapped result
      */
     public static Result wrap(Result result) {
-        return result instanceof DataResult ? new DataResultImpl<>(result) : new ResultImpl(result);
+        return result instanceof DataResult ? new DataResultImpl<>((DataResult<?>) result) : new ResultImpl(result);
     }
 
 

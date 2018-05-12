@@ -1,9 +1,8 @@
 package com.github.peacetrue.result;
 
+import com.github.peacetrue.printer.MessageSourceClassPrinter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import javax.annotation.PostConstruct;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,9 +17,9 @@ public class ResultProperties {
     public static final String PREFIX = "peacetrue.result";
 
     /** the prefix of result code */
-    private String codePrefix = "Result";
+    private String codePrefix = MessageSourceResultBuilder.DEFAULT_PREFIX;
     /** the prefix of class code */
-    private String classPrefix = "Class";
+    private String classPrefix = MessageSourceClassPrinter.DEFAULT_PREFIX;
     /** define the unified error page */
     private String errorPage = "/error";
     /** define all standard code to custom code */

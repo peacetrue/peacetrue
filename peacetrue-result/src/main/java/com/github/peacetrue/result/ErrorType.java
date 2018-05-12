@@ -8,6 +8,8 @@ package com.github.peacetrue.result;
  */
 public enum ErrorType {
 
+    argument_error,
     argument_type_mismatch,
+    argument_format_mismatch,
 
 }
