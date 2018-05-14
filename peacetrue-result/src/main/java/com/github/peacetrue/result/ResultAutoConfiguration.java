@@ -2,16 +2,14 @@ package com.github.peacetrue.result;
 
 import com.github.peacetrue.printer.ClassPrinter;
 import com.github.peacetrue.printer.MessageSourceClassPrinter;
-import com.github.peacetrue.result.exception.GenericExceptionHandler;
-import com.github.peacetrue.result.exception.converters.*;
-import com.github.peacetrue.result.exception.converters.jackson.InvalidFormatExceptionConverter;
-import com.github.peacetrue.result.exception.converters.jackson.JsonParseExceptionConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.peacetrue.result.exception.ResultExceptionAutoConfiguration;
+import com.github.peacetrue.result.exception.ResultWebExceptionAutoConfiguration;
+import com.github.peacetrue.result.exception.mysql.ResultMysqlExceptionAutoConfiguration;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -37,110 +35,60 @@ import static org.springframework.context.support.AbstractApplicationContext.MES
  *
  * @author xiayx
  */
-@EnableConfigurationProperties(ResultProperties.class)
+@ImportAutoConfiguration({
+        ResultExceptionAutoConfiguration.class,
+        ResultWebExceptionAutoConfiguration.class,
+        ResultMysqlExceptionAutoConfiguration.class
+})
 public class ResultAutoConfiguration {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-    private ResultProperties resultProperties;
+    /**
+     * for result build
+     */
+    @EnableConfigurationProperties(ResultProperties.class)
+    public static class BuilderAutoConfiguration {
 
-    public ResultAutoConfiguration(ResultProperties resultProperties) {
-        logger.debug("got ResultProperties: {}", resultProperties);
-        this.resultProperties = resultProperties;
-    }
+        private ResultProperties resultProperties;
 
-    @Bean
-    @ConditionalOnMissingBean(ResultBuilder.class)
-    public ResultBuilder resultBuilder() {
-        MessageSourceResultBuilder builder = new MessageSourceResultBuilder();
-        builder.setPrefix(resultProperties.getCodePrefix());
-        ResultUtils.setResultBuilder(builder);
-        return builder;
-    }
+        public BuilderAutoConfiguration(ResultProperties resultProperties) {
+            this.resultProperties = resultProperties;
+        }
 
-    @Bean
-    @ConditionalOnMissingBean(ClassPrinter.class)
-    public ClassPrinter classPrinter() {
-        MessageSourceClassPrinter printer = new MessageSourceClassPrinter();
-        printer.setPrefix(resultProperties.getClassPrefix());
-        return printer;
-    }
+        @Bean
+        @ConditionalOnMissingBean(ResultBuilder.class)
+        public ResultBuilder resultBuilder() {
+            MessageSourceResultBuilder builder = new MessageSourceResultBuilder();
+            builder.setPrefix(resultProperties.getCodePrefix());
+            ResultUtils.setResultBuilder(builder);
+            return builder;
+        }
 
-    @Bean
-    @ConditionalOnMissingBean(name = "genericExceptionHandler")
-    public GenericExceptionHandler genericExceptionHandler() {
-        return new GenericExceptionHandler();
-    }
+        @Bean
+        @ConditionalOnMissingBean(ClassPrinter.class)
+        public ClassPrinter classPrinter() {
+            MessageSourceClassPrinter printer = new MessageSourceClassPrinter();
+            printer.setPrefix(resultProperties.getClassPrefix());
+            return printer;
+        }
 
-    @Bean
-    @ConditionalOnMissingBean(name = "genericExceptionConverter")
-    public GenericExceptionConverter genericExceptionConverter() {
-        return new GenericExceptionConverter();
-    }
+        @Bean
+        @ConditionalOnMissingBean(ResultCodeResolver.class)
+        public ResultCodeResolver resultCodeResolver() {
+            SimpleResultCodeResolver resolver = new SimpleResultCodeResolver();
+            resolver.setCodes(resultProperties.getCodes());
+            return resolver;
+        }
 
-    @Bean
-    @ConditionalOnMissingBean(ResultCodeResolver.class)
-    public ResultCodeResolver resultCodeResolver() {
-        SimpleResultCodeResolver resolver = new SimpleResultCodeResolver();
-        resolver.setCodes(resultProperties.getCodes());
-        return resolver;
-    }
+        @Bean
+        @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
+        @ConditionalOnMissingBean(name = MESSAGE_SOURCE_BEAN_NAME, value = MessageSource.class)
+        public MessageSource messageSource() {
+            ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+            messageSource.setDefaultEncoding("UTF-8");
+            messageSource.setBasenames("com.github.peacetrue.result.messages", "messages");
+            return messageSource;
+        }
 
-    @Bean
-    @ConditionalOnMissingBean(name = "defaultExceptionConverter")
-    public DefaultExceptionConverter defaultExceptionConverter() {
-        return new DefaultExceptionConverter();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(name = "resultExceptionConverter")
-    public ResultExceptionConverter resultExceptionConverter() {
-        return new ResultExceptionConverter();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(name = "methodArgumentTypeMismatchExceptionConverter")
-    public MethodArgumentTypeMismatchExceptionConverter methodArgumentTypeMismatchExceptionConverter() {
-        return new MethodArgumentTypeMismatchExceptionConverter();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(name = "bindExceptionConverter")
-    public BindExceptionConverter bindExceptionConverter() {
-        return new BindExceptionConverter();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(name = "methodArgumentNotValidExceptionConverter")
-    public MethodArgumentNotValidExceptionConverter methodArgumentNotValidExceptionConverter() {
-        return new MethodArgumentNotValidExceptionConverter();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(name = "httpMessageNotReadableExceptionConverter")
-    public HttpMessageNotReadableExceptionConverter httpMessageNotReadableExceptionConverter() {
-        return new HttpMessageNotReadableExceptionConverter();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(name = "invalidFormatExceptionConverter")
-    public InvalidFormatExceptionConverter invalidFormatExceptionConverter() {
-        return new InvalidFormatExceptionConverter();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(name = "jsonParseExceptionConverter")
-    public JsonParseExceptionConverter jsonParseExceptionConverter() {
-        return new JsonParseExceptionConverter();
-    }
-
-    @Bean
-    @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
-    @ConditionalOnMissingBean(name = MESSAGE_SOURCE_BEAN_NAME, value = MessageSource.class)
-    public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setBasenames("com.github.peacetrue.result.messages", "messages");
-        return messageSource;
     }
 
     @Bean
@@ -153,7 +101,11 @@ public class ResultAutoConfiguration {
         return localeResolver;
     }
 
-    public static class ResultForm {
+
+    /**
+     * for result view
+     */
+    public static class ViewAutoConfiguration {
 
         @Autowired
         private ResultProperties resultProperties;
@@ -201,7 +153,7 @@ public class ResultAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(name = "resultBeanPostProcessor", value = BeanPostProcessor.class)
+    @ConditionalOnMissingBean(name = "resultBeanPostProcessor")
     public BeanPostProcessor resultBeanPostProcessor(ResultResponseBodyAdvice resultResponseBodyAdvice) {
         return new ResultBeanPostProcessor(resultResponseBodyAdvice);
     }

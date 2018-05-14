@@ -51,14 +51,13 @@ public class MessageSourceClassPrinterTest {
     }
 
 
-    @RunWith(SpringRunner.class)
     @ContextConfiguration(classes = {Configuration.class, HasObjectConfiguration.class, NoObjectConfiguration.class})
     public static class Abstract {
         @Autowired
         protected MessageSourceClassPrinter messageSourceClassPrinter;
     }
 
-
+    @RunWith(SpringRunner.class)
     @ActiveProfiles("hasObject")
     public static class HasObject extends Abstract {
         @Test
@@ -68,6 +67,7 @@ public class MessageSourceClassPrinterTest {
         }
     }
 
+    @RunWith(SpringRunner.class)
     @ActiveProfiles("noObject")
     public static class NoObject extends Abstract {
         @Test

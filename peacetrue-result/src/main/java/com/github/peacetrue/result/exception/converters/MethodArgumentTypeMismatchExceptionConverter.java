@@ -24,7 +24,7 @@ public class MethodArgumentTypeMismatchExceptionConverter extends AbstractExcept
     }
 
     @Override
-    protected String getCode() {
+    protected String getCode(MethodArgumentTypeMismatchException exception) {
         return ErrorType.argument_type_mismatch.name();
     }
 

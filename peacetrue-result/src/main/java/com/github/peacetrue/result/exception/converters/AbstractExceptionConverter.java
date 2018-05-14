@@ -23,18 +23,18 @@ public abstract class AbstractExceptionConverter<T extends Exception, D> impleme
 
     @Override
     public Result convert(T exception, @Nullable Locale locale) {
-        logger.info("convert {} to Result", exception.getClass().getName());
         D data = resolveData(exception);
         Object[] arguments = resolveArguments(exception, data);
-        return resultBuilder.build(resultCodeResolver.resolve(getCode()), arguments, data, locale);
+        return resultBuilder.build(resultCodeResolver.resolve(getCode(exception)), arguments, data, locale);
     }
 
     /**
      * get standard result code
      *
+     * @param exception the exception
      * @return the standard result code
      */
-    protected abstract String getCode();
+    protected abstract String getCode(T exception);
 
     /**
      * resolve data

@@ -2,7 +2,6 @@ package com.github.peacetrue.result.exception;
 
 import com.github.peacetrue.result.ErrorPageResolver;
 import com.github.peacetrue.result.Result;
-import com.github.peacetrue.result.ResultUtils;
 import com.github.peacetrue.result.exception.converters.ExceptionConverter;
 import com.github.peacetrue.spring.util.BeanUtils;
 import org.slf4j.Logger;
@@ -25,7 +24,7 @@ public class GenericExceptionHandler {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private ExceptionConverter<Exception> genericExceptionConverter;
+    private ExceptionConvertService exceptionConvertService;
     private ErrorPageResolver errorPageResolver;
 
     /**
@@ -39,14 +38,14 @@ public class GenericExceptionHandler {
     @ExceptionHandler(Exception.class)
     public String handleAll(Exception exception, Model model, HttpServletRequest request) {
         if (!logger.isDebugEnabled()) logger.warn("handle Exception", exception);
-        Result result = genericExceptionConverter.convert(exception);
+        Result result = exceptionConvertService.convert(exception);
         model.addAllAttributes(BeanUtils.map(result));
         return errorPageResolver.resolve(request, exception);
     }
 
     @Autowired
-    public void setGenericExceptionConverter(ExceptionConverter<Exception> genericExceptionConverter) {
-        this.genericExceptionConverter = genericExceptionConverter;
+    public void setExceptionConvertService(ExceptionConvertService exceptionConvertService) {
+        this.exceptionConvertService = exceptionConvertService;
     }
 
     @Autowired

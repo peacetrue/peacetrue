@@ -3,7 +3,6 @@ package com.github.peacetrue.spring.util;
 import org.springframework.core.ResolvableType;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -12,6 +11,16 @@ import java.util.stream.Collectors;
  * @author xiayx
  */
 public abstract class GenericParameterUtils {
+
+    private static class Entry<K, V> {
+        private K key;
+        private V value;
+
+        private Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
 
     /**
      * convert {@link Collection} to {@link Map},
@@ -25,10 +34,11 @@ public abstract class GenericParameterUtils {
      * @return the converted {@link Map}
      */
     public static <T> Map<Class, T> map(List<T> elements, Class<T> clazz, int index) {
-        List<T> reverseList = new ArrayList<>(elements);
-        Collections.reverse(reverseList);
-        Function<T, Class> getType = item -> ResolvableType.forClass(clazz, item.getClass()).resolveGeneric(index);
-        return reverseList.stream().collect(Collectors.toMap(getType, Function.identity(), EnumUtils.throwingMerger(), LinkedHashMap::new));
+        List<T> list = new ArrayList<>(elements);
+        return list.stream()
+                .map(t -> new Entry<>(ResolvableType.forClass(clazz, t.getClass()).resolveGeneric(index), t))
+                .sorted((o1, o2) -> o1.key.isAssignableFrom(o2.key) ? 1 : -1)
+                .collect(Collectors.toMap(t -> t.key, t -> t.value, EnumUtils.throwingMerger(), LinkedHashMap::new));
     }
 
     /**
@@ -55,10 +65,13 @@ public abstract class GenericParameterUtils {
     @SuppressWarnings("unchecked")
     public static <T> Optional<T> find(Map<Class, T> map, Class targetClass) {
         //TODO consider the class priority, eg. Integer > Number > Comparable.
-        List<Map.Entry<Class, T>> list = findList(map, targetClass);
-        if (list.isEmpty()) return Optional.empty();
-        list.sort((o1, o2) -> o1.getKey().isAssignableFrom(o2.getKey()) ? 1 : -1);
-        return Optional.of(list.get(0).getValue());
+//        List<Map.Entry<Class, T>> list = findList(map, targetClass);
+//        if (list.isEmpty()) return Optional.empty();
+//        list.sort((o1, o2) -> o1.getKey().isAssignableFrom(o2.getKey()) ? 1 : -1);
+//        return Optional.of(list.get(0).getValue());
+        return map.entrySet().stream()
+                .filter(entry -> ((Class<?>) entry.getKey()).isAssignableFrom(targetClass))
+                .map(Map.Entry::getValue).findAny();
     }
 
     private static <T> List<Map.Entry<Class, T>> findList(Map<Class, T> map, Class targetClass) {

@@ -34,7 +34,7 @@ public class InvalidFormatExceptionConverter extends AbstractExceptionConverter<
     }
 
     @Override
-    protected String getCode() {
+    protected String getCode(InvalidFormatException exception) {
         return ErrorType.argument_type_mismatch.name();
     }
 

@@ -5,11 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -27,9 +27,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author xiayx
  */
 @RunWith(SpringRunner.class)
-@WebAppConfiguration
+@SpringBootTest(classes = {
+        WebMvcAutoConfiguration.class,
+        ResultAutoConfiguration.class
+})
 @EnableWebMvc
-@EnableAutoConfiguration
 @ComponentScan
 public class ResultTest {
 
@@ -38,6 +40,8 @@ public class ResultTest {
     private MockMvc mockMvc;
     @Autowired
     private ResultBuilder resultBuilder;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Before
     public void setup() {
@@ -45,7 +49,7 @@ public class ResultTest {
     }
 
     @Test
-    public void pageSuccess() throws Exception {
+    public void getPageSuccess() throws Exception {
         User user = UserController.users.get(0);
         Result result = resultBuilder.build();
         this.mockMvc.perform(get("/user/view?id={0}", 1L)
@@ -59,7 +63,7 @@ public class ResultTest {
     }
 
     @Test
-    public void pageError() throws Exception {
+    public void getPageError() throws Exception {
         Long id = 0L;
         Result result = resultBuilder.build("EntityNotFoundException", new Object[]{id, User.class});
         this.mockMvc.perform(get("/user/view?id={0}", id)
@@ -73,7 +77,7 @@ public class ResultTest {
     }
 
     @Test
-    public void dataSuccess() throws Exception {
+    public void getDataSuccess() throws Exception {
         User user = UserController.users.get(0);
         Result result = resultBuilder.build();
         this.mockMvc.perform(get("/user/view?id={0}", 1L)
@@ -86,7 +90,7 @@ public class ResultTest {
     }
 
     @Test
-    public void dataError() throws Exception {
+    public void getDataError() throws Exception {
         Long id = 0L;
         Result result = resultBuilder.build("EntityNotFoundException", new Object[]{id, User.class});
         this.mockMvc.perform(get("/user/view?id={0}", id)
@@ -99,16 +103,16 @@ public class ResultTest {
 
     }
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Test
     public void postDataSuccess() throws Exception {
-        User user = random(User.class);
+        User user = new User();
+        user.setName("name");
+        user.setPassword("password");
         Result result = resultBuilder.build();
         this.mockMvc.perform(post("/user")
-                .content(objectMapper.writeValueAsBytes(user))
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("name", user.getName())
+                .param("password", user.getPassword())
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(jsonPath("$.code").value(result.getCode()))
@@ -120,14 +124,47 @@ public class ResultTest {
 
     @Test
     public void postDataError() throws Exception {
+        User user = new User();
+        user.setName("nam");
+        user.setPassword("pas");
+        Result result = resultBuilder.build(ResultType.error.group(), new Object[]{2});
+        this.mockMvc.perform(post("/user")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("name", user.getName())
+                .param("password", user.getPassword())
+                .accept(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(jsonPath("$.code").value(result.getCode()))
+                .andExpect(jsonPath("$.message").value(result.getMessage()))
+                .andExpect(jsonPath("$.data").isArray())
+        ;
+    }
+
+
+    @Test
+    public void requestBodyDataSuccess() throws Exception {
+        User user = random(User.class);
+        Result result = resultBuilder.build();
+        this.mockMvc.perform(post("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(user))
+                .accept(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(jsonPath("$.code").value(result.getCode()))
+                .andExpect(jsonPath("$.message").value(result.getMessage()))
+                .andExpect(jsonPath("$.data.name").value(user.getName()))
+                .andExpect(jsonPath("$.data.password").value(user.getPassword()))
+        ;
+    }
+
+    @Test
+    public void requestBodyDataError() throws Exception {
         User user = random(User.class);
         String errorChar = "{xxx";
         Result result = resultBuilder.build(ErrorType.argument_format_mismatch.name(), new Object[]{errorChar, 1, 2});
-        String content = errorChar + objectMapper.writeValueAsString(user);
-        System.out.println(content);
         this.mockMvc.perform(post("/user")
-                .content(content)
                 .contentType(MediaType.APPLICATION_JSON)
+                .content(errorChar + objectMapper.writeValueAsString(user))
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(jsonPath("$.code").value(result.getCode()))
@@ -137,31 +174,14 @@ public class ResultTest {
     }
 
     @Test
-    public void validDataSuccess() throws Exception {
-        User user = random(User.class);
-        Result result = resultBuilder.build(ResultType.error.group(), new Object[]{2});
-        this.mockMvc.perform(post("/user")
-                .content(objectMapper.writeValueAsBytes(user))
-                .param("id", user.getId().toString())
-                .param("name", user.getName())
-                .param("password", user.getPassword())
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .accept(MediaType.APPLICATION_JSON)
-        )
-                .andExpect(jsonPath("$.code").value(result.getCode()))
-                .andExpect(jsonPath("$.message").value(result.getMessage()))
-                .andExpect(jsonPath("$.data").isArray())
-        ;
-    }
-
-    @Test
-    public void returnVoid() throws Exception {
+    public void voidAsSuccess() throws Exception {
         Result result = resultBuilder.build();
         this.mockMvc.perform(post("/user/void")
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(jsonPath("$.code").value(result.getCode()))
                 .andExpect(jsonPath("$.message").value(result.getMessage()))
+                .andExpect(jsonPath("$.data").value(null))
         ;
     }
 

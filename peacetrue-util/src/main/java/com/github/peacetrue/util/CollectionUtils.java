@@ -1,12 +1,33 @@
 package com.github.peacetrue.util;
 
 
+import java.lang.reflect.Array;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * a util class for {@link java.util.Collection}.
  *
  * @author xiayx
  */
 public abstract class CollectionUtils {
+
+    private static Map<Class, Object[]> EMPTY_ARRAY = new HashMap<>();
+
+    /**
+     * Returns an empty array (immutable).
+     *
+     * @param clazz the class of array type
+     * @param <T>   the type of array
+     * @return the empty array
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T[] emptyArray(Class<T> clazz) {
+        if (!EMPTY_ARRAY.containsKey(clazz))
+            EMPTY_ARRAY.put(clazz, (Object[]) Array.newInstance(clazz, 0));
+        return (T[]) EMPTY_ARRAY.get(clazz);
+    }
+
 
     /**
      * detect the type of iterable element,

@@ -33,7 +33,7 @@ public class JsonParseExceptionConverter extends AbstractExceptionConverter<Json
     }
 
     @Override
-    protected String getCode() {
+    protected String getCode(JsonParseException exception) {
         return ErrorType.argument_format_mismatch.name();
     }
 

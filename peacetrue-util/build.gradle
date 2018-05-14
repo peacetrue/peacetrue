@@ -1,4 +1,4 @@
-description 'A util module'
+description 'a util module'
 
 dependencies {
     compile "com.google.code.findbugs:jsr305"

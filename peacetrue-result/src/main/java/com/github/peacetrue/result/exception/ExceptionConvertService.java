@@ -1,19 +1,16 @@
-package com.github.peacetrue.result.exception.converters;
+package com.github.peacetrue.result.exception;
 
 import com.github.peacetrue.result.Result;
-import com.github.peacetrue.result.exception.ExceptionConvertService;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
 
 /**
- * used to convert {@link Exception} to {@link Result}
+ * the service for exception convert
  *
  * @author xiayx
- * @see ConditionalExceptionConverter
- * @see ExceptionConvertService
  */
-public interface ExceptionConverter<T extends Exception> {
+public interface ExceptionConvertService {
 
     /**
      * convert {@link Exception} to {@link Result}
@@ -22,7 +19,7 @@ public interface ExceptionConverter<T extends Exception> {
      * @param locale    the locale
      * @return the result converted by {@code exception}
      */
-    Result convert(T exception, @Nullable Locale locale);
+    Result convert(Exception exception, @Nullable Locale locale);
 
     /**
      * convert {@link Exception} to {@link Result}
@@ -30,9 +27,7 @@ public interface ExceptionConverter<T extends Exception> {
      * @param exception the exception need to converted
      * @return the result converted by {@code exception}
      */
-    default Result convert(T exception) {
+    default Result convert(Exception exception) {
         return convert(exception, null);
     }
-
-
 }
