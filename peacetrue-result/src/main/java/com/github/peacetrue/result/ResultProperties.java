@@ -2,12 +2,11 @@ package com.github.peacetrue.result;
 
 import com.github.peacetrue.printer.MessageSourceClassPrinter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * the properties for Result
@@ -27,12 +26,8 @@ public class ResultProperties {
     private String errorPage = "/error";
     /** define all standard code to custom code */
     private Map<String, String> codes = new HashMap<>();
-    /** the proxy exception, delegate to {@link Exception#getCause()} as implement */
-    private List<Class<? extends Exception>> proxyExceptionClasses = new ArrayList<>();
-
-    public ResultProperties() {
-        proxyExceptionClasses.add(HttpMessageNotReadableException.class);
-    }
+    /** All returned data will be converted to {@link Result} by default, If you do not want to automatically convert, config this param */
+    private Set<Class> excludeAutoConvertWhenReturn = new HashSet<>();
 
     public String getCodePrefix() {
         return codePrefix;
@@ -66,11 +61,11 @@ public class ResultProperties {
         this.codes = codes;
     }
 
-    public List<Class<? extends Exception>> getProxyExceptionClasses() {
-        return proxyExceptionClasses;
+    public Set<Class> getExcludeAutoConvertWhenReturn() {
+        return excludeAutoConvertWhenReturn;
     }
 
-    public void setProxyExceptionClasses(List<Class<? extends Exception>> proxyExceptionClasses) {
-        this.proxyExceptionClasses = proxyExceptionClasses;
+    public void setExcludeAutoConvertWhenReturn(Set<Class> excludeAutoConvertWhenReturn) {
+        this.excludeAutoConvertWhenReturn = excludeAutoConvertWhenReturn;
     }
 }

@@ -10,6 +10,10 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.servlet.mvc.method.annotation.JsonViewResponseBodyAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Set;
+
 /**
  * Convert data to {@link Result}
  *
@@ -17,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  */
 public class ResultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
+    private Set<Class> excludes = Collections.emptySet();
     private ResultBuilder resultBuilder;
     private ResponseBodyAdvice<Object> responseBodyAdvice;
 
@@ -27,10 +32,19 @@ public class ResultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        if (!(body instanceof Result)) body = resultBuilder.build(body);
+        if (!(body instanceof Result) && !exclude(body)) body = resultBuilder.build(body);
         if (responseBodyAdvice instanceof JsonViewResponseBodyAdvice
                 && returnType.getMethodAnnotation(JsonView.class) == null) return body;
         return responseBodyAdvice.beforeBodyWrite(body, returnType, selectedContentType, selectedConverterType, request, response);
+    }
+
+    protected boolean exclude(Object body) {
+        Class<?> bodyClass = body == null ? Void.class : body.getClass();
+        return excludes.stream().anyMatch(aClass -> ((Class<?>) aClass).isAssignableFrom(bodyClass));
+    }
+
+    public void setExcludes(Set<Class> excludes) {
+        this.excludes = Objects.requireNonNull(excludes);
     }
 
     @Autowired

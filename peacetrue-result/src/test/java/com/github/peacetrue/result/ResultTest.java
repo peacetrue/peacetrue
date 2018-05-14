@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,10 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {
         WebMvcAutoConfiguration.class,
-        ResultAutoConfiguration.class
+        ResultAutoConfiguration.class,
+        UserController.class
 })
 @EnableWebMvc
-@ComponentScan
 public class ResultTest {
 
     @Autowired
@@ -40,8 +39,7 @@ public class ResultTest {
     private MockMvc mockMvc;
     @Autowired
     private ResultBuilder resultBuilder;
-    @Autowired
-    private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Before
     public void setup() {
@@ -181,7 +179,7 @@ public class ResultTest {
         )
                 .andExpect(jsonPath("$.code").value(result.getCode()))
                 .andExpect(jsonPath("$.message").value(result.getMessage()))
-                .andExpect(jsonPath("$.data").value(null))
+                .andExpect(jsonPath("$.data").doesNotExist())
         ;
     }
 

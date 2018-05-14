@@ -42,6 +42,9 @@ import static org.springframework.context.support.AbstractApplicationContext.MES
 })
 public class ResultAutoConfiguration {
 
+    @Autowired
+    private ResultProperties resultProperties;
+
     /**
      * for result build
      */
@@ -149,7 +152,9 @@ public class ResultAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(name = "resultResponseBodyAdvice", value = ResponseBodyAdvice.class)
     public ResultResponseBodyAdvice resultResponseBodyAdvice() {
-        return new ResultResponseBodyAdvice();
+        ResultResponseBodyAdvice advice = new ResultResponseBodyAdvice();
+        advice.setExcludes(resultProperties.getExcludeAutoConvertWhenReturn());
+        return advice;
     }
 
     @Bean
