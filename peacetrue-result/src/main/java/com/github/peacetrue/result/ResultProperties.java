@@ -23,7 +23,7 @@ public class ResultProperties {
     /** the prefix of class code */
     private String classPrefix = MessageSourceClassPrinter.DEFAULT_PREFIX;
     /** define the unified error page */
-    private String errorPage = "/error";
+    private String errorPage = "error";
     /** define all standard code to custom code */
     private Map<String, String> codes = new HashMap<>();
     /** All returned data will be converted to {@link Result} by default, If you do not want to automatically convert, config this param */

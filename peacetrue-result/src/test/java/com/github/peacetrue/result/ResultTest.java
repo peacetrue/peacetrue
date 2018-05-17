@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -29,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = {
         WebMvcAutoConfiguration.class,
         ResultAutoConfiguration.class,
+        JacksonAutoConfiguration.class,
+        ThymeleafAutoConfiguration.class,
         UserController.class
 })
 @EnableWebMvc
@@ -39,7 +43,8 @@ public class ResultTest {
     private MockMvc mockMvc;
     @Autowired
     private ResultBuilder resultBuilder;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Before
     public void setup() {
