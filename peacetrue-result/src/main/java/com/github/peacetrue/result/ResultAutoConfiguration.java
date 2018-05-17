@@ -17,15 +17,20 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.Ordered;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 import static org.springframework.context.support.AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME;
@@ -161,6 +166,20 @@ public class ResultAutoConfiguration {
     @ConditionalOnMissingBean(name = "resultBeanPostProcessor")
     public BeanPostProcessor resultBeanPostProcessor(ResultResponseBodyAdvice resultResponseBodyAdvice) {
         return new ResultBeanPostProcessor(resultResponseBodyAdvice);
+    }
+
+    @Bean
+    public WebMvcConfigurer jacksonAtFirstWebMvcConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+                converters.sort((o1, o2) -> {
+                    if (o1 instanceof AbstractJackson2HttpMessageConverter) return -1;
+                    if (o2 instanceof AbstractJackson2HttpMessageConverter) return 1;
+                    return 0;
+                });
+            }
+        };
     }
 
 }

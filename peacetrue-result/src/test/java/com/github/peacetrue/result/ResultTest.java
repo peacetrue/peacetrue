@@ -177,14 +177,27 @@ public class ResultTest {
     }
 
     @Test
-    public void voidAsSuccess() throws Exception {
+    public void voidAsResult() throws Exception {
         Result result = resultBuilder.build();
-        this.mockMvc.perform(post("/user/void")
+        this.mockMvc.perform(post("/return/void")
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(jsonPath("$.code").value(result.getCode()))
                 .andExpect(jsonPath("$.message").value(result.getMessage()))
                 .andExpect(jsonPath("$.data").doesNotExist())
+        ;
+    }
+
+    @Test
+    public void stringAsDataResult() throws Exception {
+        String data = random(String.class);
+        DataResult<String> result = resultBuilder.build(data);
+        this.mockMvc.perform(post("/return/string?input={0}", result.getData())
+                .accept(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(jsonPath("$.code").value(result.getCode()))
+                .andExpect(jsonPath("$.message").value(result.getMessage()))
+                .andExpect(jsonPath("$.data").value(result.getData()))
         ;
     }
 

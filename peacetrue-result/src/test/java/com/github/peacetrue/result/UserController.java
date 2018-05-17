@@ -69,9 +69,16 @@ public class UserController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/user/void")
+    @PostMapping(value = "/return/void")
     public void returnVoid() {
         logger.info("returnVoid");
     }
+
+    @ResponseBody
+    @PostMapping(value = "/return/string")
+    public String returnString(String input) {
+        return input;
+    }
+
 
 }

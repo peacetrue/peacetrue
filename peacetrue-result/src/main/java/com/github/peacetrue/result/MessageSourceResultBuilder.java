@@ -58,7 +58,7 @@ public class MessageSourceResultBuilder implements ResultBuilder {
 
     @Override
     public Result build() {
-        return build(resultCodeResolver.resolve(ResultType.success.name()));
+        return build(resultCodeResolver.resolve(ResultType.success.name()), (Object[]) null);
     }
 
     @Override

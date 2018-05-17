@@ -10,18 +10,6 @@ import java.util.Locale;
  */
 public interface ResultBuilder {
 
-
-    /**
-     * build result from code and arguments
-     *
-     * @param code      this custom result code
-     * @return the {@link DataResult}
-     */
-    default Result build(String code) {
-        return build(code, null, null);
-    }
-
-
     /**
      * build result from code and arguments
      *
