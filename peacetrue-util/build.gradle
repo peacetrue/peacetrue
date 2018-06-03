@@ -1,6 +1,0 @@
-description 'a util module'
-
-dependencies {
-    compile "com.google.code.findbugs:jsr305"
-    compileOnly 'junit:junit'
-}

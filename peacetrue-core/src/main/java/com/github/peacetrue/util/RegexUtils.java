@@ -19,7 +19,17 @@ public abstract class RegexUtils {
      * @return the value of placeholder in regex
      */
     public static String[] extractValue(String regex, String message) {
-        Pattern pattern = Pattern.compile(regex);
+        return extractValue(Pattern.compile(regex), message);
+    }
+
+    /**
+     * extract value of placeholder in regex
+     *
+     * @param pattern the pattern
+     * @param message the message
+     * @return the value of placeholder in regex
+     */
+    public static String[] extractValue(Pattern pattern, String message) {
         Matcher matcher = pattern.matcher(message);
         if (!matcher.find()) return CollectionUtils.emptyArray(String.class);
         String[] placeholders = new String[matcher.groupCount()];
@@ -28,4 +38,5 @@ public abstract class RegexUtils {
         }
         return placeholders;
     }
+
 }

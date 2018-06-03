@@ -1,7 +1,6 @@
 package com.github.peacetrue.security;
 
 import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -68,8 +67,7 @@ public abstract class MessageDigestUtils {
      * @return the encoded string
      */
     public static String encode(MessageDigest messageDigest, String string) {
-        byte[] digest = messageDigest.digest(string.getBytes(StandardCharsets.UTF_8));
-//        return Base64.getEncoder().encodeToString(digest);
+        byte[] digest = messageDigest.digest(string.getBytes());
         return DatatypeConverter.printHexBinary(digest);
     }
 }

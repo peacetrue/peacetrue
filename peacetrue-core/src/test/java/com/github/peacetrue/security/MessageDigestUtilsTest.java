@@ -1,5 +1,6 @@
 package com.github.peacetrue.security;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -10,8 +11,8 @@ import org.junit.Test;
 public class MessageDigestUtilsTest {
     @Test
     public void encode() throws Exception {
-        String encode = MessageDigestUtils.encode(MessageDigestUtils.getMD5(), "zhongjiao123");
-        System.out.println(encode);
+        String encode = MessageDigestUtils.encode(MessageDigestUtils.getMD5(), "1");
+        Assert.assertEquals("C4CA4238A0B923820DCC509A6F75849B", encode);
     }
 
 }
