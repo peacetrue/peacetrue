@@ -4,9 +4,12 @@ dependencies {
     provided 'com.fasterxml.jackson.core:jackson-databind'
     provided 'org.springframework.data:spring-data-commons'
     provided "org.springframework.boot:spring-boot-autoconfigure"
+    provided 'com.alibaba:fastjson:1.2.47'
     optional "org.springframework.boot:spring-boot-configuration-processor"
 
     testCompile 'com.fasterxml.jackson.core:jackson-databind'
     testCompile 'org.springframework.data:spring-data-commons'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'com.alibaba:fastjson:1.2.47'
+
 }

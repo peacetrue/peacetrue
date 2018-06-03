@@ -2,18 +2,15 @@ package com.github.peacetrue.paging.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.github.peacetrue.paging.PageAttribute;
-import com.github.peacetrue.paging.PagingProperties;
-import com.github.peacetrue.paging.converter.GenericPageConverter;
 import com.github.peacetrue.paging.converter.PageConverter;
+import com.github.peacetrue.paging.spring.SpringAutoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
-
-import java.util.HashMap;
 
 /**
  * auto configuration for jackson
@@ -21,7 +18,7 @@ import java.util.HashMap;
  * @author xiayx
  */
 @ConditionalOnClass(ObjectMapper.class)
-@ImportAutoConfiguration(JacksonAutoConfiguration.SpringAutoConfiguration.class)
+@ImportAutoConfiguration(JacksonAutoConfiguration.JacksonSpringAutoConfiguration.class)
 public class JacksonAutoConfiguration {
 
     @Bean
@@ -31,26 +28,13 @@ public class JacksonAutoConfiguration {
     }
 
     @ConditionalOnClass(Page.class)
-    public static class SpringAutoConfiguration {
+    @AutoConfigureAfter(SpringAutoConfiguration.class)
+    public static class JacksonSpringAutoConfiguration {
 
         @Autowired
-        private PagingProperties pagingProperties;
-
-        @Bean
-        @ConditionalOnMissingBean(PageConverter.class)
-        public PageConverter pageConverter() {
-            GenericPageConverter converter = new GenericPageConverter();
-            HashMap<PageAttribute, String> source = new HashMap<>();
-            source.put(PageAttribute.data, "content");
-            converter.setSource(source);
-            converter.setTarget(pagingProperties.getTarget());
-            return converter;
-        }
-
-        @Autowired
-        public void registerPageSerializer(ObjectMapper objectMapper, PageConverter<? super Page> pageConverter) {
+        public void registerPageSerializer(ObjectMapper objectMapper, PageConverter<? super Page> springPageConverter) {
             SimpleModule simpleModule = new SimpleModule();
-            simpleModule.addSerializer(Page.class, new PageSerializer<>(pageConverter));
+            simpleModule.addSerializer(Page.class, new PageSerializer<>(springPageConverter));
             objectMapper.registerModule(simpleModule);
         }
     }
