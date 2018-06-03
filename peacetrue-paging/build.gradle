@@ -1,0 +1,12 @@
+dependencies {
+    compile project(':peacetrue-spring')
+    compile 'org.slf4j:slf4j-api'
+    provided 'com.fasterxml.jackson.core:jackson-databind'
+    provided 'org.springframework.data:spring-data-commons'
+    provided "org.springframework.boot:spring-boot-autoconfigure"
+    optional "org.springframework.boot:spring-boot-configuration-processor"
+
+    testCompile 'com.fasterxml.jackson.core:jackson-databind'
+    testCompile 'org.springframework.data:spring-data-commons'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}

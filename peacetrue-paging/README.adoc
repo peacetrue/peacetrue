@@ -1,0 +1,62 @@
+= 分页
+xiayx <xiayouxue@hotmail.com>
+v1.0, 2018-06-03: SNAPSHOT
+:doctype: docbook
+:toc: left
+:numbered:
+:imagesdir: assets/images
+:sourcedir: src/main/java
+:resourcesdir: src/main/resources
+:testsourcedir: src/test/java
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+
+== 概念
+数据量过大，不能一次性全部查出，只能一部分一部分的查出。
+
+分页查询，在普通查询的基础上，需要做两个额外操作：
+
+* 限制查询的记录条数
+* 查询出总记录条数
+
+== 特性
+* 自定义分页数据的输出格式
+
+NOTE:: 只考虑一个系统使用一种分页数据的场景
+
+== 设计
+
+=== 输入
+.Pagable：分页参数
+* page:当前第几页
+* size:每页记录条数
+* orders:排序
+
+.Order：排序
+* property：属性
+* direction：方向
+
+=== 输出
+.Page：分页数据
+必须::
+* totalElements：总记录条数
+* data：记录数据
+可选::
+* page：当前第几页
+* size：每页记录条数
+* totalPages：总页数
+* isFirst：是否首页
+* isLast：是否末页
+* pageSize：当前页记录条数
+
+page和size是从客户端传递过来的，而且值不会改变，不必再返回给客户端。
+
+== 集成
+=== Spring
+.spring-data-commons
+* org.springframework.data.domain.Pageable
+* org.springframework.data.domain.PageRequest
+* org.springframework.data.domain.Page
+* org.springframework.data.domain.PageImpl
+* org.springframework.data.web.PageableHandlerMethodArgumentResolver
+
