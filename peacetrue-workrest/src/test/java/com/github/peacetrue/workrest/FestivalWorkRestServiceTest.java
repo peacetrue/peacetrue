@@ -2,6 +2,7 @@ package com.github.peacetrue.workrest;
 
 import com.github.peacetrue.festivalschedule.FestivalScheduleUtils;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -18,10 +19,11 @@ import java.util.stream.Collectors;
  */
 public class FestivalWorkRestServiceTest {
 
-    private FestivalWorkRestService festivalWorkRestService = new FestivalWorkRestService();
-    private String yearOf2018 = "2018-01-01,2018-02-15,2018-02-16,2018-02-19,2018-02-20,2018-02-21,2018-04-05,2018-04-06,2018-04-30,2018-05-01,2018-06-18,2018-09-24,2018-10-01,2018-10-02,2018-10-03,2018-10-04,2018-10-05";
+    private static FestivalWorkRestService festivalWorkRestService = new FestivalWorkRestService();
+    private static String yearOf2018 = "2018-01-01,2018-02-15,2018-02-16,2018-02-19,2018-02-20,2018-02-21,2018-04-05,2018-04-06,2018-04-30,2018-05-01,2018-06-18,2018-09-24,2018-10-01,2018-10-02,2018-10-03,2018-10-04,2018-10-05";
 
-    public FestivalWorkRestServiceTest() {
+    @BeforeClass
+    public static void beforeClass() throws Exception {
         festivalWorkRestService.setFestivalScheduleProvider(FestivalScheduleUtils.buildFestivalScheduleProvider());
     }
 

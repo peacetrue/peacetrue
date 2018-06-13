@@ -17,23 +17,33 @@ import java.util.*;
 public class FestivalWorkRestService implements WorkRestService {
 
     private FestivalScheduleProvider festivalScheduleProvider;
-    private Set<Year> years = new HashSet<>();
+    /** initialize state: not initialize, half initialize, full initialize, true mean full initialize */
+    private Map<Year, Boolean> years = new HashMap<>();
     private Map<Year, List<MonthDay>> workdays = new HashMap<>();
     private Map<Year, List<MonthDay>> restdays = new HashMap<>();
 
     private void initCache(Year year) {initCache(year, true);}
 
     private void initCache(Year year, boolean isCascade) {
-        if (years.contains(year)) return;// already init
-        years.add(year);
+        if (years.containsKey(year)) {
+            if (years.get(year) == Boolean.TRUE) return;// already full initialize
+            if (!isCascade) return;// already half initialize
+            years.put(year, Boolean.TRUE);
+        } else {
+            years.put(year, isCascade);
+        }
 
         List<FestivalSchedule> festivalSchedules = festivalScheduleProvider.getFestivalSchedules(year);
         festivalSchedules.forEach(festivalSchedule -> {
             addMonthDay(workdays, year, festivalSchedule.getWorkdays());
             addMonthDay(restdays, year, festivalSchedule.getRestdays());
         });
-        //initialize 2019 when initializing 2018, because 2019 will affect 2018
-        if (isCascade) initCache(year.plusYears(1), false);
+        if (isCascade) {
+            //initialize 2019 when initializing 2018, because 2019 will affect 2018
+            initCache(year.plusYears(1), false);
+        }
+        Optional.ofNullable(workdays.get(year)).ifPresent(monthDays -> monthDays.sort(MonthDay::compareTo));
+        Optional.ofNullable(restdays.get(year)).ifPresent(monthDays -> monthDays.sort(MonthDay::compareTo));
     }
 
     private void addMonthDay(Map<Year, List<MonthDay>> yearMonthDays, Year year, TemporalAccessor[] temporalAccessors) {
