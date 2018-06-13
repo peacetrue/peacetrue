@@ -19,7 +19,6 @@ public class GroupFestivalScheduleProvider implements FestivalScheduleProvider {
 
     @Override
     public List<FestivalSchedule> getFestivalSchedules(Year year) {
-        if (year.isAfter(Year.now())) throw new RuntimeException();
         for (FestivalScheduleProvider festivalScheduleProvider : festivalScheduleProviders) {
             List<FestivalSchedule> festivalSchedules = festivalScheduleProvider.getFestivalSchedules(year);
             if (!CollectionUtils.isEmpty(festivalSchedules)) {
