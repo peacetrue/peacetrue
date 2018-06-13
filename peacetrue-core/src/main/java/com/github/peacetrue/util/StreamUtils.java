@@ -1,9 +1,6 @@
 package com.github.peacetrue.util;
 
-import java.util.function.BiConsumer;
-import java.util.function.BiPredicate;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+import java.util.function.*;
 
 /**
  * a util class for {@link java.util.stream.Stream}
@@ -42,8 +39,19 @@ public abstract class StreamUtils {
     }
 
     /** static quote for {@link Predicate} */
-    public static <T> boolean alwaysFlase(T anything) {
+    public static <T> boolean alwaysFalse(T anything) {
         return false;
     }
+
+    /**
+     * Returns a BinaryOperator that always returns its right argument.
+     *
+     * @param <T> the type of the input and output objects to the function
+     * @return a function that always returns its right argument
+     */
+    public static <T> BinaryOperator<T> rightBinaryOperator() {
+        return (t, t2) -> t2;
+    }
+
 
 }
