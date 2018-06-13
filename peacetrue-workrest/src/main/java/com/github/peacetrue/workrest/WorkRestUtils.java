@@ -1,8 +1,11 @@
 package com.github.peacetrue.workrest;
 
+import com.github.peacetrue.festivalschedule.FestivalScheduleUtils;
+
 import java.time.DayOfWeek;
 import java.time.temporal.ChronoField;
 import java.time.temporal.Temporal;
+import java.util.Arrays;
 import java.util.Calendar;
 
 /**
@@ -34,4 +37,11 @@ public abstract class WorkRestUtils {
         return dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY;
     }
 
+    public static GroupWorkRestService buildGroupWorkRestService() {
+        GroupWorkRestService workRestService = new GroupWorkRestService();
+        FestivalWorkRestService festivalWorkRestService = new FestivalWorkRestService();
+        festivalWorkRestService.setFestivalScheduleProvider(FestivalScheduleUtils.buildFestivalScheduleProvider());
+        workRestService.setWorkRestServices(Arrays.asList(new WeekWorkRestService(), festivalWorkRestService));
+        return workRestService;
+    }
 }
