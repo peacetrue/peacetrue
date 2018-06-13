@@ -14,12 +14,11 @@ public class FestivalSchedule {
     public static final String PROPERTY_DATE = "date";
     public static final String PROPERTY_RESTDAYS = "restdays";
     public static final String PROPERTY_WORKDAYS = "workdays";
-    public static final String[] PROPERTIES = {PROPERTY_DATE, PROPERTY_RESTDAYS, PROPERTY_WORKDAYS};
 
     private Festival festival;
-    private MonthDay date;
-    private TemporalAccessor[] restdays;
-    private TemporalAccessor[] workdays;
+    private MonthDay date;// must be MonthDay
+    private TemporalAccessor[] restdays;// MonthDay or LocalDate, NEW_YEAR may cross year
+    private TemporalAccessor[] workdays;// MonthDay or LocalDate, NEW_YEAR may cross year
 
     @Override
     public String toString() {

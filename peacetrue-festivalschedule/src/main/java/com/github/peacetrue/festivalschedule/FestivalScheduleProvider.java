@@ -15,7 +15,6 @@ public interface FestivalScheduleProvider {
      *
      * @param year the special year
      * @return festival schedule list
-     * @throws FestivalUnscheduled
      */
     List<FestivalSchedule> getFestivalSchedules(Year year);
 

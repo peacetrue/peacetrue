@@ -75,19 +75,23 @@ public abstract class FestivalScheduleUtils {
         FestivalSchedule festivalSchedule = new FestivalSchedule();
         festivalSchedule.setFestival(Festival.valueOf(entry.getKey().toUpperCase()));
         festivalSchedule.setDate(MonthDay.parse(entry.getValue().get(FestivalSchedule.PROPERTY_DATE), DateTimeFormatterUtils.SHORT_MONTH_DAY));
-        festivalSchedule.setWorkdays(resolveTemporal(entry.getValue().get(FestivalSchedule.PROPERTY_WORKDAYS)));
-        festivalSchedule.setRestdays(resolveTemporal(entry.getValue().get(FestivalSchedule.PROPERTY_RESTDAYS)));
+        festivalSchedule.setWorkdays(resolveTemporalArray(entry.getValue().get(FestivalSchedule.PROPERTY_WORKDAYS)));
+        festivalSchedule.setRestdays(resolveTemporalArray(entry.getValue().get(FestivalSchedule.PROPERTY_RESTDAYS)));
         return festivalSchedule;
     }
 
-    private static TemporalAccessor[] resolveTemporal(String value) {
+    static TemporalAccessor[] resolveTemporalArray(String value) {
         if (StringUtils.isEmpty(value)) return CollectionUtils.emptyArray(TemporalAccessor.class);
         String[] days = value.split(",");
         return Arrays.stream(days).map(String::trim)
-                .map(day -> day.length() == 4
-                        ? MonthDay.parse(day, DateTimeFormatterUtils.SHORT_MONTH_DAY)
-                        : LocalDate.parse(day, DateTimeFormatterUtils.SHORT_DATE))
+                .map(FestivalScheduleUtils::resolveTemporal)
                 .toArray(TemporalAccessor[]::new);
+    }
+
+    static TemporalAccessor resolveTemporal(String value) {
+        return value.length() == 4
+                ? MonthDay.parse(value, DateTimeFormatterUtils.SHORT_MONTH_DAY)
+                : LocalDate.parse(value, DateTimeFormatterUtils.SHORT_DATE);
     }
 
     public static String buildPropertyKey(Year year, Festival festival, String name) {
