@@ -1,6 +1,8 @@
 package com.github.peacetrue.result.exception;
 
+import com.github.peacetrue.core.CodeAware;
 import com.github.peacetrue.result.Result;
+import com.github.peacetrue.result.ResultUtils;
 
 import java.util.Objects;
 
@@ -9,7 +11,7 @@ import java.util.Objects;
  *
  * @author xiayx
  */
-public class ResultException extends RuntimeException implements Result {
+public class ResultException extends RuntimeException implements Result, CodeAware {
 
     /** the result code */
     private String code;
@@ -29,7 +31,17 @@ public class ResultException extends RuntimeException implements Result {
     }
 
     @Override
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Override
     public String getMessage() {
         return super.getMessage();
+    }
+
+    @Override
+    public String toString() {
+        return ResultUtils.toString(this);
     }
 }

@@ -1,0 +1,9 @@
+group 'com.github.peacetrue'
+
+dependencies {
+    compile project(':peacetrue-core')
+    compile project(':peacetrue-tree')
+    compile 'com.google.code.findbugs:jsr305'
+    compile 'org.springframework:spring-core'
+    compileOnly 'org.springframework:spring-beans'
+}

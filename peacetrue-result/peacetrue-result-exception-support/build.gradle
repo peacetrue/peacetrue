@@ -1,0 +1,29 @@
+description 'add exception converter'
+
+sourceSets {
+    test {
+        resources {
+            srcDirs += "src/test/java"
+        }
+    }
+}
+
+dependencies {
+    compile project(':peacetrue-spring')
+    compile project(':peacetrue-result:peacetrue-result-exception')
+    optional "org.springframework.boot:spring-boot-configuration-processor"
+
+    compileOnly "com.fasterxml.jackson.core:jackson-databind"
+    compileOnly "mysql:mysql-connector-java"
+    compileOnly "javax.validation:validation-api:2.0.0.Final"
+    compileOnly "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final"
+    compileOnly "org.springframework:spring-webmvc"
+    compileOnly 'javax.servlet:javax.servlet-api'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testCompile 'org.springframework.boot:spring-boot-starter-validation'
+    testCompile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    testCompile "mysql:mysql-connector-java"
+
+}

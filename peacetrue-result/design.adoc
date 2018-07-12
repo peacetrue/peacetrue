@@ -11,6 +11,17 @@ v1.0, 2018-03-25: SNAPSHOT
 :source-highlighter: coderay
 :coderay-linenums-mode: inline
 
+== 组件部件
+. 定义结果数据结构：``Result``
+. 构建结果：``ResultBuilder``
+. 异常转换成结果：``ExceptionConvertService``
+.. Common
+.. Web
+.. DB
+. 统一返回结果类型数据：``ResultBeanPostProcessor``,``ResultResponseBodyAdvice``
+. 内容导航：``ContentNegotiating``
+. 错误页面：
+
 == 异常处理
 
 === MethodArgumentTypeMismatchException

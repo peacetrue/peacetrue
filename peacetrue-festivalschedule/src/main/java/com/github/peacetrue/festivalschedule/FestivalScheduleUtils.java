@@ -45,8 +45,8 @@ public abstract class FestivalScheduleUtils {
      * ...
      * 2018:
      *    new_year:
-     *      date:01-01
-     *      restdays:2017-12-30,2017-12-31
+     *      date:0101
+     *      restdays:20171230,20171231
      *      workdays:
      * ...
      * </pre>
@@ -74,7 +74,8 @@ public abstract class FestivalScheduleUtils {
     private static FestivalSchedule resolveFestivalSchedule(Map.Entry<String, Map<String, String>> entry) {
         FestivalSchedule festivalSchedule = new FestivalSchedule();
         festivalSchedule.setFestival(Festival.valueOf(entry.getKey().toUpperCase()));
-        festivalSchedule.setDate(MonthDay.parse(entry.getValue().get(FestivalSchedule.PROPERTY_DATE), DateTimeFormatterUtils.SHORT_MONTH_DAY));
+        String date = entry.getValue().get(FestivalSchedule.PROPERTY_DATE);
+        if (!StringUtils.isEmpty(date)) festivalSchedule.setDate(MonthDay.parse(date, DateTimeFormatterUtils.SHORT_MONTH_DAY));
         festivalSchedule.setWorkdays(resolveTemporalArray(entry.getValue().get(FestivalSchedule.PROPERTY_WORKDAYS)));
         festivalSchedule.setRestdays(resolveTemporalArray(entry.getValue().get(FestivalSchedule.PROPERTY_RESTDAYS)));
         return festivalSchedule;
@@ -94,10 +95,15 @@ public abstract class FestivalScheduleUtils {
                 : LocalDate.parse(value, DateTimeFormatterUtils.SHORT_DATE);
     }
 
-    public static String buildPropertyKey(Year year, Festival festival, String name) {
+    static String buildPropertyKey(Year year, Festival festival, String name) {
         return year.getValue() + "." + festival.name().toLowerCase() + "." + name;
     }
 
+    /**
+     * provide a common instance
+     *
+     * @return the FestivalScheduleProvider
+     */
     public static FestivalScheduleProvider buildFestivalScheduleProvider() {
         GroupFestivalScheduleProvider provider = new GroupFestivalScheduleProvider();
         CachedFestivalScheduleProvider cachedFestivalScheduleProvider = new CachedFestivalScheduleProvider();

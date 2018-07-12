@@ -1,0 +1,84 @@
+= 节日安排
+xiayx <xiayouxue@hotmail.com>
+v1.0, 2018-06-03: SNAPSHOT
+:doctype: docbook
+:toc: left
+:numbered:
+:imagesdir: assets/images
+:sourcedir: src/main/java
+:resourcesdir: src/main/resources
+:testsourcedir: src/test/java
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+
+== 概念
+=== 节日
+.中国法定节日
+* 元旦，每年阳历1月1日
+* 春节，每年阴历正月初一
+* 清明节，冬至后的106天，具体规则待确认
+* 劳动节，每年阳历5月1日
+* 端午节，每年阴历五月初五
+* 中秋节，每年阴历八月十五
+* 国庆节，每年阳历10月1日
+
+节日包含阴历和阳历，需要了解两种日历系统。
+节日的日期大多是确定的，只有清明节是不确定的。
+其具体规则尚在研究中，可参考 http://baijiahao.baidu.com/s?id=1563583912986740&wfr=spider&for=pc[清明节]。
+
+=== 节日安排
+节日日期是确定的，但节日安排是不确定的。
+节日安排由政府公布，通常在新一年开始之前一个月左右。
+近年节日安排公布信息如下：
+
+* http://www.gov.cn/zhengce/content/2017-11/30/content_5243579.htm[2018]
+* http://www.gov.cn/zhengce/content/2016-12/01/content_5141603.htm[2017]
+* http://www.gov.cn/zhengce/content/2015-12/10/content_10394.htm[2016]
+
+节日安排通常包括哪几天放假，哪几天上班。
+节日当天都是放假的，节日前后还会再连着放几天，
+如果连着放假天数较多，会要求节日前后的周末上班。
+
+节日安排会影响人们的工作和休息时间，以及交易市场的开市和休市时间。
+
+=== 工作日和休息日
+通常周前【自定义概念，与周末相对，1~5】为工作日，周末为休息日。
+节日安排会调整以上规则，导致周前成为休息日，周末成为工作日。
+
+=== 开市日和休市日
+在股票市场、期货市场、黄金市场等等，
+除节假日休市外，每周末都停牌，即使节假日规定周末上班，交易市场也是停牌。
+
+== 需求
+判断某一天是否工作，工作在不同的场景下具有不同的含义：
+
+* 对上班族来说，就是上班
+* 对股市来说，就是开市
+
+.功能
+* 节日管理
+* 日期管理
+
+== 设计
+需要每年去政府网站同步一次节假日信息。
+
+.节假日读取策略
+* 从内存读取
+* 从本地缓存读取
+* 从远程接口读取
+
+== 其他
+* 以Properties作为持久层，代替数据库
+* 文件在线编辑功能
+* 数据流转过程：db -> memory cache -> internet
+
+=== 农历
+see https://stackoverflow.com/questions/28923204/how-convert-gregorian-to-chinese-lunar-calendar[lunar-calendar]
+
+不了解农历的规则，自然也写不出农历的组件，看看别人的吧。
+
+=== 备忘
+* 发现一个看起来不错的网站 http://site.icu-project.org/download/61#TOC-ICU4J-Download[icu]
+
+
+

@@ -1,54 +1,50 @@
 package com.github.peacetrue.result;
 
-import com.github.peacetrue.spring.util.BeanUtils;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
+import javax.annotation.Nullable;
+import java.util.Arrays;
 
 /**
- * the util class for {@link Result}
+ * a util class for result
  *
  * @author xiayx
  */
 public abstract class ResultUtils {
 
-    private static ResultBuilder resultBuilder;
-
-    static void setResultBuilder(ResultBuilder resultBuilder) {
-        ResultUtils.resultBuilder = Objects.requireNonNull(resultBuilder);
-    }
-
     /**
-     * bind data to model
+     * convert the result to string
      *
-     * @param model the model
-     * @param data  the data
+     * @param result the result
+     * @return the string of result
      */
-    public static void bind(Model model, Object data) {
-        model.addAllAttributes(BeanUtils.map(resultBuilder.build(data)));
+    public static String toString(Result result) {
+        return result.getCode() + ":" + result.getMessage();
     }
 
     /**
-     * bind data to modelMap
+     * convert the result to string
      *
-     * @param modelMap the modelMap
-     * @param data     the data
+     * @param result the result
+     * @return the string of result
      */
-    public static void bind(ModelMap modelMap, Object data) {
-        modelMap.addAllAttributes(BeanUtils.map(resultBuilder.build(data)));
+    public static String toString(DataResult<?> result) {
+        return toString((Result) result) + "[" + toString(result.getData()) + "]";
     }
 
+    private static String toString(Object object) {
+        if (object == null) return "null";
+        return object.getClass().isArray() ? Arrays.toString((Object[]) object) : object.toString();
+    }
 
     /**
-     * bind data to request
+     * build result
      *
-     * @param request the request
+     * @param code    the code
+     * @param message the message
      * @param data    the data
+     * @return a result
      */
-    public static void bind(HttpServletRequest request, Object data) {
-        BeanUtils.map(resultBuilder.build(data)).forEach(request::setAttribute);
+    public static Result build(String code, String message, @Nullable Object data) {
+        return data == null ? new ResultImpl(code, message) : new DataResultImpl<>(code, message, data);
     }
 
     /**
@@ -60,6 +56,5 @@ public abstract class ResultUtils {
     public static Result wrap(Result result) {
         return result instanceof DataResult ? new DataResultImpl<>((DataResult<?>) result) : new ResultImpl(result);
     }
-
 
 }

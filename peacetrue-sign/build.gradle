@@ -1,0 +1,10 @@
+dependencies {
+    compile project(':peacetrue-spring')
+
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    optional "org.springframework.boot:spring-boot-configuration-processor"
+
+    testCompile "org.projectlombok:lombok"
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+
+}

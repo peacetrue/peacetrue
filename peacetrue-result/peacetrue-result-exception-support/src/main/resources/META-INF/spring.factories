@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.github.peacetrue.result.exception.ResultBasicExceptionAutoConfiguration,\
+  com.github.peacetrue.result.exception.mysql.ResultMysqlExceptionAutoConfiguration,\
+  com.github.peacetrue.result.exception.jackson.ResultJacksonExceptionAutoConfiguration,\
+  com.github.peacetrue.result.exception.web.ResultWebExceptionAutoConfiguration

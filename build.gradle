@@ -31,11 +31,13 @@ allprojects {
             dependency 'com.google.guava:guava:24.1-jre'
             dependency 'org.projectlombok:lombok:1.16.20'
             dependency "javax.json:javax.json-api:1.1"
-//            dependency 'com.fasterxml.jackson.module:jackson-module-parameter-names:2.4.1'
             dependency 'org.reflections:reflections:0.9.9-RC1'
+            dependency 'org.jooq:jool:0.9.13'// for Java 9+
+            dependency 'org.jooq:jool-java-8:0.9.13'// for Java 8
             dependency 'org.aspectj:aspectjweaver:1.8.9'
             dependency 'mysql:mysql-connector-java:5.1.39'
             dependency 'com.h2database:h2:1.4.196'
+            dependency 'org.mybatis:mybatis:3.4.0'
             dependency 'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2'
             dependency "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final"
             dependency 'org.hibernate:hibernate-core:5.2.11.Final'
@@ -44,13 +46,12 @@ allprojects {
             dependency 'org.hibernate:hibernate-validator:5.2.4.Final'
             dependency 'org.apache.commons:commons-lang3:3.1'
             dependency 'io.github.benas:random-beans:3.7.0'
-
         }
     }
 
     group 'com.github.peacetrue'
-    version '1.3-SNAPSHOT'
-//    version '1.1-RELEASE'
+    version '1.0-SNAPSHOT'
+//    version '1.2-SNAPSHOT'
 
     apply plugin: 'java'
     sourceCompatibility = 1.8
@@ -74,6 +75,14 @@ allprojects {
         testCompile "junit:junit"
         testCompile "io.github.benas:random-beans"
         testCompile "org.projectlombok:lombok"
+    }
+
+    sourceSets {
+        test {
+            resources {
+                srcDirs += "src/test/java"
+            }
+        }
     }
 
     apply plugin: 'maven'

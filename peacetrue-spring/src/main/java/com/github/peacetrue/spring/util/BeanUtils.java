@@ -90,7 +90,9 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
     @Nullable
     public static Object getPropertyValue(Object bean, String propertyName) {
         PropertyDescriptor propertyDescriptor = getRequiredPropertyDescriptor(bean.getClass(), propertyName);
-        return ReflectionUtils.invokeMethod(propertyDescriptor.getReadMethod(), bean);
+        Method readMethod = propertyDescriptor.getReadMethod();
+        if (!readMethod.isAccessible()) readMethod.setAccessible(true);
+        return ReflectionUtils.invokeMethod(readMethod, bean);
     }
 
     /**
@@ -160,7 +162,6 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
     public static Map<String, Object> map(Object bean) {
         return map(bean, (Predicate<String>) null);
     }
-
 
 
     /**

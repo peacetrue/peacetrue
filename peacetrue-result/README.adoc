@@ -12,7 +12,32 @@ v1.1, 2018-05-07: RELEASE
 :source-highlighter: coderay
 :coderay-linenums-mode: inline
 
-用于封装响应结果，使开发者可以专注于业务处理。
+用于封装响应结果，使整个系统对外输出的数据保持统一一致的结构：
+
+.直接返回json数据
+[source%nowrap,javascript]
+----
+{
+  "code": null,
+  "message": null,
+  "data": null
+}
+----
+或者
+
+.在页面上使用数据
+[source%nowrap,html]
+----
+<!DOCTYPE html>
+<html>
+<body>
+<div><label>编码：</label><span>${code}</span></div>
+<div><label>描述：</label><span>${message}</span></div>
+<div><label>数据：</label><span>${data}</span></div>
+</body>
+</html>
+----
+
 
 == 概念说明
 **响应结果**是指服务端向客户端输出的信息，以下简称**结果**。
@@ -29,11 +54,33 @@ v1.1, 2018-05-07: RELEASE
 * 失败
 
 == 特性支持
+规范结果数据结构::
+* 编码：用于区分不同类型的结果
+* 描述：用于描述结果的概要信息
+* 数据：实际具体需要使用的数据
+
+.结果数据结构
+image::result-data-structure.png[]
+
+结果描述支持i18n::
+可通过``ResultMessages.properties``配置编码对应的描述。
+
+内容导航::
+同样的处理逻辑，会根据客户端可接受的媒体类型，自动返回json数据或者页面。
+
+异常转换::
+捕获系统出现的异常，自动转换成结果后，输出到客户端。
+
+数据转换::
+结果数据可自动转换成成功类型的结果，以实现对已有系统的无缝集成。
+
+////
 确定的内容在不同形式下返回不同的结果::
 组件会自动根据客户端可接收的媒体类型，决定输出页面或数据。
 
 确定的内容在不同类型下返回不同的结果::
 组件会自动根据服务端异常情况，决定输出成功或者失败。
+////
 
 == 依赖关系
 . https://docs.spring.io/spring-boot/docs/1.4.1.RELEASE/reference/htmlsingle/[spring boot 1.4.1^]
@@ -70,26 +117,33 @@ dependencies {
 ----
 
 === 配置编码和描述
-在**application.properties**中，
-通过以下属性指定你对外输出的编码，
+不同类型的结果会具有不同的编码。
+组件内置了很多不同类型的结果，
+并为它们设置了默认编码和默认描述。
+
+你可以在**application.properties**中，
+通过以下属性指定编码，
 你指定的编码会覆盖默认编码：
 
 .application.properties
 [source%nowrap,properties]
 ----
-include::{resourcesdir}/templates/result.application.properties[]
+include::{testresourcesdir}/doc/code.properties[]
 ----
 
-在**messages.properties**和**ValidationMessages.properties**中，
-通过以下属性指定你对外输出的描述，
+在**ResultMessages.properties**中，
+通过以下属性指定描述（以下类型的结果由结果组件提供），
 你指定的描述会覆盖默认值：
 
-.messages.properties
+.ResultMessages.properties
 [source%nowrap,properties]
 ----
-include::{resourcesdir}/com/github/peacetrue/result/messages_zh_CN.properties[tags=Result]
+include::{resourcesdir}/com/github/peacetrue/result/ResultMessages.properties[tags=Result]
 ----
 
+在**ValidationMessages.properties**中，
+通过以下属性指定描述（以下类型的结果由Hibernate Validator提供），
+你指定的描述会覆盖默认值：
 [[validation_code]]
 .ValidationMessages.properties
 [source%nowrap,properties]
@@ -105,9 +159,9 @@ include::{resourcesdir}/templates/result.ValidationMessages.properties[]
 定义编码::
 定义一个编码，任意编码都可以，只要是唯一的，假设为**6666**
 配置描述::
-在``messages.properties``中配置描述：``Result.6666=标识为{0}的{1}不存在``，此处需要接收两个参数。
+在``ResultMessages.properties``中配置描述：``Result.6666=标识为{0}的{1}不存在``，此处需要接收两个参数。
 配置类型::
-在``messages.properties``中配置描述：``Class.com.github.peacetrue.result.User=用户``
+在``ResultMessages.properties``中配置描述：``Class.com.github.peacetrue.result.User=用户``
 抛出异常::
 使用以下代码抛出异常：
 [source%nowrap,java]
@@ -206,7 +260,7 @@ include::{testresourcesdir}/doc/error.json[]
 ==== 跳转页面
 如果是通过浏览器访问，请求头包含``Accept: text/html``，
 会返回到统一的异常页面，默认为``/error``，
-你可以通过``peacetrue.result.error-page``更改地址。
+你可以通过``peacetrue.result.failure-page``更改地址。
 如果你需要根据不同的请求跳转不同的错误页，需要实现``ErrorPageResolver``接口。
 
 == 编码
@@ -239,7 +293,7 @@ include::{testresourcesdir}/doc/validation.code.properties[]
 例如：想要指定成功编码为**200**，可使用``peacetrue.result.codes.success=200``。
 
 === 自定义描述
-你需要在``messages.properties``中配置编码的描述。
+你需要在``ResultMessages.properties``中配置编码的描述。
 配置规则为：``{prefix}.{code}=描述``，
 ``{prefix}``可通过``peacetrue.result.code-prefix``指定，默认为``Result``。
 //TODO 可以不指定前缀么
@@ -249,6 +303,51 @@ include::{testresourcesdir}/doc/validation.code.properties[]
 // asciidoctor peacetrue-result/README.adoc -o ../peacetrue.github.io/peacetrue-result.html
 // peacetrue\.result\.codes\.(.+)=  peacetrue.result.codes.$1=$1$1
 
+
+== 异常分析
+围绕web请求的流程分析其中可能出现的异常。
+
+异常处理会有一些场景化的问题存在。
+
+=== 原理
+.系统使用者：
+* 消费者
+* 维护者
+
+.系统规则：
+* 外部规则
+* 内部规则
+
+操作结果：
+成功
+失败
+
+外部规则：
+界面规则
+接口规则
+
+失败：
+客户端错误
+服务端错误
+
+结果属性：
+编码
+名称
+描述
+数据
+
+
+
+=== 参数异常
+* 参数缺失
+* 参数格式错误
+* 参数值错误
+
+=== 系统异常
+* 数据错误
+* 系统BUG
+
+=== 业务异常
 
 
 

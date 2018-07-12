@@ -15,8 +15,12 @@ public abstract class AssertUtils {
      * or {@link java.util.function.Supplier}
      */
     public interface Executor {
-        /** Performs this operation */
-        void execute();
+        /**
+         * Performs this operation
+         *
+         * @throws Throwable any exception
+         */
+        void execute() throws Throwable;
     }
 
     /**
@@ -24,23 +28,27 @@ public abstract class AssertUtils {
      *
      * @param executor the test content need to execute
      * @param message  the identifying message for the {@link AssertionError} (<code>null</code> okay)
+     * @return the throwable
      */
-    public static void assertException(Executor executor, String message) {
+    public static Throwable assertException(Executor executor, String message) {
         try {
             executor.execute();
+            Assert.fail();
         } catch (Throwable e) {
-            return;
+            return e;
         }
         Assert.fail(message);
+        return null;
     }
 
     /**
      * assert there will be a exception in {@link Executor}
      *
      * @param executor the test content need to execute
+     * @return the throwable
      */
-    public static void assertException(Executor executor) {
-        assertException(executor, null);
+    public static Throwable assertException(Executor executor) {
+        return assertException(executor, null);
     }
 
 }

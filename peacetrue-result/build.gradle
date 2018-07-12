@@ -1,21 +1,5 @@
-sourceSets {
-    test {
-        resources {
-            srcDirs += "src/test/java"
-        }
-    }
-}
+description 'define the result structure, used for api'
 
 dependencies {
-    compile project(':peacetrue-spring')
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-validation'
-    optional "org.springframework.boot:spring-boot-configuration-processor"
-    provided 'mysql:mysql-connector-java'
-
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    testCompile 'org.springframework.boot:spring-boot-starter-data-jpa'
-    testCompile 'mysql:mysql-connector-java'
-    testCompile 'com.alibaba:druid-spring-boot-starter:1.1.9'
+    compile project(':peacetrue-core')
 }

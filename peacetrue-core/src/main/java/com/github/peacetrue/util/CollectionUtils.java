@@ -4,6 +4,7 @@ package com.github.peacetrue.util;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 /**
  * a util class for {@link java.util.Collection}.
@@ -53,6 +54,21 @@ public abstract class CollectionUtils {
     @SuppressWarnings("unchecked")
     public static <T> Class<? extends T> detectElementType(T[] array) {
         return (Class<? extends T>) array[0].getClass();
+    }
+
+    /**
+     * convert the element of array
+     *
+     * @param array     a array
+     * @param converter a converter
+     * @param <T>       the type of array
+     * @return the array
+     */
+    public static <T> T[] map(T[] array, UnaryOperator<T> converter) {
+        for (int i = 0; i < array.length; i++) {
+            array[i] = converter.apply(array[i]);
+        }
+        return array;
     }
 
 }

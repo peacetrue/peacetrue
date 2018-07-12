@@ -27,7 +27,7 @@ public abstract class MessageDigestUtils {
         try {
             return MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException(algorithm + " not supported", e);
+            throw new IllegalArgumentException(algorithm + " not supported", e);
         }
     }
 

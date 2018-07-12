@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':peacetrue-core')
+    compile 'org.springframework:spring-core'
+    compile 'org.springframework:spring-beans'
+}

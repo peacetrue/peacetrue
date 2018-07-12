@@ -1,0 +1,24 @@
+description 'An extension module of Spring'
+
+dependencies {
+    compile "com.google.code.findbugs:jsr305"
+    compile "org.springframework:spring-beans"
+    compile 'com.google.guava:guava'
+    compile project(':peacetrue-spring')
+    
+    compileOnly project(':peacetrue-jpa')
+    compileOnly 'org.hibernate:hibernate-validator'
+    compileOnly "org.springframework:spring-webmvc"
+    compileOnly "javax.servlet:javax.servlet-api"
+    compileOnly "org.springframework.data:spring-data-jpa"
+    compileOnly "org.springframework.boot:spring-boot-autoconfigure"
+    compileOnly "com.fasterxml.jackson.core:jackson-databind"
+
+    testCompile "org.apache.commons:commons-lang3"
+    testCompile "org.springframework:spring-webmvc"
+    testCompile "javax.servlet:javax.servlet-api"
+    testCompile "org.springframework.data:spring-data-jpa"
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+    testCompile "com.fasterxml.jackson.core:jackson-databind"
+
+}

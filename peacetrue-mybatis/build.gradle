@@ -1,0 +1,13 @@
+description 'extend mybatis: argument resolve for RowBounds'
+
+
+dependencies {
+    compileOnly 'org.mybatis:mybatis'
+    compileOnly 'tk.mybatis:mapper-spring-boot-starter:1.2.3'
+    compileOnly 'com.github.pagehelper:pagehelper-spring-boot-starter:1.2.3'
+    compileOnly 'org.springframework:spring-webmvc'
+    compileOnly 'org.springframework.boot:spring-boot-autoconfigure'
+    compileOnly 'org.springframework.data:spring-data-commons'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-web'
+}

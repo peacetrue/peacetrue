@@ -33,12 +33,24 @@ public abstract class StreamUtils {
     }
 
 
-    /** static quote for {@link Predicate} */
+    /**
+     * static quote for {@link Predicate}
+     *
+     * @param anything anything
+     * @param <T>      any type
+     * @return true
+     */
     public static <T> boolean alwaysTrue(T anything) {
         return true;
     }
 
-    /** static quote for {@link Predicate} */
+    /**
+     * static quote for {@link Predicate}
+     *
+     * @param anything anything
+     * @param <T>      any type
+     * @return false
+     */
     public static <T> boolean alwaysFalse(T anything) {
         return false;
     }
@@ -52,6 +64,5 @@ public abstract class StreamUtils {
     public static <T> BinaryOperator<T> rightBinaryOperator() {
         return (t, t2) -> t2;
     }
-
 
 }

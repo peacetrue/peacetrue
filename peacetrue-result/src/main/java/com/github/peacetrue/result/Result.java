@@ -1,14 +1,15 @@
 package com.github.peacetrue.result;
 
 
-import java.io.Serializable;
+import com.github.peacetrue.core.Code;
+import com.github.peacetrue.core.Message;
 
 /**
  * the response result that server output to client
  *
  * @author xiayx
  */
-public interface Result extends Serializable {
+public interface Result extends Code, Message {
 
     /**
      * get result code
