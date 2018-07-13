@@ -34,7 +34,7 @@ public class DataResultImpl<T> extends ResultImpl implements DataResult<T> {
     }
 
     public void setData(T data) {
-        this.data = Objects.requireNonNull(data);
+        this.data = data;
     }
 
     @Override

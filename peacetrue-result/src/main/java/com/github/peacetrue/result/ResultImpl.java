@@ -33,11 +33,15 @@ public class ResultImpl implements Result, CodeAware, Serializable {
 
     @Override
     public void setCode(String code) {
-        this.code = Objects.requireNonNull(code);
+        this.code = code;
     }
 
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
