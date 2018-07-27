@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -40,8 +41,6 @@ public class ResultWebAutoConfiguration {
         this.resultWebProperties = resultWebProperties;
     }
 
-    // TODO 不明白为什么需要额外使用一个配置类，如果直接放在外层配置类中，
-    // 导致异常【java.lang.IllegalArgumentException: A ServletContext is required to configure default servlet handling】
     @Configuration
     public static class ViewResolverConfiguration {
         @Autowired
@@ -62,7 +61,7 @@ public class ResultWebAutoConfiguration {
         ResultWebUtils.setResultBuilder(resultBuilder);
     }
 
-    @ConditionalOnBean(ExceptionConvertService.class)
+    @ConditionalOnClass(ExceptionConvertService.class)
     public static class ExceptionConfiguration {
         @Bean
         @ConditionalOnMissingBean(name = "exceptionHandler")

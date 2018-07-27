@@ -123,7 +123,9 @@ public interface ResultBuilder {
      * @param locale the locale
      * @return the {@link Result}
      */
-    Result success(@Nullable Locale locale);
+    default Result success(@Nullable Locale locale) {
+        return build(ResultType.success.name(), locale);
+    }
 
     /**
      * build success {@link Result} from data
@@ -145,7 +147,9 @@ public interface ResultBuilder {
      * @param <T>    the type of data
      * @return the {@link DataResult}
      */
-    <T> DataResult<T> success(T data, @Nullable Locale locale);
+    default <T> DataResult<T> success(T data, @Nullable Locale locale) {
+        return build(ResultType.success.name(), data, locale);
+    }
 
 
     /**
@@ -164,7 +168,9 @@ public interface ResultBuilder {
      * @param locale the locale
      * @return the {@link Result}
      */
-    Result failure(@Nullable Locale locale);
+    default Result failure(@Nullable Locale locale) {
+        return build(ResultType.failure.name(), locale);
+    }
 
 
     /**
@@ -186,6 +192,8 @@ public interface ResultBuilder {
      * @param <T>    the type of data
      * @return the {@link DataResult}
      */
-    <T> DataResult<T> failure(T data, @Nullable Locale locale);
+    default <T> DataResult<T> failure(T data, @Nullable Locale locale) {
+        return build(ResultType.failure.name(), data, locale);
+    }
 
 }
