@@ -122,6 +122,26 @@ public class CodeConvertResultBuilder extends ResultBuilderAdapter {
     }
 
     @Override
+    public Result success() {
+        return handleCode(super.success(), this::setCodeChain);
+    }
+
+    @Override
+    public <T> DataResult<T> success(T data) {
+        return handleCode(super.success(data), this::setCodeChain);
+    }
+
+    @Override
+    public Result failure() {
+        return handleCode(super.failure(), this::setCodeChain);
+    }
+
+    @Override
+    public <T> DataResult<T> failure(T data) {
+        return handleCode(super.failure(data), this::setCodeChain);
+    }
+
+    @Override
     public Result failure(@Nullable Locale locale) {
         return handleCode(super.failure(), this::setCodeChain);
     }

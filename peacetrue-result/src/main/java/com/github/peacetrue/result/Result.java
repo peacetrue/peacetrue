@@ -1,15 +1,15 @@
 package com.github.peacetrue.result;
 
 
-import com.github.peacetrue.core.Code;
-import com.github.peacetrue.core.Message;
+import com.github.peacetrue.core.CodeCapable;
+import com.github.peacetrue.core.MessageCapable;
 
 /**
  * the response result that server output to client
  *
  * @author xiayx
  */
-public interface Result extends Code, Message {
+public interface Result extends CodeCapable, MessageCapable {
 
     /**
      * get result code
