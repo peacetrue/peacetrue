@@ -1,6 +1,8 @@
 package com.github.peacetrue.result.exception;
 
 import com.github.peacetrue.result.ResultBuilderAutoConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -20,6 +22,7 @@ import static com.github.peacetrue.result.exception.StandardExceptionConvertServ
 @EnableConfigurationProperties(ResultExceptionProperties.class)
 public class ResultExceptionAutoConfiguration {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
     private ResultExceptionProperties resultExceptionProperties;
 
     public ResultExceptionAutoConfiguration(ResultExceptionProperties resultExceptionProperties) {
@@ -55,6 +58,8 @@ public class ResultExceptionAutoConfiguration {
         //add default result exception messages config
         if (messageSource instanceof ResourceBundleMessageSource) {
             ((ResourceBundleMessageSource) messageSource).addBasenames("result-exception");
+        } else {
+            logger.warn("the default config 'result-exception.properties' not be added to MessageSource");
         }
     }
 
