@@ -60,8 +60,9 @@ public class ResultBuilderAutoConfiguration {
         //add default result builder messages config
         if (messageSource instanceof ResourceBundleMessageSource) {
             ((ResourceBundleMessageSource) messageSource).addBasenames("result-builder");
+            logger.debug("add default config 'result-builder.properties' to '{}'", messageSource);
         } else {
-            logger.warn("the default config 'result-builder.properties' not be added to MessageSource");
+            logger.warn("the default config 'result-builder.properties' can't be added to '{}'", messageSource);
         }
     }
 
