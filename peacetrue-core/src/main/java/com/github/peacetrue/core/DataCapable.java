@@ -7,7 +7,7 @@ package com.github.peacetrue.core;
  * @param <T> the type of data
  * @author xiayx
  */
-public interface Data<T> {
+public interface DataCapable<T> {
 
     /**
      * get the unique program identification code

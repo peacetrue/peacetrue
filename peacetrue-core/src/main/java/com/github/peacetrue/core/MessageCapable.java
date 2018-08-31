@@ -6,7 +6,7 @@ package com.github.peacetrue.core;
  *
  * @author xiayx
  */
-public interface Message {
+public interface MessageCapable {
 
     /**
      * get the human identifiable info

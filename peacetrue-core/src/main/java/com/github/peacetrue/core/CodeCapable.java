@@ -7,7 +7,7 @@ package com.github.peacetrue.core;
  * @author xiayx
  * @see CodeAware
  */
-public interface Code {
+public interface CodeCapable {
 
     /**
      * get the unique developer identification code

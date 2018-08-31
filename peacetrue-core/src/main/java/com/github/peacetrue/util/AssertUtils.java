@@ -1,7 +1,5 @@
 package com.github.peacetrue.util;
 
-import org.junit.Assert;
-
 /**
  * a util class for {@link org.junit.Assert}
  *
@@ -33,12 +31,11 @@ public abstract class AssertUtils {
     public static Throwable assertException(Executor executor, String message) {
         try {
             executor.execute();
-            Assert.fail();
         } catch (Throwable e) {
             return e;
         }
-        Assert.fail(message);
-        return null;
+        if (message == null) throw new AssertionError();
+        throw new AssertionError(message);
     }
 
     /**

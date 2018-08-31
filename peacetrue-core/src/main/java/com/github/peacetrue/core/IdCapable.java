@@ -7,7 +7,7 @@ package com.github.peacetrue.core;
  * @param <T> the type of id
  * @author xiayx
  */
-public interface Id<T> {
+public interface IdCapable<T> {
 
     /**
      * get the unique program identification code
