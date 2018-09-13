@@ -1,7 +1,6 @@
 package com.github.peacetrue.security;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 /**
@@ -17,13 +16,9 @@ public class Sha1Encoder implements Encoder {
 
     @Override
     public String encode(String string) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            byte[] digest = md.digest(string.getBytes());
-            return Base64.getEncoder().encodeToString(digest);
-        } catch (NoSuchAlgorithmException e) {
-            throw new EncodeException(string, "SHA-1");
-        }
+        MessageDigest md = MessageDigestUtils.getSHA1();
+        byte[] digest = md.digest(string.getBytes());
+        return Base64.getEncoder().encodeToString(digest);
     }
 
 }

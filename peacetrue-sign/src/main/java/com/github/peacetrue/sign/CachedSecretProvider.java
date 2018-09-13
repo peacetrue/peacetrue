@@ -27,13 +27,13 @@ public class CachedSecretProvider implements SecretProvider {
         this.secrets = secrets;
     }
 
-    public CachedSecretProvider(List<? extends AppSecret> appSecrets) {
-        this.secrets = appSecrets.stream().collect(Collectors.toMap(AppId::getAppId, AppSecret::getAppSecret));
+    public CachedSecretProvider(List<? extends AppSecretCapable> appSecrets) {
+        this.secrets = appSecrets.stream().collect(Collectors.toMap(AppIdCapable::getAppId, AppSecretCapable::getAppSecret));
     }
 
     @Override
     public String getSecretById(String id) {
-        logger.info("get secret for id: {}", id);
+        logger.info("获取应用'{}'的秘钥", id);
         return secrets.get(id);
     }
 

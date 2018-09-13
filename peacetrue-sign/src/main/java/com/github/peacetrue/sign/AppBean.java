@@ -1,14 +1,24 @@
 package com.github.peacetrue.sign;
 
+import java.io.Serializable;
+
 /**
- * the bean of app
+ * 应用Bean
  *
  * @author xiayx
  */
-public class AppBean implements AppSecret {
+public class AppBean implements AppSecretCapable, Serializable {
 
     private String appId;
     private String appSecret;
+
+    public AppBean() {
+    }
+
+    public AppBean(String appId, String appSecret) {
+        this.appId = appId;
+        this.appSecret = appSecret;
+    }
 
     @Override
     public String getAppId() {

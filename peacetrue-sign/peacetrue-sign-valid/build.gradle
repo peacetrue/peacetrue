@@ -1,0 +1,8 @@
+dependencies {
+    compile project(":peacetrue-sign")
+    compile 'org.springframework:spring-webmvc'
+    compile 'com.fasterxml.jackson.core:jackson-databind'
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    testCompile "org.springframework.boot:spring-boot-starter-web"
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+}

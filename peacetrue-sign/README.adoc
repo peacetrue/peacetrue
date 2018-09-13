@@ -5,13 +5,13 @@ v1.0, 2018-03-25: SNAPSHOT
 :toc: left
 :numbered:
 :imagesdir: assets/images
-:sourcedir: peacetrue-sign-client/src/main/java
-:resourcesdir: peacetrue-sign-client/src/main/resources
-:testsourcedir: peacetrue-sign-client/src/test/java
+:sourcedir: peacetrue-sign-append/src/main/java
+:resourcesdir: peacetrue-sign-append/src/main/resources
+:testsourcedir: peacetrue-sign-append/src/test/java
 :source-highlighter: coderay
 :coderay-linenums-mode: inline
 
-签名组件用于为开放接口生成签名并验证签名。
+签名组件用于为开放接口生成签名和验证签名。
 签名组件的目的请参考 https://blog.csdn.net/qq_18495465/article/details/79248608[开放API接口签名验证，让你的接口从此不再裸奔]
 
 == 概念说明
@@ -75,7 +75,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.peacetrue:peacetrue-sign-client:1.2-RELEASE'
+    compile 'com.github.peacetrue:peacetrue-sign-append:1.2-RELEASE'
 }
 ----
 
@@ -84,7 +84,7 @@ dependencies {
 ----
 <dependency>
     <groupId>com.github.peacetrue</groupId>
-    <artifactId>peacetrue-sign-client</artifactId>
+    <artifactId>peacetrue-sign-append</artifactId>
     <version>1.2-RELEASE</version>
 </dependency>
 ----
@@ -124,7 +124,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.peacetrue:peacetrue-sign-server:1.2-RELEASE'
+    compile 'com.github.peacetrue:peacetrue-sign-valid:1.2-RELEASE'
 }
 ----
 
@@ -133,9 +133,8 @@ dependencies {
 ----
 <dependency>
     <groupId>com.github.peacetrue</groupId>
-    <artifactId>peacetrue-sign-server</artifactId>
+    <artifactId>peacetrue-sign-valid</artifactId>
     <version>1.2-RELEASE</version>
 </dependency>
 ----
 
-===
