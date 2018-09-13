@@ -15,10 +15,10 @@ dependencies {
     compileOnly "com.fasterxml.jackson.core:jackson-databind"
 
     testCompile "org.apache.commons:commons-lang3"
-    testCompile "org.springframework:spring-webmvc"
     testCompile "javax.servlet:javax.servlet-api"
     testCompile "org.springframework.data:spring-data-jpa"
     testCompile "org.springframework.boot:spring-boot-starter-test"
+    testCompile "ch.qos.logback:logback-classic"
     testCompile "com.fasterxml.jackson.core:jackson-databind"
 
 }
