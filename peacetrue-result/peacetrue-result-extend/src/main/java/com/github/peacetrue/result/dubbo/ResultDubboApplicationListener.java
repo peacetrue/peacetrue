@@ -17,6 +17,8 @@ public class ResultDubboApplicationListener implements ApplicationListener<Appli
 
     @Override
     public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
+        //properties 配置和 xml 配置 冲突，二者只能选其一而不能合并
+        if (!event.getEnvironment().containsProperty("dubbo.provider.id")) return;
         MutablePropertySources propertySources = event.getEnvironment().getPropertySources();
         Properties properties = new Properties();
         properties.put("dubbo.provider.filter", "ResultExceptionFilter,-exception");

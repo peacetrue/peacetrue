@@ -11,6 +11,8 @@ import com.github.peacetrue.result.exception.ResultException;
  */
 public class ResultExceptionFilter extends ExceptionFilter {
 
+    public static final String CONFIG_NAME = "ResultExceptionFilter,-exception";
+
     public ResultExceptionFilter() {
     }
 
