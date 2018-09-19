@@ -33,7 +33,7 @@ public abstract class ClassLoaderUtils {
      * @return 类的字节码
      */
     public static byte[] loadClass(ClassLoader classLoader, String className) {
-        className = className.replace('.', '/') + ".class";
+        className = toBytecodePath(className);
         InputStream stream = classLoader.getResourceAsStream(className);
         try {
             return toByteArray(stream);
@@ -41,6 +41,7 @@ public abstract class ClassLoaderUtils {
             throw new IllegalArgumentException("can't load class '" + className + "'", e);
         }
     }
+
 
     /** 基于{@link #loadClass(ClassLoader, String)}设置了默认的{@link ClassLoader} */
     public static byte[] loadClass(String className) {
@@ -79,6 +80,26 @@ public abstract class ClassLoaderUtils {
     /** 基于{@link #defineClass(ClassLoader, String, byte[])}设置了默认的{@link ClassLoader} */
     public static Class defineClass(String className, byte[] bytes) {
         return defineClass(ClassLoaderUtils.class.getClassLoader(), className, bytes);
+    }
+
+    /**
+     * 转成类名成类字节码路径
+     *
+     * @param className 类名，例如：com.github.peacetrue.util.ClassLoaderUtils
+     * @return 类字节码路径，例如：com/github/peacetrue/util/ClassLoaderUtils.class
+     */
+    public static String toBytecodePath(String className) {
+        return toPath(className) + ".class";
+    }
+
+    /**
+     * 转成类名成类路径
+     *
+     * @param className 类名，例如：com.github.peacetrue.util.ClassLoaderUtils
+     * @return 类路径，例如：com/github/peacetrue/util/ClassLoaderUtils
+     */
+    public static String toPath(String className) {
+        return className.replace('.', '/');
     }
 
 
