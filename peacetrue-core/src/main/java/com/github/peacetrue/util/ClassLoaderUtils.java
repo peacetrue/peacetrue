@@ -1,5 +1,8 @@
 package com.github.peacetrue.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -18,35 +21,64 @@ public abstract class ClassLoaderUtils {
             defineClass.setAccessible(true);
             return defineClass;
         } catch (NoSuchMethodException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("not expected exception", e);
         }
+    }
+
+    /**
+     * 加载字节码内容
+     *
+     * @param classLoader 类加载器，用于获取类的字节码
+     * @param classPath   类路径，例如：com.github.peacetrue.util.ClassLoaderUtils
+     * @return 类的字节码
+     */
+    public static byte[] loadClass(ClassLoader classLoader, String classPath) {
+        classPath = classPath.replace('.', '/') + ".class";
+        InputStream stream = classLoader.getResourceAsStream(classPath);
+        try {
+            return toByteArray(stream);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("can't load class '" + classPath + "'", e);
+        }
+    }
+
+    /** 基于{@link #loadClass(ClassLoader, String)}设置了默认的{@link ClassLoader} */
+    public static byte[] loadClass(String classPath) {
+        return ClassLoaderUtils.loadClass(ClassLoaderUtils.class.getClassLoader(), classPath);
+    }
+
+    public static byte[] toByteArray(InputStream in) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024]; // you can configure the buffer size
+        int length;
+        while ((length = in.read(buffer)) != -1) {
+            out.write(buffer, 0, length); //copy streams
+        }
+        in.close(); // call this in a finally block
+
+        return out.toByteArray();
     }
 
     /**
      * 定义类
      *
      * @param classLoader 类加载器
-     * @param name        类名
-     * @param bytes       类字节码
+     * @param classPath   类路径，例如：com.github.peacetrue.util.ClassLoaderUtils
+     * @param bytes       类字节码数组，可以使用{@link #loadClass(String)}的返回值
      * @return 被定义的类
+     * @see #loadClass(String)
      */
-    public static Class defineClass(ClassLoader classLoader, String name, byte[] bytes) {
+    public static Class defineClass(ClassLoader classLoader, String classPath, byte[] bytes) {
         try {
-            return (Class) DEFINE_CLASS.invoke(classLoader, new Object[]{name, bytes, 0, bytes.length});
+            return (Class) DEFINE_CLASS.invoke(classLoader, new Object[]{classPath, bytes, 0, bytes.length});
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalArgumentException("can't define class '" + classPath + "'", e);
         }
     }
 
-    /**
-     * 定义类
-     *
-     * @param name  类名
-     * @param bytes 类字节码
-     * @return 被定义的类
-     */
-    public static Class defineClass(String name, byte[] bytes) {
-        return defineClass(ClassLoaderUtils.class.getClassLoader(), name, bytes);
+    /** 基于{@link #defineClass(ClassLoader, String, byte[])}设置了默认的{@link ClassLoader} */
+    public static Class defineClass(String classPath, byte[] bytes) {
+        return defineClass(ClassLoaderUtils.class.getClassLoader(), classPath, bytes);
     }
 
 
