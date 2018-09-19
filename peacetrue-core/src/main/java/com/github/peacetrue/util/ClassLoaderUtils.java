@@ -29,22 +29,22 @@ public abstract class ClassLoaderUtils {
      * 加载字节码内容
      *
      * @param classLoader 类加载器，用于获取类的字节码
-     * @param classPath   类路径，例如：com.github.peacetrue.util.ClassLoaderUtils
+     * @param className   类名称，例如：com.github.peacetrue.util.ClassLoaderUtils
      * @return 类的字节码
      */
-    public static byte[] loadClass(ClassLoader classLoader, String classPath) {
-        classPath = classPath.replace('.', '/') + ".class";
-        InputStream stream = classLoader.getResourceAsStream(classPath);
+    public static byte[] loadClass(ClassLoader classLoader, String className) {
+        className = className.replace('.', '/') + ".class";
+        InputStream stream = classLoader.getResourceAsStream(className);
         try {
             return toByteArray(stream);
         } catch (IOException e) {
-            throw new IllegalArgumentException("can't load class '" + classPath + "'", e);
+            throw new IllegalArgumentException("can't load class '" + className + "'", e);
         }
     }
 
     /** 基于{@link #loadClass(ClassLoader, String)}设置了默认的{@link ClassLoader} */
-    public static byte[] loadClass(String classPath) {
-        return ClassLoaderUtils.loadClass(ClassLoaderUtils.class.getClassLoader(), classPath);
+    public static byte[] loadClass(String className) {
+        return ClassLoaderUtils.loadClass(ClassLoaderUtils.class.getClassLoader(), className);
     }
 
     public static byte[] toByteArray(InputStream in) throws IOException {
@@ -63,22 +63,22 @@ public abstract class ClassLoaderUtils {
      * 定义类
      *
      * @param classLoader 类加载器
-     * @param classPath   类路径，例如：com.github.peacetrue.util.ClassLoaderUtils
+     * @param className   类名称，例如：com.github.peacetrue.util.ClassLoaderUtils
      * @param bytes       类字节码数组，可以使用{@link #loadClass(String)}的返回值
      * @return 被定义的类
      * @see #loadClass(String)
      */
-    public static Class defineClass(ClassLoader classLoader, String classPath, byte[] bytes) {
+    public static Class defineClass(ClassLoader classLoader, String className, byte[] bytes) {
         try {
-            return (Class) DEFINE_CLASS.invoke(classLoader, new Object[]{classPath, bytes, 0, bytes.length});
+            return (Class) DEFINE_CLASS.invoke(classLoader, new Object[]{className, bytes, 0, bytes.length});
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalArgumentException("can't define class '" + classPath + "'", e);
+            throw new IllegalArgumentException("can't define class '" + className + "'", e);
         }
     }
 
     /** 基于{@link #defineClass(ClassLoader, String, byte[])}设置了默认的{@link ClassLoader} */
-    public static Class defineClass(String classPath, byte[] bytes) {
-        return defineClass(ClassLoaderUtils.class.getClassLoader(), classPath, bytes);
+    public static Class defineClass(String className, byte[] bytes) {
+        return defineClass(ClassLoaderUtils.class.getClassLoader(), className, bytes);
     }
 
 
