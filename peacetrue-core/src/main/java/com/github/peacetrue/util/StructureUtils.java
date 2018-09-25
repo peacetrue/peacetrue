@@ -49,8 +49,8 @@ public abstract class StructureUtils {
     }
 
 
-    public static <T extends CodeCapable> Optional<T> findOptionalByCode(Stream<T> stream, String id) {
-        return findOptional(stream, CodeCapable::getCode, id);
+    public static <T extends CodeCapable> Optional<T> findOptionalByCode(Stream<T> stream, String code) {
+        return findOptional(stream, CodeCapable::getCode, code);
     }
 
     public static <T extends CodeCapable> List<T> findListByCode(Stream<T> stream, Supplier<Stream<String>> codes) {
