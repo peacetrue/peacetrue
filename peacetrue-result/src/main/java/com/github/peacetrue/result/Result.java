@@ -16,6 +16,7 @@ public interface Result extends CodeCapable, MessageCapable {
      *
      * @return a unique identifier for program
      */
+    @Override
     String getCode();
 
     /**
@@ -23,5 +24,6 @@ public interface Result extends CodeCapable, MessageCapable {
      *
      * @return a description for human
      */
+    @Override
     String getMessage();
 }

@@ -27,6 +27,7 @@ public class ResultImpl implements Result, CodeAware, Serializable {
         this(result.getCode(), result.getMessage());
     }
 
+    @Override
     public String getCode() {
         return code;
     }
@@ -36,6 +37,7 @@ public class ResultImpl implements Result, CodeAware, Serializable {
         this.code = code;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }

@@ -15,5 +15,6 @@ public interface DataResult<T> extends Result, DataCapable<T> {
      *
      * @return a generic type data used for program
      */
+    @Override
     T getData();
 }

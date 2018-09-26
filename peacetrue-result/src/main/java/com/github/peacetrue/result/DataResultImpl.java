@@ -29,6 +29,7 @@ public class DataResultImpl<T> extends ResultImpl implements DataResult<T> {
         this(result, result.getData());
     }
 
+    @Override
     public T getData() {
         return data;
     }

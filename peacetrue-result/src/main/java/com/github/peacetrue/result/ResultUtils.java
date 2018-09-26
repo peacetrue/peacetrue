@@ -31,7 +31,7 @@ public abstract class ResultUtils {
     }
 
     private static String toString(Object object) {
-        if (object == null) return "null";
+        if (object == null) {return "null";}
         return object.getClass().isArray() ? Arrays.toString((Object[]) object) : object.toString();
     }
 
