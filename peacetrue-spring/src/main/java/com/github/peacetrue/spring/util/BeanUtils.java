@@ -13,6 +13,9 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * extends for {@link BeanUtils}
@@ -193,5 +196,26 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         return EnumUtils._map(beans, keyProperty, null);
     }
 
+    /** convert to a instance of subclass */
+    public static <S, T extends S> T toSubclass(S source, Class<T> targetClass) {
+        T target = BeanUtils.instantiate(targetClass);
+        BeanUtils.copyProperties(source, target);
+        return target;
+    }
+
+    /** replace the element of collection to subclass instance */
+    public static <S, T extends S> Stream<T> replace(Collection<S> beans, Class<T> targetClass) {
+        return beans.stream().map(s -> toSubclass(s, targetClass));
+    }
+
+    /** similar to {@link #replace(Collection, Class)}, but return {@link Collection} */
+    public static <S, T extends S, C extends Collection<T>> C replace(Collection<S> beans, Class<T> targetClass, Supplier<C> collectionFactory) {
+        return replace(beans, targetClass).collect(Collectors.toCollection(collectionFactory));
+    }
+
+    /** similar to {@link #replace(Collection, Class)}, but return {@link List} */
+    public static <S, T extends S> List<T> replaceAsList(Collection<S> beans, Class<T> targetClass) {
+        return replace(beans, targetClass, ArrayList::new);
+    }
 
 }
