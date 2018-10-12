@@ -1,0 +1,11 @@
+description 'dubbo extend'
+
+//https://github.com/apache/incubator-dubbo/issues/502
+
+dependencies {
+    //所有第三方依赖都需要调用者提供
+    compile "com.alibaba:dubbo:2.6.2"
+
+    testCompile 'com.alibaba.boot:dubbo-spring-boot-starter:0.1.1'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
