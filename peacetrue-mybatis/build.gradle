@@ -1,13 +1,33 @@
-description 'extend mybatis: argument resolve for RowBounds'
+description 'extend mybatis'
 
 
 dependencies {
-    compileOnly 'org.mybatis:mybatis'
-    compileOnly 'tk.mybatis:mapper-spring-boot-starter:1.2.3'
-    compileOnly 'com.github.pagehelper:pagehelper-spring-boot-starter:1.2.3'
-    compileOnly 'org.springframework:spring-webmvc'
-    compileOnly 'org.springframework.boot:spring-boot-autoconfigure'
-    compileOnly 'org.springframework.data:spring-data-commons'
 
-    testCompile 'org.springframework.boot:spring-boot-starter-web'
+    compile project(':peacetrue-core')
+
+    compileOnly 'org.mybatis:mybatis'
+    compileOnly 'org.mybatis:mybatis-spring'
+//    compileOnly 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
+    compileOnly 'tk.mybatis:mapper'
+//    testCompile 'tk.mybatis:mapper-spring-boot-starter:1.2.3'
+    compileOnly 'com.github.pagehelper:pagehelper'
+//    compileOnly 'com.github.pagehelper:pagehelper-spring-boot-starter'
+    compileOnly 'org.mybatis.dynamic-sql:mybatis-dynamic-sql'
+    compileOnly 'org.springframework.data:spring-data-commons'
+    compileOnly 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'com.google.guava:guava'
+
+    testCompile 'org.mybatis:mybatis'
+    testCompile 'org.mybatis:mybatis-spring'
+    testCompile 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
+    testCompile 'tk.mybatis:mapper-spring-boot-starter:1.2.3'
+    testCompile 'com.github.pagehelper:pagehelper'
+    testCompile 'com.github.pagehelper:pagehelper-spring-boot-starter'
+    testCompile 'org.mybatis.dynamic-sql:mybatis-dynamic-sql'
+    testCompile 'org.springframework.boot:spring-boot-autoconfigure'
+    testCompile 'org.springframework.data:spring-data-commons'
+    testCompile 'com.google.guava:guava'
+    testCompile 'com.h2database:h2'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+
 }
