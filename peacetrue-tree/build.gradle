@@ -1,5 +1,7 @@
 dependencies {
     compile project(':peacetrue-core')
+    compile project(':peacetrue-spring')
     compile 'org.springframework:spring-core'
     compile 'org.springframework:spring-beans'
+    compile 'ch.qos.logback:logback-classic'
 }
