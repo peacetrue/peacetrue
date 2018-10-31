@@ -343,6 +343,52 @@ include::{testresourcesdir}/doc/validation.code.properties[]
 * 参数格式错误
 * 参数值错误
 
+.绑定数据时，日期类型接收了非日期值，导致错误：
+----
+{
+    "data": [
+        {
+            "code": "typeMismatch",
+            "message": "Failed to convert property value of type 'java.lang.String' to required type 'java.util.Date' for property 'personCardValid'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@javax.validation.constraints.NotNull java.util.Date] for value '1'; nested exception is java.lang.IllegalArgumentException",
+            "data": {
+                "name": "personCardValid",
+                "type": null,
+                "value": "1"
+            }
+        },
+        {
+            "code": "Size",
+            "message": "个数必须在10和32之间",
+            "data": {
+                "name": "socialSign",
+                "type": null,
+                "value": "1"
+            }
+        },
+        {
+            "code": "Size",
+            "message": "个数必须在10和20之间",
+            "data": {
+                "name": "legalPersonCode",
+                "type": null,
+                "value": "1"
+            }
+        },
+        {
+            "code": "Size",
+            "message": "个数必须在2和32之间",
+            "data": {
+                "name": "legalPersonName",
+                "type": null,
+                "value": "1"
+            }
+        }
+    ],
+    "message": "共有4项参数绑定错误",
+    "code": "1000"
+}
+----
+
 === 系统异常
 * 数据错误
 * 系统BUG

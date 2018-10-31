@@ -1,13 +1,5 @@
 description 'add exception converter'
 
-sourceSets {
-    test {
-        resources {
-            srcDirs += "src/test/java"
-        }
-    }
-}
-
 dependencies {
     compile project(':peacetrue-spring')
     compile project(':peacetrue-result:peacetrue-result-exception')
@@ -18,6 +10,7 @@ dependencies {
     compileOnly "javax.validation:validation-api:2.0.0.Final"
     compileOnly "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final"
     compileOnly "org.springframework:spring-webmvc"
+    compileOnly "com.alibaba:dubbo:2.6.2"
     compileOnly 'javax.servlet:javax.servlet-api'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
