@@ -3,7 +3,7 @@ package com.github.peacetrue.jackson.xml;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.io.IOException;
 
@@ -69,10 +69,10 @@ public class XmlRootSerializer extends JsonSerializer<Object> {
 
     protected String getFieldName(Object item) {
         Class<?> itemClass = item.getClass();
-        JacksonXmlProperty jacksonXmlProperty = itemClass.getAnnotation(JacksonXmlProperty.class);
-        return jacksonXmlProperty == null
+        JacksonXmlRootElement jacksonXmlRootElement = itemClass.getAnnotation(JacksonXmlRootElement.class);
+        return jacksonXmlRootElement == null
                 ? itemClass.getSimpleName()
-                : jacksonXmlProperty.localName();
+                : jacksonXmlRootElement.localName();
     }
 
 }
