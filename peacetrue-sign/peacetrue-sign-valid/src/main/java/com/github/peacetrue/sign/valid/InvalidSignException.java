@@ -7,15 +7,15 @@ package com.github.peacetrue.sign.valid;
  */
 public class InvalidSignException extends RuntimeException {
 
-    private Object signed;
+    private Object signedValue;
 
-    public InvalidSignException(Object signed) {
-        super("the signed value '" + signed + "' is invalid");
-        this.signed = signed;
+    public InvalidSignException(Object signedValue) {
+        super("the signed value '" + signedValue + "' is invalid");
+        this.signedValue = signedValue;
     }
 
-    public Object getSigned() {
-        return signed;
+    public Object getSignedValue() {
+        return signedValue;
     }
 
 }

@@ -1,8 +1,13 @@
+description '接收请求时，验证签名'
+
 dependencies {
     compile project(":peacetrue-sign")
+    compile project(":peacetrue-spring")
     compile 'org.springframework:spring-webmvc'
     compile 'com.fasterxml.jackson.core:jackson-databind'
     compile "org.springframework.boot:spring-boot-autoconfigure"
+    provided "javax.servlet:javax.servlet-api"
+    optional "org.springframework.boot:spring-boot-configuration-processor"
     testCompile "org.springframework.boot:spring-boot-starter-web"
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }

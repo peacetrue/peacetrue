@@ -1,4 +1,4 @@
-package com.github.peacetrue.spring.web.client;
+package com.github.peacetrue.sign.append;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -16,6 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -24,184 +25,188 @@ import java.util.Set;
  * @author xiayx
  * @see RestTemplate
  */
-public abstract class UriRestTemplate extends RestTemplate {
+public class ClientRestTemplate extends RestTemplate {
 
-    public UriRestTemplate(ClientHttpRequestFactory requestFactory) {
+    private String uri;
+
+    public ClientRestTemplate(String uri) {
+        this.uri = Objects.requireNonNull(uri);
+    }
+
+    public ClientRestTemplate(String uri, ClientHttpRequestFactory requestFactory) {
         super(requestFactory);
+        this.uri = Objects.requireNonNull(uri);
     }
 
-    public UriRestTemplate(List<HttpMessageConverter<?>> messageConverters) {
+    public ClientRestTemplate(String uri, List<HttpMessageConverter<?>> messageConverters) {
         super(messageConverters);
+        this.uri = Objects.requireNonNull(uri);
     }
-
-    protected abstract String getUri();
 
     public <T> T getForObject(Class<T> responseType, Object... urlVariables) throws RestClientException {
-        return super.getForObject(getUri(), responseType, urlVariables);
+        return super.getForObject(uri, responseType, urlVariables);
     }
 
     public <T> T getForObject(Class<T> responseType, Map<String, ?> urlVariables) throws RestClientException {
-        return super.getForObject(getUri(), responseType, urlVariables);
+        return super.getForObject(uri, responseType, urlVariables);
     }
 
 
     public <T> T getForObject(Class<T> responseType) throws RestClientException {
-        return super.getForObject(getUri(), responseType);
+        return super.getForObject(uri, responseType);
     }
 
 
     public <T> ResponseEntity<T> getForEntity(Class<T> responseType, Object... urlVariables) throws RestClientException {
-        return super.getForEntity(getUri(), responseType, urlVariables);
+        return super.getForEntity(uri, responseType, urlVariables);
     }
 
 
     public <T> ResponseEntity<T> getForEntity(Class<T> responseType, Map<String, ?> urlVariables) throws RestClientException {
-        return super.getForEntity(getUri(), responseType, urlVariables);
+        return super.getForEntity(uri, responseType, urlVariables);
     }
 
 
     public <T> ResponseEntity<T> getForEntity(Class<T> responseType) throws RestClientException {
-        return super.getForEntity(getUri(), responseType);
+        return super.getForEntity(uri, responseType);
     }
 
     public HttpHeaders headForHeaders(Object... urlVariables) throws RestClientException {
-        return super.headForHeaders(getUri(), urlVariables);
+        return super.headForHeaders(uri, urlVariables);
     }
 
     public HttpHeaders headForHeaders(Map<String, ?> urlVariables) throws RestClientException {
-        return super.headForHeaders(getUri(), urlVariables);
+        return super.headForHeaders(uri, urlVariables);
     }
 
     public URI postForLocation(Object request, Object... urlVariables) throws RestClientException {
-        return super.postForLocation(getUri(), request, urlVariables);
+        return super.postForLocation(uri, request, urlVariables);
     }
 
 
     public URI postForLocation(Object request, Map<String, ?> urlVariables) throws RestClientException {
-        return super.postForLocation(getUri(), request, urlVariables);
+        return super.postForLocation(uri, request, urlVariables);
     }
 
 
     public URI postForLocation(Object request) throws RestClientException {
-        return super.postForLocation(getUri(), request);
+        return super.postForLocation(uri, request);
     }
 
 
     public <T> T postForObject(Object request, Class<T> responseType, Object... uriVariables) throws RestClientException {
-        return super.postForObject(getUri(), request, responseType, uriVariables);
+        return super.postForObject(uri, request, responseType, uriVariables);
     }
 
 
     public <T> T postForObject(Object request, Class<T> responseType, Map<String, ?> uriVariables) throws RestClientException {
-        return super.postForObject(getUri(), request, responseType, uriVariables);
+        return super.postForObject(uri, request, responseType, uriVariables);
     }
 
 
     public <T> T postForObject(Object request, Class<T> responseType) throws RestClientException {
-        return super.postForObject(getUri(), request, responseType);
+        return super.postForObject(uri, request, responseType);
     }
 
 
     public <T> ResponseEntity<T> postForEntity(Object request, Class<T> responseType, Object... uriVariables) throws RestClientException {
-        return super.postForEntity(getUri(), request, responseType, uriVariables);
+        return super.postForEntity(uri, request, responseType, uriVariables);
     }
 
 
     public <T> ResponseEntity<T> postForEntity(Object request, Class<T> responseType, Map<String, ?> uriVariables) throws RestClientException {
-        return super.postForEntity(getUri(), request, responseType, uriVariables);
+        return super.postForEntity(uri, request, responseType, uriVariables);
     }
 
 
     public <T> ResponseEntity<T> postForEntity(Object request, Class<T> responseType) throws RestClientException {
-        return super.postForEntity(getUri(), request, responseType);
+        return super.postForEntity(uri, request, responseType);
     }
 
 
     public void put(Object request, Object... urlVariables) throws RestClientException {
-        super.put(getUri(), request, urlVariables);
+        super.put(uri, request, urlVariables);
     }
 
 
     public void put(Object request, Map<String, ?> urlVariables) throws RestClientException {
-        super.put(getUri(), request, urlVariables);
+        super.put(uri, request, urlVariables);
     }
 
     public void put(Object request) throws RestClientException {
-        super.put(getUri(), request);
+        super.put(uri, request);
     }
 
     public void delete(Object... urlVariables) throws RestClientException {
-        super.delete(getUri(), urlVariables);
+        super.delete(uri, urlVariables);
     }
 
 
     public void delete(Map<String, ?> urlVariables) throws RestClientException {
-        super.delete(getUri(), urlVariables);
+        super.delete(uri, urlVariables);
     }
 
 
     public Set<HttpMethod> optionsForAllow(Object... urlVariables) throws RestClientException {
-        return super.optionsForAllow(getUri(), urlVariables);
+        return super.optionsForAllow(uri, urlVariables);
     }
 
 
     public Set<HttpMethod> optionsForAllow(Map<String, ?> urlVariables) throws RestClientException {
-        return super.optionsForAllow(getUri(), urlVariables);
+        return super.optionsForAllow(uri, urlVariables);
     }
 
     public <T> ResponseEntity<T> exchange(HttpMethod method, HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables) throws RestClientException {
-        return super.exchange(getUri(), method, requestEntity, responseType, uriVariables);
+        return super.exchange(uri, method, requestEntity, responseType, uriVariables);
     }
 
 
     public <T> ResponseEntity<T> exchange(HttpMethod method, HttpEntity<?> requestEntity, Class<T> responseType, Map<String, ?> uriVariables) throws RestClientException {
-        return super.exchange(getUri(), method, requestEntity, responseType, uriVariables);
+        return super.exchange(uri, method, requestEntity, responseType, uriVariables);
     }
 
 
     public <T> ResponseEntity<T> exchange(HttpMethod method, HttpEntity<?> requestEntity, Class<T> responseType) throws RestClientException {
-        return super.exchange(getUri(), method, requestEntity, responseType);
+        return super.exchange(uri, method, requestEntity, responseType);
     }
 
 
     public <T> ResponseEntity<T> exchange(HttpMethod method, HttpEntity<?> requestEntity, ParameterizedTypeReference<T> responseType, Object... uriVariables) throws RestClientException {
-        return super.exchange(getUri(), method, requestEntity, responseType, uriVariables);
+        return super.exchange(uri, method, requestEntity, responseType, uriVariables);
     }
 
 
     public <T> ResponseEntity<T> exchange(HttpMethod method, HttpEntity<?> requestEntity, ParameterizedTypeReference<T> responseType, Map<String, ?> uriVariables) throws RestClientException {
-        return super.exchange(getUri(), method, requestEntity, responseType, uriVariables);
+        return super.exchange(uri, method, requestEntity, responseType, uriVariables);
     }
 
 
     public <T> ResponseEntity<T> exchange(HttpMethod method, HttpEntity<?> requestEntity, ParameterizedTypeReference<T> responseType) throws RestClientException {
-        return super.exchange(getUri(), method, requestEntity, responseType);
+        return super.exchange(uri, method, requestEntity, responseType);
     }
 
     public <T> T execute(HttpMethod method, RequestCallback requestCallback, ResponseExtractor<T> responseExtractor, Object... urlVariables) throws RestClientException {
-        return super.execute(getUri(), method, requestCallback, responseExtractor, urlVariables);
+        return super.execute(uri, method, requestCallback, responseExtractor, urlVariables);
     }
 
 
     public <T> T execute(HttpMethod method, RequestCallback requestCallback, ResponseExtractor<T> responseExtractor, Map<String, ?> urlVariables) throws RestClientException {
-        return super.execute(getUri(), method, requestCallback, responseExtractor, urlVariables);
+        return super.execute(uri, method, requestCallback, responseExtractor, urlVariables);
     }
 
-
     public <T> T execute(HttpMethod method, RequestCallback requestCallback, ResponseExtractor<T> responseExtractor) throws RestClientException {
-        return super.execute(getUri(), method, requestCallback, responseExtractor);
+        return super.execute(uri, method, requestCallback, responseExtractor);
     }
 
     @Override
     protected <T> T doExecute(URI uri, HttpMethod method, RequestCallback requestCallback, ResponseExtractor<T> responseExtractor) throws RestClientException {
-        String thisUri = getUri();
-        String localUri = uri.toString();
-        if (!localUri.equals(thisUri)) {
-            String fullUri = thisUri + localUri;
+        String uriString = uri.toString();
+        if (!uriString.equals(this.uri)) {
+            uriString = this.uri + uriString;
             try {
-                uri = new URI(fullUri);
+                uri = new URI(uriString);
             } catch (URISyntaxException ignored) {
-                throw new IllegalArgumentException("the uri '" + fullUri + "' is invalid", ignored);
+                throw new IllegalArgumentException("the uri '" + uriString + "' is invalid", ignored);
             }
         }
         return super.doExecute(uri, method, requestCallback, responseExtractor);

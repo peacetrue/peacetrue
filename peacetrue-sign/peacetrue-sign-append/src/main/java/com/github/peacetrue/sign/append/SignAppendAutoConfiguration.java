@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.peacetrue.sign.AppSecretCapable;
 import com.github.peacetrue.sign.Md5SignGenerator;
 import com.github.peacetrue.sign.SignGenerator;
-import com.github.peacetrue.spring.web.client.UriRestTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -52,10 +51,10 @@ public class SignAppendAutoConfiguration {
     /** 用于客户端向服务端发送请求 */
     @Bean
     @ConditionalOnMissingBean(name = "clientRestTemplate")
-    public UriRestTemplate clientRestTemplate(HttpMessageConverter<MultiValueMap<String, ?>> paramSignHttpMessageConverter,
-                                              HttpMessageConverter<Object> bodySignHttpMessageConverter,
-                                              ClientHttpRequestInterceptor signClientHttpRequestInterceptor) {
-        UriRestTemplate restTemplate = new UriRestTemplate(properties.getClient().getUri(),
+    public ClientRestTemplate clientRestTemplate(HttpMessageConverter<MultiValueMap<String, ?>> paramSignHttpMessageConverter,
+                                                 HttpMessageConverter<Object> bodySignHttpMessageConverter,
+                                                 ClientHttpRequestInterceptor signClientHttpRequestInterceptor) {
+        ClientRestTemplate restTemplate = new ClientRestTemplate(properties.getClient().getUri(),
                 Arrays.asList(paramSignHttpMessageConverter, bodySignHttpMessageConverter));
         restTemplate.getInterceptors().add(signClientHttpRequestInterceptor);
         return restTemplate;

@@ -1,10 +1,8 @@
+description '请求签名'
+
 dependencies {
-    compile project(':peacetrue-spring')
-
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    optional 'org.springframework.boot:spring-boot-configuration-processor'
-
+    compile project(':peacetrue-core')
+    compile 'ch.qos.logback:logback-classic'
+    provided 'com.fasterxml.jackson.core:jackson-databind'
     testCompile 'org.projectlombok:lombok'
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
-
 }
