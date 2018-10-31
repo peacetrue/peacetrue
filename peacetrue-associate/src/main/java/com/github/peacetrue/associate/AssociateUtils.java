@@ -34,7 +34,7 @@ public abstract class AssociateUtils {
         PropertyDescriptor associateIdPropertyDescriptor = BeanUtils.getRequiredPropertyDescriptor(associate.getClass(), associatedIdProperty);
         I id = (I) ReflectionUtils.invokeMethod(associateIdPropertyDescriptor.getReadMethod(), associate);
         if (id == null) return;
-        D associated = associatedSource.getById(id);
+        D associated = associatedSource.findAssociate(id);
         BeanUtils.setPropertyValue(associate, associatedProperty, associatedSource.format(associated));
     }
 
@@ -53,7 +53,7 @@ public abstract class AssociateUtils {
         PropertyDescriptor associateIdPropertyDescriptor = BeanUtils.getRequiredPropertyDescriptor(associate.getClass(), associatedIdProperty);
         Collection<I> idCollection = (Collection<I>) ReflectionUtils.invokeMethod(associateIdPropertyDescriptor.getReadMethod(), associate);
         if (CollectionUtils.isEmpty(idCollection)) return;
-        Collection<D> associates = associatedSource.getCollectionById(idCollection);
+        Collection<D> associates = associatedSource.findCollectionAssociate(idCollection);
         BeanUtils.setPropertyValue(associate, associatedProperty, associatedSource.format(associates));
     }
 
@@ -65,7 +65,7 @@ public abstract class AssociateUtils {
      * @param associatedMap        the associated map data
      * @param associatedIdProperty the associated id property
      */
-    private static void setAssociate(Collection<?> associates, String associatedProperty, Map<?, ?> associatedMap, String associatedIdProperty) {
+    public static void setAssociate(Collection<?> associates, String associatedProperty, Map<?, ?> associatedMap, String associatedIdProperty) {
         Class associateClass = com.github.peacetrue.util.CollectionUtils.detectElementType(associates);
         PropertyDescriptor associatedIdDescriptor = BeanUtils.getRequiredPropertyDescriptor(associateClass, associatedIdProperty);
         PropertyDescriptor associatedDescriptor = BeanUtils.getRequiredPropertyDescriptor(associateClass, associatedProperty);
@@ -90,7 +90,7 @@ public abstract class AssociateUtils {
         PropertyDescriptor associateIdDescriptor = BeanUtils.getRequiredPropertyDescriptor(associateClass, associatedIdProperty);
         Set<I> associatedIds = associates.stream().map(associate -> (I) ReflectionUtils.invokeMethod(associateIdDescriptor.getReadMethod(), associate)).collect(Collectors.toSet());
         if (associatedIds.isEmpty()) return;
-        Collection<D> associatedData = associatedSource.getCollectionById(associatedIds);
+        Collection<D> associatedData = associatedSource.findCollectionAssociate(associatedIds);
         Map<I, ?> associatedMap = associatedData.stream().collect(Collectors.toMap(associatedSource::resolveId, associatedSource::format));
         setAssociate(associates, associatedProperty, associatedMap, associatedIdProperty);
     }
@@ -111,7 +111,7 @@ public abstract class AssociateUtils {
         Set<Collection<I>> associatedCollectionIds = associates.stream().map(associate -> ((Collection<I>) ReflectionUtils.invokeMethod(associateIdDescriptor.getReadMethod(), associate))).collect(Collectors.toSet());
         if (associatedCollectionIds.isEmpty()) return;
         Set<I> associatedIds = associatedCollectionIds.stream().flatMap(Collection::stream).collect(Collectors.toSet());
-        Collection<D> associateds = associatedSource.getCollectionById(associatedIds);
+        Collection<D> associateds = associatedSource.findCollectionAssociate(associatedIds);
         Map<I, ?> associatedMap = associateds.stream().collect(Collectors.toMap(associatedSource::resolveId, associatedSource::format));
         Map<Collection<I>, Collection<?>> collectionAssociatedMap = associatedCollectionIds.stream().collect(Collectors.toMap(Function.identity(), _associateIds -> _associateIds.stream().map(associatedMap::get).collect(Collectors.toList())));
         setAssociate(associates, associatedProperty, collectionAssociatedMap, associatedIdProperty);

@@ -24,7 +24,7 @@ public class ForREADME {
     public void setSingleAssociatedObjectForSingleAssociate() {
 //tag::setSingleAssociatedObjectForSingleAssociate[]
         AssociatedSource<Long, Associated, Associated> associatedSource = new SameAssociatedSource<Long, Associated>() {
-            public Associated getById(Long id) {
+            public Associated findAssociate(Long id) {
                 //根据id获取实体对象，需自行实现
                 return entityManager.find(Associated.class, id);
             }
@@ -36,7 +36,7 @@ public class ForREADME {
     public void setCollectionAssociatedObjectForSingleAssociate() {
 //tag::setCollectionAssociatedObjectForSingleAssociate[]
         CollectionAssociatedSource<Long, Associated, Associated> collectionAssociatedSource = new SameCollectionAssociatedSource<Long, Associated>() {
-            public Collection<Associated> getCollectionById(Collection<Long> ids) {
+            public Collection<Associated> findCollectionAssociate(Collection<Long> ids) {
                 //根据id集合获取实体对象集合，需自行实现
                 return entityManager.createQuery("from Associated e where e.id in ?1").setParameter(1, ids).getResultList();
             }
@@ -53,7 +53,7 @@ public class ForREADME {
     public void setSingleAssociatedNameForSingleAssociate() {
 //tag::setSingleAssociatedNameForSingleAssociate[]
         AssociatedSource<Long, String, String> associateSource = new SameAssociatedSource<Long, String>() {
-            public String getById(Long id) {
+            public String findAssociate(Long id) {
                 //根据id获取name属性，需自行实现
                 return (String) entityManager.createQuery("select e.name from Associated e where e.id = ?1").setParameter(1, id).getSingleResult();
             }
@@ -66,7 +66,7 @@ public class ForREADME {
 //tag::setCollectionAssociatedNameForSingleAssociate[]
         CollectionAssociatedSource<Long, Object[], String> collectionAssociateSource = new CollectionAssociatedSource<Long, Object[], String>() {
 
-            public Collection<Object[]> getCollectionById(Collection<Long> ids) {
+            public Collection<Object[]> findCollectionAssociate(Collection<Long> ids) {
                 //根据id集合获取实体对象(id和name)集合，需自行实现
                 return entityManager.createQuery("select e.id,e.name from Associated e where e.id in ?1").setParameter(1, ids).getResultList();
             }
@@ -89,7 +89,7 @@ public class ForREADME {
 //tag::setSingleAssociatedObjectForCollectionAssociate[]
         CollectionAssociatedSource<Long, Associated, Associated> collectionAssociatedSource = new SameCollectionAssociatedSource<Long, Associated>() {
 
-            public Collection<Associated> getCollectionById(Collection<Long> ids) {
+            public Collection<Associated> findCollectionAssociate(Collection<Long> ids) {
                 //根据id集合获取实体对象集合，需自行实现
                 return entityManager.createQuery("from Associated e where e.id in ?1").setParameter(1, ids).getResultList();
             }
@@ -107,7 +107,7 @@ public class ForREADME {
 //tag::setCollectionAssociatedObjectForCollectionAssociate[]
         CollectionAssociatedSource<Long, Associated, Associated> collectionAssociatedSource = new SameCollectionAssociatedSource<Long, Associated>() {
 
-            public Collection<Associated> getCollectionById(Collection<Long> ids) {
+            public Collection<Associated> findCollectionAssociate(Collection<Long> ids) {
                 //根据id集合获取实体对象集合，需自行实现
                 return entityManager.createQuery("from Associated e where e.id in ?1").setParameter(1, ids).getResultList();
             }
@@ -124,7 +124,7 @@ public class ForREADME {
     public void setSingleAssociatedNameForCollectionAssociate() {
 //tag::setSingleAssociatedNameForCollectionAssociate[]
         CollectionAssociatedSource<Long, Object[], String> associateSource = new CollectionAssociatedSource<Long, Object[], String>() {
-            public Collection<Object[]> getCollectionById(Collection<Long> ids) {
+            public Collection<Object[]> findCollectionAssociate(Collection<Long> ids) {
                 //根据id集合获取实体对象(id和name)集合，需自行实现
                 return entityManager.createQuery("select e.id,e.name from Associated e where e.id in ?1").setParameter(1, ids).getResultList();
             }
@@ -147,7 +147,7 @@ public class ForREADME {
 //tag::setCollectionAssociatedNameForCollectionAssociate[]
         CollectionAssociatedSource<Long, Object[], String> collectionAssociateSource = new CollectionAssociatedSource<Long, Object[], String>() {
 
-            public Collection<Object[]> getCollectionById(Collection<Long> ids) {
+            public Collection<Object[]> findCollectionAssociate(Collection<Long> ids) {
                 //根据id集合获取实体对象(id和name)集合，需自行实现
                 return entityManager.createQuery("select e.id,e.name from Associated e where e.id in ?1").setParameter(1, ids).getResultList();
             }

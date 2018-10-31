@@ -20,7 +20,7 @@ public interface AssociatedSource<I, D, R> {
      * @param id the associated object id
      * @return associated data
      */
-    D getById(I id);
+    D findAssociate(I id);
 
     /**
      * get associated value from associated data

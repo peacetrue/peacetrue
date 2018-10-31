@@ -32,7 +32,7 @@ public abstract class JpaCollectionAssociatedSource<I, D, R> implements Collecti
     }
 
     @Override
-    public Collection<D> getCollectionById(Collection<I> ids) {
+    public Collection<D> findCollectionAssociate(Collection<I> ids) {
         String entityName = MetamodelUtils.getEntityName(entityManager.getMetamodel(), entityClass);
         String qlString = "select " + getSelect("e") + " from " + entityName + " e where e.id in ?1";
         return entityManager.createQuery(qlString).setParameter(1, ids).getResultList();

@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
  */
 public interface CollectionAssociatedSource<I, D, R> extends AssociatedSource<I, D, R> {
 
-    /** get one from {@link #getCollectionById(Collection)} */
-    default D getById(I id) {
-        return getCollectionById(Collections.singleton(id)).iterator().next();
+    /** get one from {@link #findCollectionAssociate(Collection)} */
+    default D findAssociate(I id) {
+        return findCollectionAssociate(Collections.singleton(id)).iterator().next();
     }
 
     /**
@@ -29,7 +29,7 @@ public interface CollectionAssociatedSource<I, D, R> extends AssociatedSource<I,
      * @param ids the collection associated object id
      * @return collection associated data
      */
-    Collection<D> getCollectionById(Collection<I> ids);
+    Collection<D> findCollectionAssociate(Collection<I> ids);
 
     /**
      * get associated object id from associated data
