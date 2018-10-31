@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!--属性文件和xml文件混用，导致registry="provider1"找不到-->
+    <dubbo:reference id="provider1Service" interface="com.github.peacetrue.dubbo.multipleregistry.provider1.Provider1Service" registry="provider1"/>
+    <dubbo:reference id="provider2Service" interface="com.github.peacetrue.dubbo.multipleregistry.provider2.Provider2Service" registry="provider2"/>
+
+</beans>
