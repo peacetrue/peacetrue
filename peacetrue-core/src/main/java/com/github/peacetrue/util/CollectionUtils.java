@@ -1,9 +1,9 @@
 package com.github.peacetrue.util;
 
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Array;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.UnaryOperator;
 
 /**
@@ -21,6 +21,7 @@ public abstract class CollectionUtils {
      * @param clazz the class of array type
      * @param <T>   the type of array
      * @return the empty array
+     * @see Collections#emptyList() 
      */
     @SuppressWarnings("unchecked")
     public static <T> T[] emptyArray(Class<T> clazz) {
@@ -69,6 +70,21 @@ public abstract class CollectionUtils {
             array[i] = converter.apply(array[i]);
         }
         return array;
+    }
+
+    /** 获取集合的第一个元素 */
+    @Nullable
+    public static <T> T getFirstElement(@Nullable Iterable<T> iterable) {
+        if (iterable == null) return null;
+        Iterator<T> iterator = iterable.iterator();
+        return iterator.hasNext() ? iterator.next() : null;
+    }
+
+    /** 获取集合的最后一个元素 */
+    @Nullable
+    public static <T> T getLastElement(@Nullable List<T> list) {
+        if (list == null || list.size() == 0) return null;
+        return list.get(list.size() - 1);
     }
 
 }
