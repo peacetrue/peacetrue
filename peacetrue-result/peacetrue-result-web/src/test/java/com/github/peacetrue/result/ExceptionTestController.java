@@ -1,11 +1,10 @@
 package com.github.peacetrue.result;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 /**
  * @author xiayx
@@ -42,7 +41,7 @@ public class ExceptionTestController {
 
     /*参数范围错误*/
     @RequestMapping("/BindException")
-    public Object BindException(@Valid User user) {
+    public Object BindException(@Validated User user) {
         return user;
     }
 

@@ -198,7 +198,7 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
 
     /** convert to a instance of subclass */
     public static <S, T extends S> T toSubclass(S source, Class<T> targetClass) {
-        T target = BeanUtils.instantiate(targetClass);
+        T target = BeanUtils.instantiateClass(targetClass);
         BeanUtils.copyProperties(source, target);
         return target;
     }

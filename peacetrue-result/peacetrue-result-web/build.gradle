@@ -15,6 +15,7 @@ dependencies {
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile 'org.springframework.boot:spring-boot-starter-thymeleaf'
     testCompile 'javax.servlet:javax.servlet-api'
+    testCompile 'javax.validation:validation-api'
     testCompile project(':peacetrue-result:peacetrue-result-exception')
     testCompile project(':peacetrue-result:peacetrue-result-exception-support')
     testCompile "org.springframework.boot:spring-boot-starter-tomcat"

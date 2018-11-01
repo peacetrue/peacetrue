@@ -23,7 +23,7 @@ allprojects {
     apply plugin: 'io.spring.dependency-management'
     dependencyManagement {
         imports {
-            mavenBom "org.springframework.boot:spring-boot-dependencies:1.4.1.RELEASE"
+            mavenBom "org.springframework.boot:spring-boot-dependencies:2.0.1.RELEASE"
         }
 
         dependencies {
@@ -53,6 +53,8 @@ allprojects {
             dependency 'org.apache.commons:commons-lang3:3.1'
             dependency 'io.github.benas:random-beans:3.7.0'
             dependency 'org.unitils:unitils-core:3.4.2'
+            dependency "org.ow2.asm:asm-commons:6.2"
+            dependency "org.ow2.asm:asm-util:6.2"
         }
     }
 

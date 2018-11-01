@@ -2,7 +2,7 @@ description 'extends for asm'
 
 dependencies {
     compile "com.google.code.findbugs:jsr305"
-    compile "org.ow2.asm:asm-commons:6.2"
-    compile "org.ow2.asm:asm-util:6.2"
+    compile "org.ow2.asm:asm-commons"
+    compile "org.ow2.asm:asm-util"
     compile project(":peacetrue-core")
 }

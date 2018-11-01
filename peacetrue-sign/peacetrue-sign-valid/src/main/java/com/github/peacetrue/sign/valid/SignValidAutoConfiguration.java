@@ -57,7 +57,7 @@ public class SignValidAutoConfiguration {
 
     @Bean
     public WebMvcConfigurer signValidWebMvcConfigurer(HandlerInterceptor signValidHandlerInterceptor) {
-        return new WebMvcConfigurerAdapter() {
+        return new WebMvcConfigurer() {
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(signValidHandlerInterceptor).addPathPatterns("/**");
             }

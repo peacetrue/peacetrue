@@ -28,7 +28,7 @@ public abstract class PageHelperUtils {
     }
 
     public static PageRowBounds mapToRowBounds(Pageable pageable) {
-        return new PageRowBounds(pageable.getOffset(), pageable.getPageSize());
+        return new PageRowBounds((int) pageable.getOffset(), pageable.getPageSize());
     }
 
     public static void orderBy(Example example, Pageable pageable) {

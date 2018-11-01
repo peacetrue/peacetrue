@@ -59,9 +59,9 @@ public abstract class SignUtils {
             if (values.length == 1) return values[0].toString();
             return Arrays.stream(values).map(Object::toString).collect(Collectors.joining(""));
         } else if (value instanceof Collection) {
-            Collection values = (Collection) value;
+            Collection<?> values = (Collection) value;
             if (values.isEmpty()) return null;
-            return (String) values.stream().map(Object::toString).collect(Collectors.joining(""));
+            return values.stream().map(Object::toString).collect(Collectors.joining(""));
         } else {
             return value.toString();
         }
