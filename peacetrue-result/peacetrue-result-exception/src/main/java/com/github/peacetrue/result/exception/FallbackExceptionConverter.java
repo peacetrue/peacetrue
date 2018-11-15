@@ -22,7 +22,7 @@ public class FallbackExceptionConverter implements ExceptionConverter<Exception>
 
     @Override
     public Result convert(Exception exception, @Nullable Locale locale) {
-        logger.warn("no matched ExceptionConverter found for {}, used the FallbackExceptionConverter", exception.getClass().getName());
+        logger.error("catch unprocessed exception", exception);
         return resultBuilder.build(FailureType.server_error.name(), buildMessage(exception), locale);
     }
 
