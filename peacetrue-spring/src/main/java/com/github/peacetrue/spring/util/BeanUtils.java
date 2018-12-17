@@ -120,7 +120,7 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
      * @see #map(Object, BiPredicate)
      */
     public static Map<String, Object> map(Object bean, @Nullable Predicate<String> includePropertyName) {
-        Map<String, Object> properties = new HashMap<>();
+        Map<String, Object> properties = new LinkedHashMap<>();
         String propertyName;
         PropertyDescriptor[] descriptors = getPropertyDescriptors(bean.getClass());
         for (PropertyDescriptor descriptor : descriptors) {
@@ -142,7 +142,7 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
      * @return a map properties
      */
     public static Map<String, Object> map(Object bean, BiPredicate<String, Object> includeProperty) {
-        Map<String, Object> properties = new HashMap<>();
+        Map<String, Object> properties = new LinkedHashMap<>();
         String propertyName;
         Object propertyValue;
         PropertyDescriptor[] descriptors = getPropertyDescriptors(bean.getClass());
