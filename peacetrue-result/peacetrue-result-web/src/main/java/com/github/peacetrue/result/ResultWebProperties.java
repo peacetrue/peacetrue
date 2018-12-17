@@ -15,7 +15,8 @@ public class ResultWebProperties {
 
     public static final String PREFIX = "peacetrue.result";
 
-    /** All returned data will be converted to {@link Result} by default, If you do not want to automatically convert, config this param */
+    /** All returned data will be converted to {@link Result} by default, If you do not want to automatically convert, config this param,  使用{@link WithoutResultWrapper}替代 */
+    @Deprecated
     private Set<Class> excludeAutoConvertWhenReturn = new HashSet<>();
     /** define the unified exception page */
     private String exceptionPage = "exception";

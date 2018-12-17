@@ -22,6 +22,8 @@ import java.util.Set;
  */
 public class ResultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
+    /** 使用 {@link WithoutResultWrapper} 替代 */
+    @Deprecated
     private Set<Class> excludes = Collections.emptySet();
     private ResultBuilder resultBuilder;
     private ResponseBodyAdvice<Object> responseBodyAdvice;
@@ -40,7 +42,8 @@ public class ResultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     protected boolean supportsInternal(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         Class<?> parameterType = returnType.getParameterType();
-        return !Result.class.isAssignableFrom(parameterType)
+        return !returnType.hasMethodAnnotation(WithoutResultWrapper.class)
+                && !Result.class.isAssignableFrom(parameterType)
                 && !exclude(parameterType)
                 && ResolvableType.forClass(HttpMessageConverter.class, converterType).resolveGeneric(0).isAssignableFrom(Result.class);
     }
@@ -57,7 +60,9 @@ public class ResultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        if (!(body instanceof Result)) body = body == null ? resultBuilder.success() : resultBuilder.success(body);
+        if (!returnType.hasMethodAnnotation(WithoutResultWrapper.class) && !(body instanceof Result)) {
+            body = body == null ? resultBuilder.success() : resultBuilder.success(body);
+        }
         if (responseBodyAdvice instanceof JsonViewResponseBodyAdvice
                 && returnType.getMethodAnnotation(JsonView.class) == null) return body;
         return responseBodyAdvice.beforeBodyWrite(body, returnType, selectedContentType, selectedConverterType, request, response);
