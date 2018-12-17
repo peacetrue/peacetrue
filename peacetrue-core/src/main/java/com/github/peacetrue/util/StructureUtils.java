@@ -5,9 +5,7 @@ import com.github.peacetrue.core.IdCapable;
 import com.github.peacetrue.core.NameCapable;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -57,12 +55,30 @@ public abstract class StructureUtils {
         return findList(stream, CodeCapable::getCode, codes);
     }
 
+    public static boolean containsCode(Collection<? extends CodeCapable> collection, String code) {
+        return !collection.isEmpty() && collection.stream().anyMatch(item -> item.getCode().equals(code));
+    }
+
+    @SafeVarargs
+    public static <T extends CodeCapable> boolean containsCode(String code, T... array) {
+        return containsCode(Arrays.asList(array), code);
+    }
+
     public static <T extends NameCapable> Optional<T> findOptionalByName(Stream<T> stream, String name) {
         return findOptional(stream, NameCapable::getName, name);
     }
 
     public static <T extends NameCapable> List<T> findListByName(Stream<T> stream, Supplier<Stream<String>> names) {
         return findList(stream, NameCapable::getName, names);
+    }
+
+    public static boolean containsName(Collection<? extends NameCapable> collection, String name) {
+        return collection.stream().anyMatch(item -> item.getName().equals(name));
+    }
+
+    @SafeVarargs
+    public static <T extends NameCapable> boolean containsName(String name, T... array) {
+        return containsName(Arrays.asList(array), name);
     }
 
 }
