@@ -1,0 +1,37 @@
+= peacetrue-spring-redis
+xiayx <xiayouxue@hotmail.com>
+2017-09-01
+:jbake-type: page
+:toc: left
+:numbered:
+:sourcedir: ../src/main/java
+:testsourcedir: ../src/test/java
+:resourcesdir: ../src/test/resources
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+
+== redis 分布式锁
+
+=== 需求
+在分布式环境中，防止用户重复请求，即在同一时刻某个方法只能被一个线程执行。
+
+=== 设计
+
+.RedisLockService：Redis锁服务
+* lock：加锁
+* unlock：解锁
+* isLock：是否被锁
+
+.RedisLock：Redis锁切点
+* key：键名
+* maxTime：最长时间，超过此时间自动释放锁，防止死锁
+* user：用户标识，用于从方法参数中获取用户的标识，支持SPEL表达式，参考``Cacheable``
+
+.RedisLockAspect：Redis锁切面
+使用环绕通知，拦截``@RedisLock``。
+在方法执行之前，检查是否被锁，如果被锁，则抛出异常，如果未被锁，则加锁
+在方法执行之后，解锁。如果由于机器故障，导致未能解锁，则由``maxTime``自动释放锁。
+
+.并发访问异常
+使用系统自带的``ConcurrentException``或者``ConcurrentModificationException``。
+也可以自建``ConcurrentOperateException``
