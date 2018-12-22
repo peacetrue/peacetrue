@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.lang.annotation.Repeatable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,7 +27,7 @@ public class LockClientServiceImplTest {
         //同步执行，每个方法都能取得锁，不会出现异常
         for (int i = 0; i < 2; i++) {
             DTO dto = new DTO();
-            dto.setUserName("wang");
+            dto.setUserId("wang");
             lockClientService.doSomething(dto);
         }
     }
@@ -37,7 +36,7 @@ public class LockClientServiceImplTest {
     public void doSomethingFailure() throws Exception {
         //并发执行，只有一个方法能取得锁
         DTO dto = new DTO();
-        dto.setUserName("wang");
+        dto.setUserId("wang");
 
         int totalCount = 5;
         AtomicInteger

@@ -31,7 +31,7 @@ public class LockAutoConfiguration {
     @ConditionalOnMissingBean(LockService.class)
     public RedisLockService redisLockService(RedisConnectionFactory redisConnectionFactory) {
         RedisLockService redisLockService = new RedisLockService(redisConnectionFactory);
-        redisLockService.setPrefix(properties.getPrefix());
+        redisLockService.setPrefix(properties.getRedisPrefix());
         redisLockService.setExpiry(properties.getExpiry());
         return redisLockService;
     }

@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class LockProperties {
 
     /** redis 键名前缀 */
-    private String prefix = "peacetrue:";
+    private String redisPrefix = "peacetrue:";
     /** redis 自动过期时间(毫秒) */
     private long expiry = 10 * 1000;
 

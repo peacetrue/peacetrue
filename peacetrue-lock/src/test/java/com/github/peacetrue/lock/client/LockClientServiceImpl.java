@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class LockClientServiceImpl implements LockClientService {
 
     @Override
-    @LockPoint(key = "client:#{[0].userName}")
+    @LockPoint(key = "client:#{[0].userId}")
     public void doSomething(DTO dto) {
         System.out.println("do something for " + dto);
     }

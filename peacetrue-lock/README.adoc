@@ -1,37 +1,103 @@
-= peacetrue-spring-redis
+= peacetrue-lock
 xiayx <xiayouxue@hotmail.com>
-2017-09-01
+2018-12-22
 :jbake-type: page
 :toc: left
 :numbered:
+:imagesdir: assets/images
 :sourcedir: ../src/main/java
 :testsourcedir: ../src/test/java
 :resourcesdir: ../src/test/resources
 :source-highlighter: coderay
 :coderay-linenums-mode: inline
 
-== redis 分布式锁
+== 分布式锁
 
 === 需求
-在分布式环境中，防止用户重复请求，即在同一时刻某个方法只能被一个线程执行。
+在分布式环境中，防止用户重复请求，即针对同一个用户在同一时刻只能执行一次特定请求。
+如果执行了多次请求，可能会导致数据状态的不一致产生系统错误。
 
 === 设计
+.锁服务
+* 加锁
+* 解锁
+//* 是否被锁，因为在判断是否被锁和加锁之间存在着时间差，所以该判断并不准确，
 
-.RedisLockService：Redis锁服务
-* lock：加锁
-* unlock：解锁
-* isLock：是否被锁
+.锁服务异常
+* 锁已存在
 
-.RedisLock：Redis锁切点
-* key：键名
-* maxTime：最长时间，超过此时间自动释放锁，防止死锁
-* user：用户标识，用于从方法参数中获取用户的标识，支持SPEL表达式，参考``Cacheable``
+.锁切面
+使用环绕通知，拦截'锁切点'。
+在方法执行之前，进行加锁，加锁失败，则抛出'锁已存在异常'
+在方法执行之后，进行解锁。如果由于机器故障，导致未能解锁，则由``过期时间``自动释放锁。
 
-.RedisLockAspect：Redis锁切面
-使用环绕通知，拦截``@RedisLock``。
-在方法执行之前，检查是否被锁，如果被锁，则抛出异常，如果未被锁，则加锁
-在方法执行之后，解锁。如果由于机器故障，导致未能解锁，则由``maxTime``自动释放锁。
+.锁切点
+* 键名，使用SPEL表达式，需要从参数中取出用户名，针对用户进行限制
+* 过期时间，超过此时间自动释放锁，防止死锁
 
-.并发访问异常
-使用系统自带的``ConcurrentException``或者``ConcurrentModificationException``。
-也可以自建``ConcurrentOperateException``
+=== 实现
+* 锁服务，参考 <<spring-cloud-samples.locks>>，基本直接使用了其redis锁
+* 锁拦截，使用spring-aop实现
+* SPEL表达式，从参数中读取用户标识
+* spring boot 自动装配
+** 配置redis锁前缀：``peacetrue.lock.redis-prefix``
+** 配置锁默认过期时间：``peacetrue.lock.expiry``
+
+=== 使用示例
+.引入类库
+[source%nowrap,java]
+----
+<dependency>
+    <groupId>com.github.peacetrue</groupId>
+    <artifactId>peacetrue-lock</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+----
+
+.在方法上使用注解
+[source%nowrap,java]
+----
+@LockPoint(key = "client:#{[0].userId}") //<1>
+public void doSomething(DTO dto) {
+    System.out.println("do something for " + dto);
+}
+----
+<1> [0]对应第一个参数
+
+== 扩展应用
+=== dubbo 异常支持
+在``ExceptionFilter``中支持``LockExistsException``
+
+=== 集成 peacetrue-result
+添加如下配置：
+
+.application.properties
+[source%nowrap,properties]
+----
+peacetrue.result.exception.noArgsClasses=com.github.peacetrue.lock.service.LockExistsException
+peacetrue.result.codes.LockExistsException=000003
+----
+
+.messages.properties
+[source%nowrap,properties]
+----
+Result.LockExistsException=重复请求
+----
+
+== 测试结果
+使用``jMeter``模拟50个请求同时下单。
+
+.下单
+image::order-add-request.jpg[]
+
+.下单结果
+image::order-add-response.jpg[]
+
+尚未学会如何使用``jMeter``统计结果，人工看了一遍，大概有10来个重复请求。
+
+
+== 待优化项
+* SPEL 表达式不能像 @Cacheable 一样便捷使用
+* 如果切面只扫描指定包下的类，应该更加高效
+
+
