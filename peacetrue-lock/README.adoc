@@ -1,4 +1,4 @@
-= peacetrue-lock
+= 分布式锁
 xiayx <xiayouxue@hotmail.com>
 2018-12-22
 :jbake-type: page
@@ -11,13 +11,11 @@ xiayx <xiayouxue@hotmail.com>
 :source-highlighter: coderay
 :coderay-linenums-mode: inline
 
-== 分布式锁
-
-=== 需求
+== 需求
 在分布式环境中，防止用户重复请求，即针对同一个用户在同一时刻只能执行一次特定请求。
 如果执行了多次请求，可能会导致数据状态的不一致产生系统错误。
 
-=== 设计
+== 设计
 .锁服务
 * 加锁
 * 解锁
@@ -35,7 +33,7 @@ xiayx <xiayouxue@hotmail.com>
 * 键名，使用SPEL表达式，需要从参数中取出用户名，针对用户进行限制
 * 过期时间，超过此时间自动释放锁，防止死锁
 
-=== 实现
+== 实现
 * 锁服务，参考 <<spring-cloud-samples.locks>>，基本直接使用了其redis锁
 * 锁拦截，使用spring-aop实现
 * SPEL表达式，从参数中读取用户标识
@@ -43,7 +41,7 @@ xiayx <xiayouxue@hotmail.com>
 ** 配置redis锁前缀：``peacetrue.lock.redis-prefix``
 ** 配置锁默认过期时间：``peacetrue.lock.expiry``
 
-=== 使用示例
+== 使用示例
 .引入类库
 [source%nowrap,java]
 ----
@@ -65,10 +63,10 @@ public void doSomething(DTO dto) {
 <1> [0]对应第一个参数
 
 == 扩展应用
-=== dubbo 异常支持
+== dubbo 异常支持
 在``ExceptionFilter``中支持``LockExistsException``
 
-=== 集成 peacetrue-result
+== 集成 peacetrue-result
 添加如下配置：
 
 .application.properties
