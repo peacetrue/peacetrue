@@ -35,7 +35,7 @@ public class LockAspect {
         String key = expression.getValue(context, String.class);
         logger.debug("取得键值: {}", key);
 
-        Lock lock = lockPoint.expiry() == -1
+        Lock lock = lockPoint.expiry() == LockPoint.EXPIRY_UNSET
                 ? lockService.create(key)
                 : lockService.create(key, lockPoint.expiry());
         logger.debug("创建锁: {}", lock);
