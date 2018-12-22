@@ -22,7 +22,8 @@ public class ResultExceptionProperties {
     public static final String PREFIX = "peacetrue.result.exception";
     /** the proxy exception, delegate to {@link Exception#getCause()} as implement */
     private List<Class<? extends Exception>> proxyClasses = new ArrayList<>();
-
+    /** 无参的异常类 */
+    private Set<Class<? extends Exception>> noArgsClasses = new HashSet<>();
 
     public List<Class<? extends Exception>> getProxyClasses() {
         return proxyClasses;
@@ -30,6 +31,14 @@ public class ResultExceptionProperties {
 
     public void setProxyClasses(List<Class<? extends Exception>> proxyClasses) {
         this.proxyClasses = proxyClasses;
+    }
+
+    public Set<Class<? extends Exception>> getNoArgsClasses() {
+        return noArgsClasses;
+    }
+
+    public void setNoArgsClasses(Set<Class<? extends Exception>> noArgsClasses) {
+        this.noArgsClasses = noArgsClasses;
     }
 
     @SuppressWarnings("unchecked")

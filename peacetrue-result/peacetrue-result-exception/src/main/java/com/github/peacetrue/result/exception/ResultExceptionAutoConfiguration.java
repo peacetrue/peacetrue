@@ -53,6 +53,12 @@ public class ResultExceptionAutoConfiguration {
         return new ProxyConditionalExceptionConverter(resultExceptionProperties.getProxyClasses());
     }
 
+    @Bean
+    @ConditionalOnMissingBean(name = "noArgsConditionalExceptionConverter")
+    public NoArgsConditionalExceptionConverter noArgsConditionalExceptionConverter() {
+        return new NoArgsConditionalExceptionConverter(resultExceptionProperties.getNoArgsClasses());
+    }
+
     @Autowired
     public void addResultExceptionMessage(MessageSource messageSource) {
         //add default result exception messages config
