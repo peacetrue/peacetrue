@@ -1,8 +1,5 @@
 package com.github.peacetrue.sign;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +13,6 @@ import java.util.stream.Collectors;
  */
 public class CachedSecretProvider implements SecretProvider {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
     private Map<String, String> secrets = new HashMap<>();
 
 
@@ -33,7 +29,6 @@ public class CachedSecretProvider implements SecretProvider {
 
     @Override
     public String getSecretById(String id) {
-        logger.info("获取应用'{}'的秘钥", id);
         return secrets.get(id);
     }
 

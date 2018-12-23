@@ -1,0 +1,142 @@
+= 签名组件
+xiayx <xiayouxue@hotmail.com>
+v1.0, 2018-03-25: SNAPSHOT
+:doctype: docbook
+:toc: left
+:numbered:
+:imagesdir: assets/images
+:sourcedir: peacetrue-sign-appender/src/main/java
+:resourcesdir: peacetrue-sign-appender/src/main/resources
+:testsourcedir: peacetrue-sign-appender/src/test/java
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+
+签名组件用于为开放接口生成签名和验证签名。
+
+== 需求
+签名组件的目的请参考 https://blog.csdn.net/qq_18495465/article/details/79248608[开放API接口签名验证，让你的接口从此不再裸奔]
+
+== 概念说明
+应用按服务角度划分为：
+
+. 服务提供者，用于为消费者提供服务
+. 服务消费者，用于使用提供者的服务
+
+应用按签名角度划分为：
+
+. 签名服务端，接收签名后的数据
+. 签名客户端，发送签名后的数据
+
+一个服务消费者可以消费多个服务提供者，
+一个服务提供者也可以向多个服务消费者提供服务。
+
+服务提供者和服务消费者之间的通讯模式分为：
+
+* 抓取，服务消费者调用服务提供者的接口获取数据
+* 推送，服务提供者将数据推送至服务消费者的接口上
+
+假设有三个应用：
+
+* 买房应用：提供买房信息
+* 卖房应用：提供卖房信息
+* 中介应用：提供可成交的买卖信息，依赖于买房应用和卖房应用
+
+
+
+
+////
+对于某项服务，可以是服务消费者去调用服务提供者，也可以是服务提供者推送至服务消费者，
+所以服务消费者和服务提供者都有可能作为签名客户端。
+一个服务消费者只消费一个服务提供者，此时它被称为**单签名客户端**；
+一个服务消费者如果消费多个服务提供者，此时它被称为**多签名客户端**。
+////
+
+
+== 特性支持
+. 签名客户端自动生成签名
+. 签名服务端自动验证签名
+.待实现
+. 签名时效性控制，防止重复使用
+
+////
+请求身份是否合法？
+请求参数是否被篡改？
+请求是否唯一？
+////
+== 依赖关系
+
+== 客户端使用说明
+
+
+==== 引入依赖
+.gradle
+[source%nowrap,gradle]
+----
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.github.peacetrue:peacetrue-sign-appender:1.2-RELEASE'
+}
+----
+
+.maven
+[source%nowrap,maven]
+----
+<dependency>
+    <groupId>com.github.peacetrue</groupId>
+    <artifactId>peacetrue-sign-appender</artifactId>
+    <version>1.2-RELEASE</version>
+</dependency>
+----
+
+=== 配置属性
+作为服务消费者，配置每个服务的认证信息，至少要有一个服务。
+如下示例，配置了买房服务和卖房服务：
+
+.application.properties
+[source%nowrap,properties]
+----
+include::{testsourcedir}/com/github/peacetrue/sign/client/application.consumer.properties[]
+----
+
+作为服务提供者，配置所有消费者的认证信息，至少要有一个消费者。
+如下示例，配置了中介服务的3个消费者：
+
+.application.properties
+[source%nowrap,properties]
+----
+include::{testsourcedir}/com/github/peacetrue/sign/client/application.provider.properties[]
+----
+
+=== 发送请求
+作为服务消费者，使用消费者客户端，消费者客户端的名称规则为
+
+
+=== 作为服务端
+服务端需要验证签名。
+
+==== 引入依赖
+.gradle
+[source%nowrap,gradle]
+----
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.github.peacetrue:peacetrue-sign-validator:1.2-RELEASE'
+}
+----
+
+.maven
+[source%nowrap,maven]
+----
+<dependency>
+    <groupId>com.github.peacetrue</groupId>
+    <artifactId>peacetrue-sign-validator</artifactId>
+    <version>1.2-RELEASE</version>
+</dependency>
+----
+

@@ -19,8 +19,9 @@ public abstract class SignUtils {
      * @param secret the secret
      * @return the generated sign
      */
-    public static String generateSign(String params, String secret) {
-        return MessageDigestUtils.encode(MessageDigestUtils.getMD5(), params + secret);
+    public static String generateSign(Map<String, ?> params, String secret) {
+        String string = concat(params);
+        return generateSign(string, secret);
     }
 
     /**
@@ -30,9 +31,8 @@ public abstract class SignUtils {
      * @param secret the secret
      * @return the generated sign
      */
-    public static String generateSign(Map<String, ?> params, String secret) {
-        String string = concat(params);
-        return generateSign(string, secret);
+    public static String generateSign(String params, String secret) {
+        return MessageDigestUtils.encode(MessageDigestUtils.getMD5(), params + secret);
     }
 
     /** 串联参数 */
@@ -97,7 +97,7 @@ public abstract class SignUtils {
      * @return the signed
      */
     public static Object wrap(Object data, String appId, String appSecret) {
-        SignBean<Object> bean = new SignBean<>();
+        SignableData<Object> bean = new SignableData<>();
         bean.setAppId(appId);
         if (bean.getAppId() == null && data instanceof AppIdCapable) {
             bean.setAppId(((AppIdCapable) data).getAppId());

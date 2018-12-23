@@ -10,10 +10,10 @@ import javax.annotation.Nullable;
 public interface SecretProvider {
 
     /**
-     * get secret by id
+     * get app secret by app id
      *
-     * @param id the id
-     * @return the secret
+     * @param id the app id
+     * @return the app secret
      */
     @Nullable
     String getSecretById(String id);
