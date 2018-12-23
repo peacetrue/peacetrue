@@ -1,6 +1,6 @@
 = 签名组件
 xiayx <xiayouxue@hotmail.com>
-v1.0, 2018-03-25: SNAPSHOT
+v1.0, 2018-12-23: SNAPSHOT
 :doctype: docbook
 :toc: left
 :numbered:
