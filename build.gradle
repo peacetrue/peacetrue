@@ -23,7 +23,7 @@ allprojects {
     apply plugin: 'io.spring.dependency-management'
     dependencyManagement {
         imports {
-            mavenBom "org.springframework.boot:spring-boot-dependencies:1.4.1.RELEASE"
+            mavenBom "org.springframework.boot:spring-boot-dependencies:1.5.18.RELEASE"
         }
 
         dependencies {
