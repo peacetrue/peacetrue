@@ -67,45 +67,4 @@ public abstract class SignUtils {
         }
     }
 
-    /**
-     * wrap the request data to a signable data
-     *
-     * @param data the request data
-     * @return the signed
-     */
-    public static Object wrap(Object data) {
-        return wrap(data, null);
-    }
-
-    /**
-     * wrap the request data to a signable data
-     *
-     * @param data the request data
-     * @return the signed
-     */
-
-    public static Object wrap(Object data, String id) {
-        return wrap(data, id, null);
-    }
-
-    /**
-     * wrap the request data to a signable data
-     *
-     * @param data      the request data
-     * @param appId     the appId
-     * @param appSecret the appSecret
-     * @return the signed
-     */
-    public static Object wrap(Object data, String appId, String appSecret) {
-        SignableData<Object> bean = new SignableData<>();
-        bean.setAppId(appId);
-        if (bean.getAppId() == null && data instanceof AppIdCapable) {
-            bean.setAppId(((AppIdCapable) data).getAppId());
-        }
-        bean.setAppSecret(appSecret);
-        bean.setData(data);
-        return bean;
-    }
-
-
 }
