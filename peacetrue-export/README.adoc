@@ -1,0 +1,50 @@
+= 导出
+//tag::meta[]
+xiayx <xiayouxue@hotmail.com>
+v1.0, 2018-04-29: SNAPSHOT
+:doctype: docbook
+:toc: left
+:numbered:
+:imagesdir: assets/images
+:sourcedir: src/main/java
+:resourcesdir: src/main/resources
+:testsourcedir: src/test/java
+:source-highlighter: highlightjs
+:coderay-linenums-mode: inline
+//end::meta[]
+
+== 需求
+导出后台列表数据。
+
+== 设计
+* 导出集合对象
+* 每一列都有一个表头和转换器，转换器负责将对象转换成单元格内容
+
+== 实现
+* 导出``csv``格式
+* 支持对象属性
+* 支持对象嵌套属性
+* 支持布尔型转换
+* 支持日期型转换
+* 支持单元格内容附加前缀防止格式错乱
+* 支持自定义内容转换
+
+== 使用方法
+.引入类库
+[source%nowrap,java]
+----
+<dependency>
+    <groupId>com.github.peacetrue</groupId>
+    <artifactId>peacetrue-export</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+----
+
+.示例
+[source%nowrap,java]
+----
+include::{testsourcedir}/com/github/peacetrue/export/CSVExportServiceTest.java[tags=csv]
+----
+
+.导出结果
+image::export-result.jpg[]
