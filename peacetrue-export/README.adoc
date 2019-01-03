@@ -1,7 +1,7 @@
 = 导出
 //tag::meta[]
 xiayx <xiayouxue@hotmail.com>
-v1.0, 2018-04-29: SNAPSHOT
+v1.0, 2019-01-03: SNAPSHOT
 :doctype: docbook
 :toc: left
 :numbered:
