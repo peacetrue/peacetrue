@@ -41,13 +41,13 @@ public abstract class SignUtils {
                 .sorted(Comparator.comparing(Map.Entry::getKey))
                 .map(SignUtils::toString)
                 .filter(Objects::nonNull)
-                .collect(Collectors.joining(""));
+                .collect(Collectors.joining("&"));
     }
 
     private static String toString(Map.Entry<String, ?> entry) {
         String value = toString(entry.getValue());
         if (value == null) return null;
-        return Objects.requireNonNull(entry.getKey()) + value;
+        return Objects.requireNonNull(entry.getKey()) + "=" + value;
     }
 
     private static String toString(Object value) {
