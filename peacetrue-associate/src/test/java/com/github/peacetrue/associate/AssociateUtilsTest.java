@@ -1,16 +1,25 @@
 package com.github.peacetrue.associate;
 
+import com.github.peacetrue.associate.support.AssociatedExpressionCollectionAssociatedSource;
+import com.github.peacetrue.associate.support.AssociatedPropertyCollectionAssociatedSource;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -129,6 +138,75 @@ public class AssociateUtilsTest {
         for (int i = 0; i < mains.size(); i++) {
             Associate main = mains.get(i);
             Assert.assertEquals(Collections.singletonList(associateds.get(i).getName()), main.getAssociatedNames());
+        }
+    }
+
+
+    @Autowired
+    private AssociatedExpressionCollectionAssociatedSource associatedExpressionCollectionAssociatedSource;
+
+    @Test
+    @Transactional
+    public void setCollectionAssociateNameForCollectionMain1() throws Exception {
+        AssociateUtils.setCollectionAssociate(mains, "associatedNames", associatedExpressionCollectionAssociatedSource, "associatedIds");
+        for (int i = 0; i < mains.size(); i++) {
+            Associate main = mains.get(i);
+            Assert.assertEquals(Collections.singletonList(associateds.get(i).getName()), main.getAssociatedNames());
+        }
+    }
+
+    @Autowired
+    private AssociatedPropertyCollectionAssociatedSource associatedPropertyCollectionAssociatedSource;
+
+    @Test
+    @Transactional
+    public void setCollectionAssociateNameForCollectionMain2() throws Exception {
+        AssociateUtils.setCollectionAssociate(mains, "associatedNames", associatedPropertyCollectionAssociatedSource, "associatedIds");
+        for (int i = 0; i < mains.size(); i++) {
+            Associate main = mains.get(i);
+            Assert.assertEquals(Collections.singletonList(associateds.get(i).getName()), main.getAssociatedNames());
+        }
+    }
+
+
+    @Configuration
+    public static class Config {
+
+        @Bean
+        public ExpressionParser expressionParser() {
+            return new SpelExpressionParser();
+        }
+
+        @Bean
+        public AssociatedExpressionCollectionAssociatedSource associatedExpressionCollectionAssociatedSource() {
+            return new AssociatedExpressionCollectionAssociatedSource<Long, Associated, String>("#{name}") {
+
+                @PersistenceContext
+                private EntityManager entityManager;
+
+                @PostConstruct
+                protected void init() {
+                    super.init();
+                }
+
+                @Override
+                public Collection<Associated> findCollectionAssociate(Collection<Long> ids) {
+                    return entityManager.createQuery("from Associated where id in ?1").setParameter(1, ids).getResultList();
+                }
+            };
+        }
+
+        @Bean
+        public AssociatedPropertyCollectionAssociatedSource associatedPropertyCollectionAssociatedSource() {
+            return new AssociatedPropertyCollectionAssociatedSource<Long, Associated, String>("name") {
+                @PersistenceContext
+                private EntityManager entityManager;
+
+                @Override
+                public Collection<Associated> findCollectionAssociate(Collection<Long> ids) {
+                    return entityManager.createQuery("from Associated where id in ?1").setParameter(1, ids).getResultList();
+                }
+            };
         }
     }
 
