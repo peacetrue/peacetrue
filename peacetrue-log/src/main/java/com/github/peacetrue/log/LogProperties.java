@@ -15,10 +15,9 @@ public class LogProperties {
 
     public static final String PREFIX = "peacetrue.log";
 
-    /** 是否启用日志拦截 */
+    /** 是否启用日志拦截，默认启用 */
     private boolean enabled;
-
-    /** the subclass of {@link AbstractLog} */
+    /** 具体的日志类 */
     private Class<? extends AbstractLog> concreteClass;
 
 }

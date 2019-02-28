@@ -43,6 +43,7 @@ public class DefaultLogBuilder extends AbstractLogBuilder {
     @Override
     protected Object parseRecordId(Context context) {
         LogInfo logInfo = context.getMethod().getAnnotation(LogInfo.class);
+        if (logInfo.recordId().equals("")) return null;
         Expression expression = expressionParser.parseExpression(logInfo.recordId());
         return expression.getValue(context, recordIdType);
     }

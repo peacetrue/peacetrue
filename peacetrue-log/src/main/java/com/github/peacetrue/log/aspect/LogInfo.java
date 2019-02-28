@@ -17,7 +17,7 @@ import java.lang.annotation.*;
 public @interface LogInfo {
 
     /** 记录主键表达式，用于从{@link Context}中获取{@link AbstractLog#recordId} */
-    String recordId();
+    String recordId() default "";
 
     /** 描述表达式，用于从{@link Context}中获取{@link AbstractLog#description} */
     String description();
