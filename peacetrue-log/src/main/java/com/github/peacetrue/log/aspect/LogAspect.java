@@ -37,20 +37,19 @@ public class LogAspect implements BeanFactoryAware {
     @SuppressWarnings("unchecked")
     @AfterReturning(pointcut = "@annotation(lockPoint)", returning = "returning")
     public void process(JoinPoint joinPoint, LogPoint lockPoint, Object returning) throws Throwable {
-        logger.debug("拦截方法: {}", joinPoint.getSignature().toShortString());
-
-        LogBuilder logBuilder = beanFactory.getBean(lockPoint.logBuilder(), LogBuilder.class);
-        logger.trace("取得日志构建器: {}", logBuilder);
-
-        LogBuilder.Context context = new LogBuilder.Context(
-                joinPoint.getTarget(), getMethod(joinPoint),
-                joinPoint.getArgs(), returning);
-        logger.trace("创建日志上下文: {}", context);
-
-        AbstractLog log = logBuilder.build(context);
-        logger.trace("取得构建的日志: {}", log);
-
         try {
+            logger.debug("拦截方法: {}", joinPoint.getSignature().toShortString());
+
+            LogBuilder logBuilder = beanFactory.getBean(lockPoint.logBuilder(), LogBuilder.class);
+            logger.trace("取得日志构建器: {}", logBuilder);
+
+            LogBuilder.Context context = new LogBuilder.Context(
+                    joinPoint.getTarget(), getMethod(joinPoint),
+                    joinPoint.getArgs(), returning);
+            logger.trace("创建日志上下文: {}", context);
+
+            AbstractLog log = logBuilder.build(context);
+            logger.trace("取得构建的日志: {}", log);
             logService.add(log);
         } catch (Exception e) {
             logger.error("添加日志异常", e);
