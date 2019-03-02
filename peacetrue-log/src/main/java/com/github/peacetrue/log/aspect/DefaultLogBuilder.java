@@ -31,17 +31,18 @@ public class DefaultLogBuilder extends AbstractLogBuilder {
     }
 
     @Override
-    protected AbstractLog instance(Context context) {
+    protected AbstractLog instance(AfterMethodBasedEvaluationContext context) {
         return BeanUtils.instantiate(logProperties.getConcreteClass());
     }
 
     @Override
-    protected String parseModuleCode(Context context) {
-        return context.getBean().getClass().getAnnotation(Module.class).code();
+    protected String parseModuleCode(AfterMethodBasedEvaluationContext context) {
+        String code = context.getMethod().getAnnotation(Operate.class).module().code();
+        return code.equals("") ? context.getTarget().getClass().getAnnotation(Module.class).code() : code;
     }
 
     @Override
-    protected Object parseRecordId(Context context) {
+    protected Object parseRecordId(AfterMethodBasedEvaluationContext context) {
         LogInfo logInfo = context.getMethod().getAnnotation(LogInfo.class);
         if (logInfo.recordId().equals("")) return null;
         Expression expression = expressionParser.parseExpression(logInfo.recordId());
@@ -49,19 +50,19 @@ public class DefaultLogBuilder extends AbstractLogBuilder {
     }
 
     @Override
-    protected String parseOperateCode(Context context) {
+    protected String parseOperateCode(AfterMethodBasedEvaluationContext context) {
         return context.getMethod().getAnnotation(Operate.class).code();
     }
 
     @Override
-    protected String parseDescription(Context context) {
+    protected String parseDescription(AfterMethodBasedEvaluationContext context) {
         LogInfo logInfo = context.getMethod().getAnnotation(LogInfo.class);
         Expression expression = expressionParser.parseExpression(logInfo.description(), ParserContext.TEMPLATE_EXPRESSION);
         return expression.getValue(context, String.class);
     }
 
     @Override
-    protected Object parseCreatorId(Context context) {
-        return creatorIdProvider.get(context);
+    protected Object parseCreatorId(AfterMethodBasedEvaluationContext context) {
+        return creatorIdProvider.getCreatorId(context);
     }
 }

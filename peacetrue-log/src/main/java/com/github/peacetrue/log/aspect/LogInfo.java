@@ -1,6 +1,5 @@
 package com.github.peacetrue.log.aspect;
 
-import com.github.peacetrue.log.aspect.LogBuilder.Context;
 import com.github.peacetrue.log.service.AbstractLog;
 
 import java.lang.annotation.*;
@@ -16,9 +15,9 @@ import java.lang.annotation.*;
 @Documented
 public @interface LogInfo {
 
-    /** 记录主键表达式，用于从{@link Context}中获取{@link AbstractLog#recordId} */
+    /** 记录主键表达式，用于从{@link AfterMethodBasedEvaluationContext}中获取{@link AbstractLog#recordId} */
     String recordId() default "";
 
-    /** 描述表达式，用于从{@link Context}中获取{@link AbstractLog#description} */
+    /** 描述表达式，用于从{@link AfterMethodBasedEvaluationContext}中获取{@link AbstractLog#description} */
     String description();
 }

@@ -4,6 +4,7 @@ import com.github.peacetrue.log.aspect.LogInfo;
 import com.github.peacetrue.log.aspect.LogPoint;
 import com.github.peacetrue.log.aspect.Module;
 import com.github.peacetrue.log.aspect.Operate;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import javax.persistence.PersistenceContext;
  */
 @Service
 @Module(code = "user")
+@Getter
 public class UserServiceImpl implements UserService {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
@@ -25,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Operate(code = "add")
-    @LogInfo(recordId = "args[0].id", description = "新增用户#{args[0].name}")
+    @LogInfo(recordId = "#returning", description = "新增用户#{#p0.name}")
     @Transactional
     //tag::class[]
     @LogPoint

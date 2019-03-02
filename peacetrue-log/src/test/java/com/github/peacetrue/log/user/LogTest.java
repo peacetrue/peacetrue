@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,10 +37,10 @@ import java.util.Date;
                 "logging.level.com.github.peacetrue=trace",
                 "spring.jpa.generate-ddl=true",
                 "peacetrue.log.concreteClass=com.github.peacetrue.log.service.Log",
+//                "peacetrue.log.async=false",
         }
 )
 @EntityScan(basePackages = "com.github.peacetrue.log")
-@EnableAspectJAutoProxy
 public class LogTest {
 
     @Autowired
@@ -48,6 +48,7 @@ public class LogTest {
 
     @Test
     @Transactional
+    @Rollback(false)
     public void add() throws Exception {
         userService.add(getUser());
     }

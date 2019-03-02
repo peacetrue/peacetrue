@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 抽象日志类。主键类型不确定，一般而言，某个系统的主键类型应该是一致的
+ * 抽象日志类。主键类型不确定
  *
  * @param <Id>        the type of {@link #id}
  * @param <RecordId>  the type of {@link #recordId}

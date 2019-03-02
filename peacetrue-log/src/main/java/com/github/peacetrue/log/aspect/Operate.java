@@ -13,6 +13,9 @@ import java.lang.annotation.*;
 @Documented
 public @interface Operate {
 
+    /** 模块 */
+    Module module() default @Module(code = "");
+
     /** 操作编码 */
     String code();
 

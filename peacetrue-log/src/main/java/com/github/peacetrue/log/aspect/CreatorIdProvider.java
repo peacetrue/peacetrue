@@ -7,5 +7,5 @@ package com.github.peacetrue.log.aspect;
  */
 public interface CreatorIdProvider<CreatorId> {
     /** 获取创建者主键 */
-    CreatorId get(LogBuilder.Context context);
+    CreatorId getCreatorId(AfterMethodBasedEvaluationContext context);
 }

@@ -17,7 +17,7 @@ public abstract class AbstractLogBuilder implements LogBuilder {
 
     @Override
     @SuppressWarnings("unchecked")
-    public AbstractLog build(Context context) {
+    public AbstractLog build(AfterMethodBasedEvaluationContext context) {
         logger.info("构建日志: {}", context);
         AbstractLog log = instance(context);
         log.setId(parseId(context));
@@ -31,24 +31,24 @@ public abstract class AbstractLogBuilder implements LogBuilder {
     }
 
     /** 实例化日志 */
-    protected abstract AbstractLog instance(Context context);
+    protected abstract AbstractLog instance(AfterMethodBasedEvaluationContext context);
 
     /** 解析主键 */
-    protected Object parseId(Context context) {return null;}
+    protected Object parseId(AfterMethodBasedEvaluationContext context) {return null;}
 
     /** 解析模块编码 */
-    protected abstract String parseModuleCode(Context context);
+    protected abstract String parseModuleCode(AfterMethodBasedEvaluationContext context);
 
     /** 解析记录主键 */
-    protected abstract Object parseRecordId(Context context);
+    protected abstract Object parseRecordId(AfterMethodBasedEvaluationContext context);
 
     /** 解析操作编码 */
-    protected abstract String parseOperateCode(Context context);
+    protected abstract String parseOperateCode(AfterMethodBasedEvaluationContext context);
 
     /** 解析操作描述 */
-    protected abstract String parseDescription(Context context);
+    protected abstract String parseDescription(AfterMethodBasedEvaluationContext context);
 
     /** 解析创建者主键 */
-    protected abstract Object parseCreatorId(Context context);
+    protected abstract Object parseCreatorId(AfterMethodBasedEvaluationContext context);
 
 }

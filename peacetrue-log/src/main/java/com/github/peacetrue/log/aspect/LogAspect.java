@@ -8,10 +8,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.aspectj.AspectJAdviceParameterNameDiscoverer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.expression.BeanFactoryResolver;
+import org.springframework.scheduling.annotation.Async;
 
 import java.lang.reflect.Method;
 
@@ -24,13 +26,13 @@ import java.lang.reflect.Method;
 public class LogAspect implements BeanFactoryAware {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
-    @Autowired
-    private LogService logService;
     private BeanFactory beanFactory;
+    private BeanFactoryResolver beanFactoryResolver;
 
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
+        this.beanFactoryResolver = new BeanFactoryResolver(beanFactory);
     }
 
     /** 拦截含有{@link LogPoint}注解的方法 */
@@ -39,19 +41,22 @@ public class LogAspect implements BeanFactoryAware {
     public void process(JoinPoint joinPoint, LogPoint lockPoint, Object returning) throws Throwable {
         try {
             logger.debug("拦截方法: {}", joinPoint.getSignature().toShortString());
-
             LogBuilder logBuilder = beanFactory.getBean(lockPoint.logBuilder(), LogBuilder.class);
             logger.trace("取得日志构建器: {}", logBuilder);
 
-            LogBuilder.Context context = new LogBuilder.Context(
-                    joinPoint.getTarget(), getMethod(joinPoint),
-                    joinPoint.getArgs(), returning);
-            logger.trace("创建日志上下文: {}", context);
+            AfterMethodBasedEvaluationContext evaluationContext = new AfterMethodBasedEvaluationContext(
+                    joinPoint.getTarget(), getMethod(joinPoint), joinPoint.getArgs(),
+                    new AspectJAdviceParameterNameDiscoverer(joinPoint.getStaticPart().toLongString()),
+                    returning
+            );
+            evaluationContext.setVariable("returning", returning);
+            evaluationContext.setBeanResolver(this.beanFactoryResolver);
+            logger.trace("创建日志上下文: {}", evaluationContext);
 
-            AbstractLog log = logBuilder.build(context);
-            logger.trace("取得构建的日志: {}", log);
-            logService.add(log);
-        } catch (Exception e) {
+            AbstractLog log = logBuilder.build(evaluationContext);
+            logger.trace("构建出日志: {}", log);
+            beanFactory.getBean(LogService.class).add(log);
+        } catch (Throwable e) {
             logger.error("添加日志异常", e);
         }
     }
@@ -61,7 +66,6 @@ public class LogAspect implements BeanFactoryAware {
         if (!method.getDeclaringClass().isInterface()) return method;
 
         try {
-            //TODO 未考虑父类方法
             return joinPoint.getTarget().getClass().getDeclaredMethod(method.getName(), method.getParameterTypes());
         } catch (NoSuchMethodException e) {
             throw new IllegalStateException(e);
