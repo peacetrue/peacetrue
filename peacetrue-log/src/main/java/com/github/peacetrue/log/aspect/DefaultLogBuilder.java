@@ -8,8 +8,6 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.ParserContext;
 
-import javax.annotation.PostConstruct;
-
 /**
  * 默认的日志构建器
  *
@@ -20,14 +18,14 @@ public class DefaultLogBuilder extends AbstractLogBuilder {
     @Autowired
     private ExpressionParser expressionParser;
     @Autowired
+    private CreatorIdProvider creatorIdProvider;
     private LogProperties logProperties;
     private Class<?> recordIdType;
-    @Autowired
-    private CreatorIdProvider creatorIdProvider;
 
-    @PostConstruct
-    private void init() {
-        recordIdType = BeanUtils.getPropertyDescriptor(logProperties.getConcreteClass(), "recordId").getPropertyType();
+    @Autowired
+    public void setLogProperties(LogProperties logProperties) {
+        this.logProperties = logProperties;
+        this.recordIdType = BeanUtils.getPropertyDescriptor(logProperties.getConcreteClass(), "recordId").getPropertyType();
     }
 
     @Override
