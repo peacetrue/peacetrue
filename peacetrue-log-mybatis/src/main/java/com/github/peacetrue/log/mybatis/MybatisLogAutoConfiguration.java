@@ -24,7 +24,7 @@ public class MybatisLogAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(CreatorIdProvider.class)
     public CreatorIdProvider<String> creatorIdProvider() {
-        return new ArgCreatorIdProvider();
+        return new ArgCreatorIdProvider<>();
     }
 
 }
