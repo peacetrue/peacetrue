@@ -67,9 +67,7 @@ public class LimitAndOffsetAdapter<R> {
             parameters.putAll(delegate.getParameters());
             parameters.put("limit", limit);
             parameters.put("offset", offset);
-
-            selectStatement = delegate.getSelectStatement() +
-                    " LIMIT #{parameters.limit} OFFSET #{parameters.offset}";
+            selectStatement = delegate.getSelectStatement() + " LIMIT #{parameters.limit} OFFSET #{parameters.offset}";
         }
 
         @Override

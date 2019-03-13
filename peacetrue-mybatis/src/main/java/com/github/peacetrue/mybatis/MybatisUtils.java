@@ -2,10 +2,8 @@ package com.github.peacetrue.mybatis;
 
 import com.github.peacetrue.util.DateUtils;
 import com.google.common.base.CaseFormat;
-import org.mybatis.dynamic.sql.SortSpecification;
-import org.mybatis.dynamic.sql.SqlBuilder;
-import org.mybatis.dynamic.sql.SqlColumn;
-import org.mybatis.dynamic.sql.SqlTable;
+import org.mybatis.dynamic.sql.*;
+import org.mybatis.dynamic.sql.select.QueryExpressionDSL;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.ReflectionUtils;
 
@@ -42,15 +40,15 @@ public abstract class MybatisUtils {
     }
 
     /** 构造SELECT列，用于连表查询时构造组合列 */
-    public static SqlColumnsBuilder sqlColumns(SqlColumn... sqlColumns) {
-        return new SqlColumnsBuilder(sqlColumns);
+    public static SqlColumnsBuilder sqlColumns(BasicColumn... sqlColumns) {
+        return new SqlColumnsBuilder().append(sqlColumns);
     }
 
     /*-----------WHERE----------*/
 
     /** 空字符串转换成{@code null}，便于对接{@link SqlBuilder}的判断性条件，例如{@link SqlBuilder#isEqualToWhenPresent(Object)} */
     public static String trimToNull(String string) {
-        if (string == null) {return null;}
+        if (string == null) return null;
         String trim = string.trim();
         return trim.length() == 0 ? null : trim;
     }
@@ -72,14 +70,14 @@ public abstract class MybatisUtils {
     }
 
     /*-----------ORDER BY----------*/
-    
-    public static SqlColumn[] findSqlColumns(SqlTable sqlTable, String... names) {
+    public static BasicColumn[] findSqlColumns(SqlTable sqlTable, String... names) {
         SqlColumn[] sqlColumns = getSqlColumns(sqlTable);
         return Arrays.stream(names).map(name -> Arrays.stream(sqlColumns).anyMatch(s -> name.equals(s.name()))).toArray(SqlColumn[]::new);
     }
 
-    /** 获取排序属性，将{@link Sort}转换为{@link org.mybatis.dynamic.sql.select.QueryExpressionDSL#orderBy(SortSpecification...)}的入参 */
+    /** 获取排序属性，将{@link Sort}转换为{@link QueryExpressionDSL#orderBy(SortSpecification...)}的入参 */
     public static SortSpecification[] orders(SqlTable sqlTable, Sort sort) {
+        if (sort == null) return new SortSpecification[]{findSqlColumn(sqlTable, "id")};
         return StreamSupport.stream(sort.spliterator(), false)
                 .map(order -> order(sqlTable, order))
                 .toArray(SortSpecification[]::new);
@@ -101,22 +99,15 @@ public abstract class MybatisUtils {
     }
 
     /** 属性名转列名 */
-    public static String propertyNameToColumnName(String propertyName) {
+    static String propertyNameToColumnName(String propertyName) {
         return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, propertyName);
     }
 
+
     public static class SqlColumnsBuilder {
 
-        private List<SqlColumn> sqlColumns = new ArrayList<>();
+        private List<BasicColumn> sqlColumns = new ArrayList<>();
         private String associate;
-
-        public SqlColumnsBuilder(SqlColumn sqlColumn) {
-            append(sqlColumn);
-        }
-
-        public SqlColumnsBuilder(SqlColumn... sqlColumns) {
-            append(sqlColumns);
-        }
 
         private String getAlias(SqlColumn sqlColumn) {
             return associate + "_" + sqlColumn.name();
@@ -137,10 +128,20 @@ public abstract class MybatisUtils {
             return this;
         }
 
+        public SqlColumnsBuilder append(BasicColumn basicColumn) {
+            this.sqlColumns.add(basicColumn);
+            return this;
+        }
 
-        public SqlColumn[] build() {
-            return sqlColumns.toArray(new SqlColumn[sqlColumns.size()]);
+        public SqlColumnsBuilder append(BasicColumn... basicColumn) {
+            Arrays.stream(basicColumn).forEach(this::append);
+            return this;
+        }
+
+        public BasicColumn[] build() {
+            return sqlColumns.toArray(new BasicColumn[sqlColumns.size()]);
         }
     }
+
 
 }
