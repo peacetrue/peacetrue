@@ -1,0 +1,17 @@
+dependencies {
+
+    compile project(":peacetrue-spring")
+    compile project(":peacetrue-log")
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    compile "org.springframework.boot:spring-boot-starter-logging"
+    compile 'com.google.code.findbugs:jsr305'
+    compile 'org.mybatis:mybatis'
+    compile 'org.mybatis:mybatis-spring'
+    compile 'org.mybatis.dynamic-sql:mybatis-dynamic-sql:1.1.0'
+    compile 'com.fasterxml.jackson.core:jackson-annotations'
+
+    testCompile 'junit:junit'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
+    testCompile 'com.h2database:h2'
+}
