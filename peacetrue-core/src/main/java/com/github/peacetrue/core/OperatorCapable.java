@@ -1,4 +1,4 @@
-package com.github.peacetrue.log.mybatis;
+package com.github.peacetrue.core;
 
 
 /**
