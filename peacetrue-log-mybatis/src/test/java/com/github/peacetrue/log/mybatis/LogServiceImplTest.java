@@ -1,5 +1,6 @@
 package com.github.peacetrue.log.mybatis;
 
+import com.github.peacetrue.core.OperatorCapable;
 import com.github.peacetrue.log.LogAutoConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,5 +1,6 @@
 package com.github.peacetrue.log.mybatis;
 
+import com.github.peacetrue.core.OperatorCapable;
 import com.github.peacetrue.log.aspect.LogInfo;
 import com.github.peacetrue.log.aspect.LogPoint;
 import com.github.peacetrue.log.aspect.Module;

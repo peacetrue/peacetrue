@@ -1,5 +1,6 @@
 package com.github.peacetrue.log.mybatis;
 
+import com.github.peacetrue.core.OperatorCapable;
 import com.github.peacetrue.log.aspect.AfterMethodBasedEvaluationContext;
 import com.github.peacetrue.log.aspect.CreatorIdProvider;
 import org.slf4j.Logger;
