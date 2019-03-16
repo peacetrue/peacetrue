@@ -1,7 +1,5 @@
 package com.github.peacetrue.result;
 
-import java.util.Objects;
-
 /**
  * a bean implement of {@link DataResult}
  *
@@ -15,18 +13,32 @@ public class DataResultImpl<T> extends ResultImpl implements DataResult<T> {
     /** used for json deserialize or spring auto bind */
     public DataResultImpl() { }
 
-    public DataResultImpl(String code, String message, T data) {
+    public DataResultImpl(String code, String message) {
         super(code, message);
-        this.data = Objects.requireNonNull(data);
+    }
+
+    public DataResultImpl(String code, String message, T data) {
+        this(code, message);
+        this.data = data;
+    }
+
+    public DataResultImpl(Result result) {
+        super(result);
     }
 
     public DataResultImpl(Result result, T data) {
-        super(result);
-        this.data = Objects.requireNonNull(data);
+        this(result);
+        this.data = data;
     }
 
     public DataResultImpl(DataResult<T> result) {
         this(result, result.getData());
+    }
+
+    public static DataResult to(Result result) {
+        return result instanceof DataResult
+                ? (DataResult) result
+                : new DataResultImpl<>(result);
     }
 
     @Override
