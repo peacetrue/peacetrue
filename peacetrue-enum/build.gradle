@@ -1,0 +1,16 @@
+description 'add some general controller'
+
+dependencies {
+    compile project(":peacetrue-core")
+//    compile "com.google.code.findbugs:jsr305"
+    compile "org.projectlombok:lombok"
+    compile "org.springframework:spring-web"
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor"
+    compile "org.springframework.boot:spring-boot-starter-logging"
+    compile "org.reflections:reflections"
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'org.springframework.boot:spring-boot-starter-web'
+
+}
