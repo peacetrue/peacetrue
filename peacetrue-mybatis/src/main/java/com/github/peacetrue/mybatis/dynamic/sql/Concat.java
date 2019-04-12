@@ -51,7 +51,6 @@ public class Concat implements BindableColumn<String> {
 
     @Override
     public Optional<String> typeHandler() {
-        //TODO don't know how to do
-        return Optional.of("string");
+        return Optional.empty();
     }
 }
