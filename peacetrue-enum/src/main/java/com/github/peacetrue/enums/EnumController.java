@@ -38,14 +38,14 @@ public class EnumController {
     @ResponseBody
     @GetMapping(params = "name")
     public Enum[] findOne(String name) {
-        logger.info("获取枚举'{}'的对象信息", name);
+        logger.info("获取名称为'{}'的枚举信息", name);
         return findOneInner(name);
     }
 
     @ResponseBody
     @GetMapping(params = "names")
     public Map<String, Enum[]> findSome(String... names) {
-        logger.info("获取枚举'{}'的对象信息", Arrays.toString(names));
+        logger.info("获取名称为'{}'的枚举信息", Arrays.toString(names));
         return Arrays.stream(names).collect(Collectors.toMap(Function.identity(), this::findOneInner));
     }
 

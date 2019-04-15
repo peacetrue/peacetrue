@@ -1,14 +1,16 @@
 package com.github.peacetrue.enums;
 
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @EnableConfigurationProperties(EnumProperties.class)
 public class EnumAutoConfiguration {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
     private EnumProperties enumProperties;
 
     public EnumAutoConfiguration(EnumProperties enumProperties) {
@@ -25,37 +28,51 @@ public class EnumAutoConfiguration {
     }
 
     /** 在指定包下搜索枚举类 */
-    private static Map<String, Class<? extends Enum>> resolveEnumClasses(EnumNameResolver resolver, String... basePackagePaths) {
-        if (ObjectUtils.isEmpty(basePackagePaths)) return Collections.emptyMap();
+    static Set<Class<? extends Enum>> findEnumClasses(String... basePackagePaths) {
+        if (ObjectUtils.isEmpty(basePackagePaths)) return Collections.emptySet();
 
-        Map<String, Class<? extends Enum>> enumClasses = new HashMap<>();
-        Arrays.stream(basePackagePaths).forEach(path -> {
-            Reflections reflections = new Reflections(path);
-            Set<Class<? extends Enum>> enumSubClasses = reflections.getSubTypesOf(Enum.class);
-            enumSubClasses.forEach(enumClass -> enumClasses.put(resolver.resolveEnumName(enumClass), enumClass));
-        });
-        return enumClasses;
+        return Arrays.stream(basePackagePaths)
+                .flatMap(path -> new Reflections(path).getSubTypesOf(Enum.class).stream())
+                .filter(enumClass -> enumClass.getSuperclass().equals(Enum.class))//防止找到非枚举的子类
+                .collect(Collectors.toSet());
+    }
+
+    /** 命名枚举类 */
+    static Map<String, Class<? extends Enum>> nameEnumClasses(Set<Class<? extends Enum>> enumClasses, EnumNameResolver resolver) {
+        if (ObjectUtils.isEmpty(enumClasses)) return Collections.emptyMap();
+        return enumClasses.stream().collect(Collectors.toMap(resolver::resolveEnumName, Function.identity()));
     }
 
     /** 将枚举类转换成枚举值数组 */
-    private static Map<String, Enum[]> toEnumArray(Map<String, Class<? extends Enum>> enumClasses) {
+    static Map<String, Enum[]> toEnumArray(Map<String, Class<? extends Enum>> enumClasses) {
         return enumClasses.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getEnumConstants()));
     }
 
+    private Map<String, Enum[]> resolveEnums() {
+        try {
+            Set<Class<? extends Enum>> enumClasses = findEnumClasses(enumProperties.getBasePackagePaths());
+            Map<String, Class<? extends Enum>> enumClassMap = nameEnumClasses(enumClasses, enumNameResolver());
+            if (!enumProperties.getEnumClasses().isEmpty()) {
+                enumClassMap = new HashMap<>(enumClassMap);
+                enumClassMap.putAll(enumProperties.getEnumClasses());
+            }
+            return toEnumArray(enumClassMap);
+        } catch (Exception e) {
+            logger.error("解析枚举类异常", e);
+            return Collections.emptyMap();
+        }
+    }
+
     @Bean
     public EnumController enumController() {
-        Map<String, Class<? extends Enum>> enumClasses = new HashMap<>(
-                resolveEnumClasses(enumNameResolver(), enumProperties.getBasePackagePaths())
-        );
-        enumClasses.putAll(enumProperties.getEnumClasses());
-        return new EnumController(toEnumArray(enumClasses));
+        return new EnumController(resolveEnums());
     }
 
     @Bean
     @ConditionalOnMissingBean(EnumNameResolver.class)
     public EnumNameResolver enumNameResolver() {
-        return enumClass -> StringUtils.uncapitalize(enumClass.getSimpleName());
+        return new SimpleEnumNameResolver();
     }
 
 }
