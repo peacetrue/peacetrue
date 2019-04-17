@@ -7,7 +7,12 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.github.peacetrue.util.DateUtils.toCalendar;
 
 /**
  * @author xiayx
@@ -47,4 +52,13 @@ public class DateUtilsTest {
         Assert.assertEquals(stringDate, localDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
     }
 
+
+    @Test
+    public void findValueBetweenRange() throws Exception {
+        Date start = dateFormat.parse("2019-01-01");
+        Date end = dateFormat.parse("2019-02-01");
+        List<Date> values = DateUtils.findValueBetweenRange(toCalendar(start), toCalendar(end), Calendar.MONTH);
+        System.out.println(values.stream().map(date -> dateFormat.format(date)).collect(Collectors.toList()));
+
+    }
 }

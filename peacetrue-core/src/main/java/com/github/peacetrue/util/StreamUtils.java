@@ -65,4 +65,19 @@ public abstract class StreamUtils {
         return (t, t2) -> t2;
     }
 
+
+    /**
+     * from Consumer to UnaryOperator, return the input arg
+     *
+     * @param <T> the type of the input and output objects to the function
+     * @return a function that always returns its argument
+     */
+    public static <T> UnaryOperator<T> fromConsumer(Consumer<T> consumer) {
+        return (t) -> {
+            consumer.accept(t);
+            return t;
+        };
+    }
+
+
 }

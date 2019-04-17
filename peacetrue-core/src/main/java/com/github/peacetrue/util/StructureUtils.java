@@ -46,7 +46,6 @@ public abstract class StructureUtils {
         return findList(stream, IdCapable::getId, ids);
     }
 
-
     public static <T extends CodeCapable> Optional<T> findOptionalByCode(Stream<T> stream, String code) {
         return findOptional(stream, CodeCapable::getCode, code);
     }
@@ -54,6 +53,18 @@ public abstract class StructureUtils {
     public static <T extends CodeCapable> List<T> findListByCode(Stream<T> stream, Supplier<Stream<String>> codes) {
         return findList(stream, CodeCapable::getCode, codes);
     }
+
+    public static <T extends CodeCapable & NameCapable> String findNameByCode(Stream<T> stream, String code) {
+        //TODO java.lang.invoke.LambdaConversionException: Invalid receiver type interface com.github.peacetrue.core.CodeCapable; not a subtype of implementation type interface com.github.peacetrue.core.NameCapable
+//        return findOptional(stream, CodeCapable::getCode, code).map(NameCapable::getName).orElse(null);
+        Optional<T> optional = findOptional(stream, CodeCapable::getCode, code);
+        return optional.isPresent() ? optional.get().getName() : null;
+    }
+
+    public static <T extends CodeCapable & NameCapable> String findNameByCode(T[] items, String code) {
+        return findNameByCode(Arrays.stream(items), code);
+    }
+
 
     public static boolean containsCode(Collection<? extends CodeCapable> collection, String code) {
         return !collection.isEmpty() && collection.stream().anyMatch(item -> item.getCode().equals(code));
