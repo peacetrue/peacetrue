@@ -1,0 +1,4 @@
+dependencies {
+    compile 'org.projectlombok:lombok'
+    compile 'com.google.code.findbugs:jsr305'
+}
