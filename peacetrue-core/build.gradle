@@ -2,5 +2,5 @@ description 'the core module, provide basic data structure and util class'
 
 dependencies {
     compile "com.google.code.findbugs:jsr305"//@Nullable注解
-    provided 'junit:junit'//扩展断言方法
+    compileOnly 'junit:junit'//扩展断言方法
 }
