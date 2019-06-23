@@ -110,8 +110,10 @@ public abstract class AssociateUtils {
         Class associateClass = com.github.peacetrue.util.CollectionUtils.detectElementType(associates);
         PropertyDescriptor associateIdDescriptor = BeanUtils.getRequiredPropertyDescriptor(associateClass, associatedIdProperty);
         Set<Collection<I>> associatedCollectionIds = associates.stream()
-                .map(associate -> ((Collection<I>) ReflectionUtils.invokeMethod(associateIdDescriptor.getReadMethod(), associate)))
-                .filter(Objects::nonNull).collect(Collectors.toSet());
+                .map(associate -> ReflectionUtils.invokeMethod(associateIdDescriptor.getReadMethod(), associate))
+                .filter(Objects::nonNull)
+                .map(value -> (Collection<I>) (value instanceof Collection ? value : Collections.singleton(value)))
+                .collect(Collectors.toSet());
         if (associatedCollectionIds.isEmpty()) return;
         Set<I> associatedIds = associatedCollectionIds.stream().flatMap(Collection::stream).collect(Collectors.toSet());
         Collection<D> associateds = associatedSource.findCollectionAssociate(associatedIds);

@@ -1,10 +1,12 @@
 description 'used to set associated extend property value'
 
 dependencies {
-    compile project(':peacetrue-spring')
-    provided project(':peacetrue-jpa')
-    provided "org.springframework:spring-expression"
     compile "com.google.code.findbugs:jsr305"
+    compile project(':peacetrue-core')//for utils class
+    compile project(':peacetrue-spring')//for BeanUtils
+    compile "org.springframework:spring-beans"//autowire
+    compileOnly project(':peacetrue-jpa')//for jpa support
+    compileOnly "org.springframework:spring-expression" //for support
 
     testCompile project(':peacetrue-jpa')
     testCompile "org.springframework.boot:spring-boot-starter-test"
