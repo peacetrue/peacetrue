@@ -196,8 +196,17 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         return EnumUtils._map(beans, keyProperty, null);
     }
 
-    /** convert to a instance of subclass */
+    /**
+     * convert to a instance of targetClass
+     *
+     * @deprecated
+     */
     public static <T> T toSubclass(Object source, Class<T> targetClass) {
+        return map(source, targetClass);
+    }
+
+    /** convert to a instance of targetClass */
+    public static <T> T map(Object source, Class<T> targetClass) {
         T target = BeanUtils.instantiate(targetClass);
         BeanUtils.copyProperties(source, target);
         return target;
