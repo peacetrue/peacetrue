@@ -1,6 +1,9 @@
+version '1.1-SNAPSHOT'
+
 dependencies {
     compile "com.google.code.findbugs:jsr305"//@Nullable注解
     compile 'com.fasterxml.jackson.core:jackson-databind'
-    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-//    compile 'com.fasterxml.woodstox:woodstox-core:5.1.0'
+    compileOnly 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+
+    testCompile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
 }

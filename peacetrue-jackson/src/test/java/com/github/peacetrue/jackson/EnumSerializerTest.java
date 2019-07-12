@@ -9,16 +9,22 @@ import org.junit.Test;
 public class EnumSerializerTest {
 
     public enum RandomEnum {
-        A("a"), B("b"), C("c");
+        A("a", "name1"), B("b", "name2"), C("c", "name3");
 
         private String id;
+        private String name;
 
-        RandomEnum(String id) {
+        RandomEnum(String id, String name) {
             this.id = id;
+            this.name = name;
         }
 
         public String getId() {
             return id;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 
