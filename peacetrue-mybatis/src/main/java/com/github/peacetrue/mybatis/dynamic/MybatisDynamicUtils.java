@@ -1,4 +1,4 @@
-package com.github.peacetrue.mybatis;
+package com.github.peacetrue.mybatis.dynamic;
 
 import com.github.peacetrue.util.DateUtils;
 import com.google.common.base.CaseFormat;
@@ -17,7 +17,7 @@ import java.util.stream.StreamSupport;
  *
  * @author xiayx
  */
-public abstract class MybatisUtils {
+public abstract class MybatisDynamicUtils {
 
     private static final Map<SqlTable, SqlColumn[]> SQL_COLUMNS = new HashMap<>();
 
@@ -25,7 +25,7 @@ public abstract class MybatisUtils {
 
     /** 获取表的所有列，附加缓存 */
     public static SqlColumn[] getSqlColumns(SqlTable sqlTable) {
-        return SQL_COLUMNS.computeIfAbsent(sqlTable, MybatisUtils::getSqlColumnsInternal);
+        return SQL_COLUMNS.computeIfAbsent(sqlTable, MybatisDynamicUtils::getSqlColumnsInternal);
     }
 
     /** 获取表的所有列，便于查询所有列时使用 */
@@ -99,11 +99,13 @@ public abstract class MybatisUtils {
     }
 
     /** 属性名转列名 */
-    static String propertyNameToColumnName(String propertyName) {
+    public static String propertyNameToColumnName(String propertyName) {
         return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, propertyName);
     }
 
-
+    public static void main(String[] args) {
+        System.out.println(propertyNameToColumnName("someOne"));
+    }
     public static class SqlColumnsBuilder {
 
         private List<BasicColumn> sqlColumns = new ArrayList<>();

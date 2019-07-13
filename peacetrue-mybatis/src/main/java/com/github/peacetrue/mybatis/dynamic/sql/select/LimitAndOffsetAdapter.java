@@ -1,4 +1,4 @@
-package com.github.peacetrue.mybatis;
+package com.github.peacetrue.mybatis.dynamic.sql.select;
 
 import org.mybatis.dynamic.sql.render.RenderingStrategy;
 import org.mybatis.dynamic.sql.select.SelectModel;
@@ -55,7 +55,7 @@ public class LimitAndOffsetAdapter<R> {
         return of(selectModel, mapperMethod, limit, 0);
     }
 
-    public static <R> LimitAndOffsetAdapter<R> lastOne(SelectModel selectModel, Function<SelectStatementProvider, R> mapperMethod) {
+    public static <R> LimitAndOffsetAdapter<R> firstOne(SelectModel selectModel, Function<SelectStatementProvider, R> mapperMethod) {
         return fromZero(selectModel, mapperMethod, 1);
     }
 
