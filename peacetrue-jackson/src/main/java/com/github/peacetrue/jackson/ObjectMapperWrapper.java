@@ -70,14 +70,12 @@ public class ObjectMapperWrapper {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public Object readAutoType(@Nullable String source) {
         if (source == null) return null;
         Object object = this.readValue(source, objectMapper.getTypeFactory().constructType(Object.class));
         return convertValue(object);
     }
 
-    @SuppressWarnings("unchecked")
     private Object convertValue(Object object) {
         if (object instanceof Collection) {
             return ((Collection<?>) object).stream().map(this::convertValue).collect(Collectors.toList());
@@ -90,7 +88,7 @@ public class ObjectMapperWrapper {
         }
     }
 
-    private Object convertValue(Map<String, Object> map) {
+    private Object convertValue(Map map) {
         String propertyName = jsonTypeId.getDefaultPropertyName();
         String className = (String) map.remove(propertyName);
         if (className == null) return map;
