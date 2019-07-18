@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import org.springframework.beans.BeanUtils;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.LinkedHashMap;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * avoid checked exception
@@ -17,10 +20,6 @@ import java.util.Objects;
  * @author xiayx
  */
 public class ObjectMapperWrapper {
-
-    /** the object map type */
-    public static final JavaType OBJECT_MAP_TYPE = TypeFactory.defaultInstance()
-            .constructParametrizedType(LinkedHashMap.class, Map.class, String.class, Object.class);
 
     private ObjectMapper objectMapper;
     private JsonTypeInfo.Id jsonTypeId = JsonTypeInfo.Id.CLASS;
@@ -37,6 +36,14 @@ public class ObjectMapperWrapper {
         }
     }
 
+    public String writeValueAsString(Object source, JavaType javaType) {
+        try {
+            return objectMapper.writer().forType(javaType).writeValueAsString(source);
+        } catch (JsonProcessingException e) {
+            throw new JacksonWriteException(e);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public <T> T readValue(String source, JavaType javaType) {
         try {
@@ -46,16 +53,53 @@ public class ObjectMapperWrapper {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T readValue(String source) {
-        try {
-            Map<String, Object> map = objectMapper.readValue(source, OBJECT_MAP_TYPE);
-            Class<?> toValueType = Class.forName((String) map.get(jsonTypeId.getDefaultPropertyName()));
-            return (T) objectMapper.convertValue(map, toValueType);
-        } catch (IOException | ClassNotFoundException e) {
-            throw new JacksonReadException(e);
+
+    public String writeAutoType(@Nullable Object source) {
+        if (source == null) return null;
+
+        if (source instanceof Collection) {
+            return ((Collection<?>) source).stream().map(this::writeAutoType).collect(Collectors.joining(",", "[", "]"));
+        } else if (source instanceof Object[]) {
+            return Arrays.stream((Object[]) source).map(this::writeAutoType).collect(Collectors.joining(",", "[", "]"));
+        } else if (BeanUtils.isSimpleValueType(source.getClass())) {
+            return writeValueAsString(source);
+        } else {
+            Map<String, Object> map = objectMapper.convertValue(source, JacksonUtils.OBJECT_MAP_TYPE);
+            map.put(jsonTypeId.getDefaultPropertyName(), source.getClass().getName());
+            return writeValueAsString(map);
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public Object readAutoType(@Nullable String source) {
+        if (source == null) return null;
+        Object object = this.readValue(source, objectMapper.getTypeFactory().constructType(Object.class));
+        return convertValue(object);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Object convertValue(Object object) {
+        if (object instanceof Collection) {
+            return ((Collection<?>) object).stream().map(this::convertValue).collect(Collectors.toList());
+        } else if (object instanceof Object[]) {
+            return Arrays.stream((Object[]) object).map(this::convertValue).collect(Collectors.toList());
+        } else if (object instanceof Map) {
+            return this.convertValue((Map) object);
+        } else {
+            return object;
+        }
+    }
+
+    private Object convertValue(Map<String, Object> map) {
+        String propertyName = jsonTypeId.getDefaultPropertyName();
+        String className = (String) map.remove(propertyName);
+        if (className == null) return map;
+        try {
+            Class<?> toValueType = Class.forName(className);
+            return objectMapper.convertValue(map, toValueType);
+        } catch (ClassNotFoundException e) {
+            throw new MapTypeParseException(className, e);
+        }
+    }
 
 }
