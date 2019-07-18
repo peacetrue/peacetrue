@@ -27,48 +27,48 @@ public class ObjectMapperWrapperTest {
     private ObjectMapperWrapper wrapper = new ObjectMapperWrapper(new ObjectMapper());
 
     @Test
-    public void writeAutoType() {
-        String s = wrapper.writeAutoType(new A("b", "a"));
+    public void writeAppendType() {
+        String s = wrapper.writeAppendType(new A("b", "a"));
         Assert.assertEquals(s, "{\"b\":\"b\",\"a\":\"a\",\"@class\":\"com.github.peacetrue.jackson.ObjectMapperWrapperTest$A\"}");
     }
 
     @Test
-    public void readAutoType4Simple() {
+    public void readDetectType4Simple() {
         Object source = "a";
-        String s = wrapper.writeAutoType(source);
-        Object o = wrapper.readAutoType(s);
+        String s = wrapper.writeAppendType(source);
+        Object o = wrapper.readDetectType(s);
         Assert.assertEquals(source, o);
     }
 
     @Test
-    public void readAutoType4Wrapper() {
+    public void readDetectType4Wrapper() {
         Object source = new A("b", "a");
-        String s = wrapper.writeAutoType(source);
-        Object o = wrapper.readAutoType(s);
+        String s = wrapper.writeAppendType(source);
+        Object o = wrapper.readDetectType(s);
         Assert.assertEquals(source, o);
     }
 
     @Test
-    public void readAutoType4ListSimple() {
+    public void readDetectType4ListSimple() {
         Object source = Arrays.asList("a", "b");
-        String s = wrapper.writeAutoType(source);
-        Object o = wrapper.readAutoType(s);
+        String s = wrapper.writeAppendType(source);
+        Object o = wrapper.readDetectType(s);
         Assert.assertEquals(source, o);
     }
 
     @Test
-    public void readAutoType4ListWrapper() {
+    public void readDetectType4ListWrapper() {
         List<A> source = Arrays.asList(new A("b", "a"), new A("b", "a"), new A("b", "a"));
-        String s = wrapper.writeAutoType(source);
-        Object o = wrapper.readAutoType(s);
+        String s = wrapper.writeAppendType(source);
+        Object o = wrapper.readDetectType(s);
         Assert.assertEquals(source, o);
     }
 
     @Test
-    public void readAutoType4ListWrapperAsSimple() {
+    public void readDetectType4ListWrapperAsSimple() {
         Object source = Arrays.asList(new Date(), new Date());
-        String s = wrapper.writeAutoType(source);
-        Object o = wrapper.readAutoType(s);
+        String s = wrapper.writeAppendType(source);
+        Object o = wrapper.readDetectType(s);
         Assert.assertNotEquals(source, o);
     }
 

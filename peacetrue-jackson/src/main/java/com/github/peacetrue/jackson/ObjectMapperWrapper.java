@@ -28,6 +28,7 @@ public class ObjectMapperWrapper {
         this.objectMapper = Objects.requireNonNull(objectMapper);
     }
 
+    /** similar to {@link ObjectMapper#writeValueAsString(Object)}, but avoid checked exception */
     public String writeValueAsString(Object source) {
         try {
             return objectMapper.writeValueAsString(source);
@@ -36,6 +37,7 @@ public class ObjectMapperWrapper {
         }
     }
 
+    /** similar to {@link ObjectMapper#writeValueAsString(Object)}, but avoid checked exception */
     public String writeValueAsString(Object source, JavaType javaType) {
         try {
             return objectMapper.writer().forType(javaType).writeValueAsString(source);
@@ -44,6 +46,7 @@ public class ObjectMapperWrapper {
         }
     }
 
+    /** similar to {@link ObjectMapper#readValue(String, JavaType)}, but avoid checked exception */
     @SuppressWarnings("unchecked")
     public <T> T readValue(String source, JavaType javaType) {
         try {
@@ -53,14 +56,14 @@ public class ObjectMapperWrapper {
         }
     }
 
-
-    public String writeAutoType(@Nullable Object source) {
+    /** write append type info for wrapper type */
+    public String writeAppendType(@Nullable Object source) {
         if (source == null) return null;
 
         if (source instanceof Collection) {
-            return ((Collection<?>) source).stream().map(this::writeAutoType).collect(Collectors.joining(",", "[", "]"));
+            return ((Collection<?>) source).stream().map(this::writeAppendType).collect(Collectors.joining(",", "[", "]"));
         } else if (source instanceof Object[]) {
-            return Arrays.stream((Object[]) source).map(this::writeAutoType).collect(Collectors.joining(",", "[", "]"));
+            return Arrays.stream((Object[]) source).map(this::writeAppendType).collect(Collectors.joining(",", "[", "]"));
         } else if (BeanUtils.isSimpleValueType(source.getClass())) {
             return writeValueAsString(source);
         } else {
@@ -70,7 +73,8 @@ public class ObjectMapperWrapper {
         }
     }
 
-    public Object readAutoType(@Nullable String source) {
+    /** read auto detect type info for wrapper type */
+    public Object readDetectType(@Nullable String source) {
         if (source == null) return null;
         Object object = this.readValue(source, objectMapper.getTypeFactory().constructType(Object.class));
         return convertValue(object);
