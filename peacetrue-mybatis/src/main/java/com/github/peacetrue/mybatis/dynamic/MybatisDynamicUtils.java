@@ -24,7 +24,7 @@ public abstract class MybatisDynamicUtils {
     private static final Map<SqlTable, SqlColumn[]> SQL_COLUMNS = new HashMap<>();
 
     /** 设置表名 */
-    private void setTableName(SqlTable sqlTable, String tableName) {
+    public static void setTableName(SqlTable sqlTable, String tableName) {
         Field field = ReflectionUtils.findField(sqlTable.getClass(), "nameSupplier", Supplier.class);
         field.setAccessible(true);
         ReflectionUtils.setField(field, sqlTable, (Supplier) () -> tableName);
