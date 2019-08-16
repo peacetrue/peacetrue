@@ -7,9 +7,11 @@ import org.mybatis.dynamic.sql.select.QueryExpressionDSL;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.StreamSupport;
 
 /**
@@ -20,6 +22,14 @@ import java.util.stream.StreamSupport;
 public abstract class MybatisDynamicUtils {
 
     private static final Map<SqlTable, SqlColumn[]> SQL_COLUMNS = new HashMap<>();
+
+    /** 设置表名 */
+    private void setTableName(SqlTable sqlTable, String tableName) {
+        Field field = ReflectionUtils.findField(sqlTable.getClass(), "nameSupplier", Supplier.class);
+        field.setAccessible(true);
+        ReflectionUtils.setField(field, sqlTable, (Supplier) () -> tableName);
+    }
+
 
     /*-----------SELECT----------*/
 
@@ -106,6 +116,7 @@ public abstract class MybatisDynamicUtils {
     public static void main(String[] args) {
         System.out.println(propertyNameToColumnName("someOne"));
     }
+
     public static class SqlColumnsBuilder {
 
         private List<BasicColumn> sqlColumns = new ArrayList<>();
