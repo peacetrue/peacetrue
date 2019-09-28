@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * @author xiayx
  */
-@ConfigurationProperties
+@ConfigurationProperties(prefix = "peacetrue.export")
 public class ExportProperties {
 
     /** 单元格内容前缀 */

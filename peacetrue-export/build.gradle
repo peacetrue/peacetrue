@@ -1,9 +1,9 @@
 dependencies {
     compile 'org.apache.commons:commons-csv:1.6'
-    compile 'org.springframework.boot:spring-boot-starter-logging'
+    compile 'ch.qos.logback:logback-classic'
     compile 'org.springframework.boot:spring-boot-autoconfigure'
-    optional 'org.springframework.boot:spring-boot-autoconfigure-processor'
-    optional 'javax.servlet:javax.servlet-api:3.1.0'
+    annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
+    compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
 
     testCompile 'org.springframework:spring-test'
     testCompile 'org.springframework.boot:spring-boot-test'
