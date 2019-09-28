@@ -1,7 +1,7 @@
 package com.github.peacetrue.associate;
 
 import com.github.peacetrue.spring.util.BeanUtils;
-import org.springframework.util.CollectionUtils;
+import com.github.peacetrue.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -51,7 +51,7 @@ public abstract class AssociateUtils {
     public static <I, D> void setCollectionAssociate(Object associate, String associatedProperty, CollectionAssociatedSource<I, D, ?> associatedSource, String associatedIdProperty) {
         PropertyDescriptor associateIdPropertyDescriptor = BeanUtils.getRequiredPropertyDescriptor(associate.getClass(), associatedIdProperty);
         Collection<I> idCollection = (Collection<I>) ReflectionUtils.invokeMethod(associateIdPropertyDescriptor.getReadMethod(), associate);
-        if (CollectionUtils.isEmpty(idCollection)) return;
+        if (idCollection == null || idCollection.isEmpty()) return;
         Collection<D> associates = associatedSource.findCollectionAssociate(idCollection);
         BeanUtils.setPropertyValue(associate, associatedProperty, associatedSource.format(associates));
     }
@@ -70,6 +70,7 @@ public abstract class AssociateUtils {
         PropertyDescriptor associatedDescriptor = BeanUtils.getRequiredPropertyDescriptor(associateClass, associatedProperty);
         associates.forEach(associate -> {
             Object associatedId = ReflectionUtils.invokeMethod(associatedIdDescriptor.getReadMethod(), associate);
+            if (associatedId == null) return;
             ReflectionUtils.invokeMethod(associatedDescriptor.getWriteMethod(), associate, associatedMap.get(associatedId));
         });
     }
@@ -107,19 +108,30 @@ public abstract class AssociateUtils {
      * @param <D>                  the type of associated data
      */
     public static <I, D> void setCollectionAssociate(Collection<?> associates, String associatedProperty, CollectionAssociatedSource<I, D, ?> associatedSource, String associatedIdProperty) {
-        Class associateClass = com.github.peacetrue.util.CollectionUtils.detectElementType(associates);
-        PropertyDescriptor associateIdDescriptor = BeanUtils.getRequiredPropertyDescriptor(associateClass, associatedIdProperty);
-        Set<Collection<I>> associatedCollectionIds = associates.stream()
+        Class associateType = CollectionUtils.detectElementType(associates);
+        PropertyDescriptor associateIdDescriptor = BeanUtils.getRequiredPropertyDescriptor(associateType, associatedIdProperty);
+        Set<Object> associateObjectIds = associates.stream()
                 .map(associate -> ReflectionUtils.invokeMethod(associateIdDescriptor.getReadMethod(), associate))
-                .filter(Objects::nonNull)
-                .map(value -> (Collection<I>) (value instanceof Collection ? value : Collections.singleton(value)))
-                .collect(Collectors.toSet());
-        if (associatedCollectionIds.isEmpty()) return;
-        Set<I> associatedIds = associatedCollectionIds.stream().flatMap(Collection::stream).collect(Collectors.toSet());
-        Collection<D> associateds = associatedSource.findCollectionAssociate(associatedIds);
-        Map<I, ?> associatedMap = associateds.stream().collect(Collectors.toMap(associatedSource::resolveId, associatedSource::format));
-        Map<Collection<I>, Collection<?>> collectionAssociatedMap = associatedCollectionIds.stream().collect(Collectors.toMap(Function.identity(), _associateIds -> _associateIds.stream().map(associatedMap::get).collect(Collectors.toList())));
-        setAssociate(associates, associatedProperty, collectionAssociatedMap, associatedIdProperty);
+                .filter(Objects::nonNull).collect(Collectors.toSet());
+        if (associateObjectIds.isEmpty()) return;
+
+        Class<?> associateIdType = CollectionUtils.detectElementType(associateObjectIds);
+        boolean isCollection = Collection.class.isAssignableFrom(associateIdType);
+        Set<I> associateIds = isCollection
+                ? associateObjectIds.stream().map(item -> (Collection<I>) item).flatMap(Collection::stream).collect(Collectors.toSet())
+                : (Set<I>) associateObjectIds;
+        Collection<D> associateds = associatedSource.findCollectionAssociate(associateIds);
+
+        if (isCollection) {
+            Map<I, ?> associatedMap = associateds.stream().collect(Collectors.toMap(associatedSource::resolveId, associatedSource::format));
+            Map<Object, Collection<?>> collectionAssociatedMap = associateObjectIds.stream().collect(Collectors.toMap(
+                    Function.identity(), _associateIds -> ((Collection<I>) _associateIds).stream().map(associatedMap::get).collect(Collectors.toList())));
+            setAssociate(associates, associatedProperty, collectionAssociatedMap, associatedIdProperty);
+        } else {
+            Map<I, ?> associatedMap = associateds.stream().collect(Collectors.groupingBy(
+                    associatedSource::resolveId, Collectors.mapping(associatedSource::format, Collectors.toList())));
+            setAssociate(associates, associatedProperty, associatedMap, associatedIdProperty);
+        }
     }
 
 
