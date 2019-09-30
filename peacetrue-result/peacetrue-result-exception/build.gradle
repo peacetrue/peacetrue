@@ -3,7 +3,8 @@ description 'used to handle exception and convert exception to result'
 dependencies {
     compile project(':peacetrue-spring')
     compile project(':peacetrue-result:peacetrue-result-builder')
-    optional "org.springframework.boot:spring-boot-configuration-processor"
+    compile "javax.annotation:javax.annotation-api"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }

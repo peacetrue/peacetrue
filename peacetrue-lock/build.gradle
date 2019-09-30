@@ -1,9 +1,10 @@
 dependencies {
     compile "org.projectlombok:lombok"
+    compile "javax.annotation:javax.annotation-api"
     compile 'org.springframework.data:spring-data-redis'
-    compile 'redis.clients:jedis:2.9.0'
+    compile 'redis.clients:jedis'
     compile 'org.springframework.boot:spring-boot-starter-aop'
-    optional 'org.springframework.boot:spring-boot-autoconfigure-processor'
+    annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
 
     testCompile 'org.springframework:spring-test'
     testCompile 'org.springframework.boot:spring-boot-test'

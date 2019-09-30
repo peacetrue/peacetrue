@@ -5,6 +5,7 @@ dependencies {
     compile project(':peacetrue-core')//for utils class
     compile project(':peacetrue-spring')//for BeanUtils
     compile "org.springframework:spring-beans"//autowire
+    compile "javax.annotation:javax.annotation-api"//autowire
     compileOnly project(':peacetrue-jpa')//for jpa support
     compileOnly "org.springframework:spring-expression" //for support
 

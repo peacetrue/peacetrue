@@ -3,7 +3,6 @@ package com.github.peacetrue.tree;
 import com.github.peacetrue.tree.extractor.Extractor;
 import com.github.peacetrue.tree.extractor.StringExtractor;
 import com.github.peacetrue.tree.iterate.ConsumerIterator;
-import org.springframework.util.Assert;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -29,8 +28,6 @@ public class GenericTree<T> implements Tree<T> {
 
     /** 初始化空树，后续可通过 {@link #setNodes(Collection)}和{@link #addNode(Object)}添加节点 */
     public GenericTree(RootPredicate<T> rootPredicate, RelationPredicate<T> relationPredicate) {
-        Assert.notNull(rootPredicate);
-        Assert.notNull(relationPredicate);
         this.rootPredicate = rootPredicate;
         this.relationPredicate = relationPredicate;
         this.nodes = new ConcurrentLinkedQueue<>();
@@ -129,7 +126,6 @@ public class GenericTree<T> implements Tree<T> {
     }
 
     public void setNodes(Collection<T> nodes) {
-        Assert.notEmpty(nodes);
         this.nodes.clear();
         this.nodes.addAll(nodes);
         checkTreeValid();

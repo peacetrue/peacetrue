@@ -10,7 +10,7 @@ public class InvalidSignException extends InvalidAppIdException {
     private String sign;
 
     public InvalidSignException(String appId, String sign) {
-        super(appId, "the sing '" + sign + "' for app '" + appId + "' is invalid");
+        super(appId, "the sign '" + sign + "' for app '" + appId + "' is invalid");
         this.sign = sign;
     }
 

@@ -2,7 +2,6 @@ package com.github.peacetrue.tree.generator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -32,9 +31,6 @@ public class TreeNodeGenerator<T> {
      * @param treeNodeBuilder 不能为null
      */
     public TreeNodeGenerator(int level, int count, TreeNodeBuilder<T> treeNodeBuilder) {
-        Assert.isTrue(level > 0);
-        Assert.isTrue(count > 0);
-        Assert.notNull(treeNodeBuilder);
         this.level = level;
         this.count = count;
         this.treeNodeBuilder = treeNodeBuilder;

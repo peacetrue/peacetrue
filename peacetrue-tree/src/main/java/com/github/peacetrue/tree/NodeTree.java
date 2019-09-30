@@ -1,11 +1,10 @@
 package com.github.peacetrue.tree;
 
-import com.github.peacetrue.spring.util.CloneUtils;
 import com.github.peacetrue.tree.extractor.Extractor;
 import com.github.peacetrue.tree.extractor.StringExtractor;
 import com.github.peacetrue.tree.iterate.ConsumerIterator;
 import com.github.peacetrue.tree.iterate.PredicateIterator;
-import org.springframework.util.Assert;
+import com.github.peacetrue.util.CloneUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,7 +29,6 @@ public class NodeTree<N extends Tree.Node<N> & Tree.ParentNodeAware<N>> implemen
     }
 
     public void setRoot(N root) {
-        Assert.notNull(root);
         if (!isRoot(root)) throw new IllegalArgumentException(root + " not a valid root node");
         this.root = root;
     }
@@ -149,7 +147,6 @@ public class NodeTree<N extends Tree.Node<N> & Tree.ParentNodeAware<N>> implemen
      */
     @Override
     public Tree<N> localTree(Collection<N> nodes) {
-        Assert.notEmpty(nodes);
         //缓存已经克隆过的节点，已经克隆过的不重复克隆
         Map<N, N> clones = new HashMap<>();
         List<List<N>> paths = nodes.stream()

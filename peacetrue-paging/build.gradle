@@ -1,11 +1,11 @@
 dependencies {
     compile project(':peacetrue-spring')
     compile 'org.slf4j:slf4j-api'
-    provided 'com.fasterxml.jackson.core:jackson-databind'
-    provided 'org.springframework.data:spring-data-commons'
-    provided "org.springframework.boot:spring-boot-autoconfigure"
-    provided 'com.alibaba:fastjson:1.2.47'
-    optional "org.springframework.boot:spring-boot-configuration-processor"
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+    compileOnly 'org.springframework.data:spring-data-commons'
+    compileOnly "org.springframework.boot:spring-boot-autoconfigure"
+    compileOnly 'com.alibaba:fastjson:1.2.47'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     testCompile 'com.fasterxml.jackson.core:jackson-databind'
     testCompile 'org.springframework.data:spring-data-commons'

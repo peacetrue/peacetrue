@@ -59,7 +59,7 @@ public class FormSignService implements SignService<MultiValueMap<String, ?>, Mu
         params.add(signProperties.getNonceParamName(), UUID.randomUUID().toString());
         //TODO 是否需要签名所有参数，上传时的流如何处理？
         params.add(signProperties.getSignParamName(),
-                signGenerator.generate(SignUtils.concat(params), appSecret.getAppSecret()));
+                signGenerator.generate(SignUtils.concat(SignUtils.toString(params)), appSecret.getAppSecret()));
     }
 
     @Autowired

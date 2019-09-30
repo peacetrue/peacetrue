@@ -57,4 +57,12 @@ public abstract class ResultUtils {
         return result instanceof DataResult ? new DataResultImpl<>((DataResult<?>) result) : new ResultImpl(result);
     }
 
+    /** 获取数据 */
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public static <T> T getData(Result result) {
+        if (result == null || !(result instanceof DataResult)) return null;
+        return (T) ((DataResult) result).getData();
+    }
+
 }

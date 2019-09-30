@@ -46,19 +46,18 @@ public class FormValidatorHandlerInterceptor extends HandlerInterceptorAdapter {
 
         logger.debug("验证'{}'的签名", handler);
         String appId = request.getParameter(signProperties.getAppIdParamName());
-        if (appId == null) {
-            throw new MissingServletRequestParameterException(
-                    signProperties.getAppIdParamName(), String.class.getSimpleName()
-            );
-        }
+        if (appId == null) throw new MissingServletRequestParameterException(signProperties.getAppIdParamName(), String.class.getSimpleName());
         logger.debug("取得应用标识: {}", appId);
+
+        String sign = request.getParameter(signProperties.getSignParamName());
+        if (sign == null) throw new MissingServletRequestParameterException(signProperties.getSignParamName(), String.class.getSimpleName());
+        logger.debug("取得签名: {}", sign);
 
         String appSecret = secretProvider.getSecretById(appId);
         if (appSecret == null) throw new InvalidAppIdException(appId);
         logger.trace("取得应用秘钥: {}", appSecret);
 
         Map<String, String[]> parameters = request.getParameterMap();
-        String sign = request.getParameter(signProperties.getSignParamName());
         if (!formValidator.valid(parameters, appSecret)) throw new InvalidSignException(appId, sign);
         logger.trace("验证通过");
 

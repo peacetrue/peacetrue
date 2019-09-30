@@ -20,9 +20,9 @@ public class RawValidator extends AbstractSignValidator<Object> {
         Map<String, ?> params = BeanUtils.map(signedData);
         Object clientSign = params.remove("sign");
         logger.debug("the client sign is {}", clientSign);
-        String serverSign = signGenerator.generate(SignUtils.concat(params), secret);
+        String serverSign = signGenerator.generate(SignUtils.concat(SignUtils.toString(params)), secret);
         logger.debug("use the params: {} and secret: {} generate sign: {}", params, secret, serverSign);
-        return clientSign.equals(serverSign);
+        return clientSign.toString().equalsIgnoreCase(serverSign);
     }
 
 }

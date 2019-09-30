@@ -47,7 +47,7 @@ public class UserController {
 
     private long index = users.size();
 
-    @ResponseBody
+    @WithoutResultWrapper
     @PostMapping("/user")
     public User add(@Valid User user) {
         logger.info("user:{}", user);
@@ -56,7 +56,7 @@ public class UserController {
         return user;
     }
 
-    @ResponseBody
+    @WithoutResultWrapper
     @PostMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE)
     public User addByRequestBody(@RequestBody User user) {
         logger.info("user:{}", user);
@@ -65,13 +65,13 @@ public class UserController {
         return user;
     }
 
-    @ResponseBody
+    @WithoutResultWrapper
     @PostMapping(value = "/return/void")
     public void returnVoid() {
         logger.info("returnVoid");
     }
 
-    @ResponseBody
+    @WithoutResultWrapper
     @PostMapping(value = "/return/string")
     public String returnString(String input) {
         return input;

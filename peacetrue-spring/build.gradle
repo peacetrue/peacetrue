@@ -1,4 +1,5 @@
 description 'An extension module of Spring'
+version '1.1.2-SNAPSHOT'
 
 dependencies {
     implementation project(':peacetrue-core')
@@ -6,6 +7,10 @@ dependencies {
     compileOnly "org.springframework:spring-beans"
     compileOnly "org.springframework:spring-context"
     compileOnly "org.springframework:spring-web"
+    compileOnly "org.springframework:spring-webmvc"// used by ServletModelAttributeMethodProcessor
+    compileOnly "javax.servlet:javax.servlet-api"  // used by ServletModelAttributeMethodProcessor
+    compileOnly "org.springframework.boot:spring-boot-autoconfigure" //used by ConcreteClassArgumentResolver
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     testCompile "org.apache.commons:commons-lang3"
     testCompile "org.springframework:spring-beans"

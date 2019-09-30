@@ -20,10 +20,11 @@ public class FormValidator extends AbstractSignValidator<Map<String, String[]>> 
         logger.debug("检查参数'{}'的签名", signedData);
         Map<String, String[]> localSignedValue = new LinkedHashMap<>(signedData);
         String clientSign = localSignedValue.remove(signProperties.getSignParamName())[0];
+        localSignedValue.remove(signProperties.getAppSecretParamName());
         logger.debug("取得客户端签名：{}", clientSign);
-        String serverSign = signGenerator.generate(SignUtils.concat(localSignedValue), secret);
+        String serverSign = signGenerator.generate(SignUtils.concat(SignUtils.toString(localSignedValue)), secret);
         logger.debug("生成服务端签名：{}", serverSign);
-        return clientSign.equals(serverSign);
+        return clientSign.equalsIgnoreCase(serverSign);
 
     }
 }

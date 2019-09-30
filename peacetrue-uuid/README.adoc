@@ -1,0 +1,79 @@
+= 唯一标识
+xiayx <xiayouxue@hotmail.com>
+v1.0, 2018-03-25: SNAPSHOT
+:doctype: docbook
+:toc: left
+:numbered:
+:imagesdir: assets/images
+:sourcedir: src/main/java
+:resourcesdir: src/main/resources
+:testsourcedir: src/test/java
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+
+== 参考
+* https://mp.weixin.qq.com/s/qO84jWhQ5O2mPafsHrh2bA[分布式ID生成器 | 架构师之路]
+
+== 绝对唯一
+参考：https://baike.baidu.com/item/UUID/5921266?fr=aladdin
+
+.优点
+* 简单易用
+* 支持集群
+
+.缺点
+* 太长，32位
+* 无法保证趋势递增
+* 无法有效利用值
+
+== 系统时间
+使用系统时间表示唯一标识。
+
+秒的单位：秒 毫秒 微秒 纳秒 皮秒
+
+每秒并发量上限：
+
+* 精确至毫秒：1000
+* 精确至微秒：1000 * 1000
+* 精确至纳秒：1000 * 1000 * 1000
+
+java可以通过``System.currentTimeMillis()``获取当期时间的毫秒表述。
+方法``System.nanoTime()``获取的纳秒时间不是当前时间，主要用于计算时间差。
+
+.优点
+* 简单易用
+* 支持集群，使用【时间戳+应用标识】
+
+.缺点
+* 每秒并发量支持有限
+* 无法有效利用值，递增不是连续的，请求低时会跳空
+
+.毫秒表示所需长度
+. yyMMddHHmmssSSS：15，100-18年内
+. yyyyMMddHHmmssSSS：17，9999-18年内
+. 毫秒1531541635737：13，9999999999999-1531541635737时间内
+. 纳秒501814693743223：15
+
+== 递增值
+使用递增值表示唯一标识。
+
+* 起点值：0
+* 递增值：1
+* 当前值：0
+
+从0开始[不包含0]，每次递增1。
+
+=== 持久化
+相比于基于时间戳的唯一标识，递增的唯一标识最大的缺点就是需要持久化。
+系统重启后，递增器必须基于上次的值，开始启动，才能保证唯一性。
+
+
+
+
+
+
+
+
+
+
+

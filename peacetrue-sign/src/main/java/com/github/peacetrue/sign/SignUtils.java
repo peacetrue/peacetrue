@@ -3,6 +3,7 @@ package com.github.peacetrue.sign;
 import com.github.peacetrue.security.MessageDigestUtils;
 
 import java.util.*;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 /**
@@ -12,44 +13,56 @@ import java.util.stream.Collectors;
  */
 public abstract class SignUtils {
 
-    /**
-     * generate sign
-     *
-     * @param params the params
-     * @param secret the secret
-     * @return the generated sign
-     */
-    public static String generateSign(Map<String, ?> params, String secret) {
-        String string = concat(params);
-        return generateSign(string, secret);
+    /** 应用标识参数名称 */
+    public static String appId = "appId";
+    /** 签名参数名称 */
+    public static String sign = "sign";
+
+    /** 生成签名 */
+    public static String generateSign(Map<String, String> params, String secret) {
+        return generateSign(concat(sort(params)), secret);
     }
 
-    /**
-     * generate sign
-     *
-     * @param params the params
-     * @param secret the secret
-     * @return the generated sign
-     */
+    /** 生成签名 */
     public static String generateSign(String params, String secret) {
         return MessageDigestUtils.encode(MessageDigestUtils.getMD5(), params + secret);
     }
 
+    /** 字典序排列 */
+    public static <T> Map<String, T> sort(Map<String, T> params) {
+        return params.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
+    }
+
+    private static <T> BinaryOperator<T> throwingMerger() {
+        return (u, v) -> {
+            throw new IllegalStateException(String.format("Duplicate key %s", u));
+        };
+    }
+
     /** 串联参数 */
-    public static String concat(Map<String, ?> params) {
-        return new ArrayList<>(params.entrySet()).stream()
-                .sorted(Comparator.comparing(Map.Entry::getKey))
-                .map(SignUtils::toString)
-                .filter(Objects::nonNull)
-                .collect(Collectors.joining("&"));
+    public static String concat(Map<String, String> params) {
+        return params.entrySet().stream()
+                .map(entry -> entry.getKey() + Objects.toString(entry.getValue(), ""))
+                .collect(Collectors.joining(""));
+    }
+
+    /** 签名参数 */
+    public static void sign(Map<String, String> params, String appId, String appSecret) {
+        params.put(SignUtils.appId, appId);
+        Map<String, String> sorted = sort(new HashMap<>(params));
+        params.put(SignUtils.sign, generateSign(sorted, appSecret));
+    }
+
+    public static Map<String, String> toString(Map<String, ?> params) {
+        return params.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, SignUtils::toString));
     }
 
     private static String toString(Map.Entry<String, ?> entry) {
-        String value = toString(entry.getValue());
-        if (value == null) return null;
-        return Objects.requireNonNull(entry.getKey()) + "=" + value;
+        return toString(entry.getValue());
     }
 
+    @SuppressWarnings("unchecked")
     private static String toString(Object value) {
         if (value == null) return null;
 

@@ -1,0 +1,77 @@
+= 分组查询
+xiayx <xiayouxue@hotmail.com>
+V1.0, 2018-03-25: SNAPSHOT
+:doctype: docbook
+:toc: left
+:numbered:
+:imagesdir: docs/assets/images
+:sourcedir: src/main/java
+:resourcesdir: src/main/resources
+:testsourcedir: src/test/java
+:testresourcesdir: src/main/resources
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+
+
+== 场景
+.用户
+[%header,format=csv]
+|===
+序号,名称
+include::docs/test_group_user.csv[]
+|===
+
+.店铺申请
+[%header,format=csv]
+|===
+序号,名称,创建者,创建时间
+include::docs/test_group_shop_apply.csv[]
+|===
+
+.店铺
+[%header,format=csv]
+|===
+序号,名称,创建者,创建时间
+include::docs/test_group_shop.csv[]
+|===
+
+如何获取用户最新的店铺申请信息呢？
+
+== 分析
+首先，按用户分组获取最大的创建时间：
+[source,sql]
+----
+SELECT creator_id, max(created_time) created_time FROM shop_apply GROUP BY creator_id
+----
+
+以上SQL无法查出``shop_apply.id``，但根据``creator_id``和``created_time``可也以唯一定位一条记录。
+
+根据``creator_id``和``created_time``查询详细信息：
+[source,sql]
+----
+SELECT * FROM shop_apply WHERE creator_id=? and created_time=?
+----
+
+如果有多条记录则应该是：
+[source,sql]
+----
+SELECT * FROM shop_apply WHERE (creator_id=? AND created_time=?) OR (creator_id=? AND created_time=?) OR ...
+----
+
+当然这么写会比较繁琐，也可以像下面这样，将两列合成一列：
+[source,sql]
+----
+SELECT * FROM shop_apply WHERE CONCAT(creator_id,'-',DATE_FORMAT(created_time,'%Y-%m-%d %H:%i:%s')) in (?)
+----
+同时，需要对查询出的记录也做同样的处理，看起来并不比上面的方式好多少。
+
+以上是分步查询的方式，也可以直接连表查询：
+[source,sql]
+----
+SELECT * FROM
+    shop_apply t1,
+    (SELECT creator_id, MAX(created_time) created_time FROM shop_apply GROUP BY creator_id) t2
+WHERE t1.creator_id = t2.creator_id AND t1.created_time=t2.created_time
+----
+
+

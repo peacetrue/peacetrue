@@ -38,7 +38,7 @@ public class RawSignService implements SignService<Object, SignedData<String>> {
         signed.setTimestamp(System.currentTimeMillis());
         signed.setData(JacksonUtils.writeValueAsString(objectMapper, data));
         Map<String, Object> map = BeanUtils.map(signed);
-        signed.setSign(signGenerator.generate(SignUtils.concat(map), appSecret.getAppSecret()));
+        signed.setSign(signGenerator.generate(SignUtils.concat(SignUtils.toString(map)), appSecret.getAppSecret()));
         logger.debug("generate sign: {}", signed.getSign());
         return signed;
     }

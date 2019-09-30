@@ -5,7 +5,7 @@ dependencies {
     compile project(':peacetrue-result:peacetrue-result-builder')
     compile 'org.springframework:spring-webmvc'
     compile "org.springframework.boot:spring-boot-autoconfigure"
-    optional "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     compile "ch.qos.logback:logback-classic"
 
     compileOnly project(':peacetrue-result:peacetrue-result-exception')

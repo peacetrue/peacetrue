@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.StreamSupport;
 
@@ -77,6 +78,27 @@ public abstract class MybatisDynamicUtils {
     /** 结束日期值，前端传入的值精确至日期，后端筛选需要使用当日最大值 */
     public static LocalDateTime endDateValue(LocalDateTime date) {
         return date == null ? null : date.truncatedTo(ChronoUnit.DAYS);
+    }
+
+    public static final VisitableCondition PLACEHOLDER_CONDITION = new VisitableCondition() {
+        public Object accept(ConditionVisitor visitor) {
+            return null;
+        }
+
+        public boolean shouldRender() {
+            return false;
+        }
+    };
+
+    /** 占位条件，始终不会匹配上 */
+    @SuppressWarnings("unchecked")
+    public static <T> VisitableCondition<T> getPlaceholderCondition() {
+        return PLACEHOLDER_CONDITION;
+    }
+
+    /** 获取条件当有值时 */
+    public static <T, V> VisitableCondition<T> getConditionWhenPresent(V value, Function<V, VisitableCondition<T>> function) {
+        return value == null ? getPlaceholderCondition() : function.apply(value);
     }
 
     /*-----------ORDER BY----------*/

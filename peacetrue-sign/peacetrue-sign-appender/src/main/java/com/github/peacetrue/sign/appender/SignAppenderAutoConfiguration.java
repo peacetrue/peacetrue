@@ -1,5 +1,6 @@
 package com.github.peacetrue.sign.appender;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.peacetrue.sign.Md5SignGenerator;
@@ -35,6 +36,7 @@ public class SignAppenderAutoConfiguration {
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, false);
         return objectMapper;
     }
 

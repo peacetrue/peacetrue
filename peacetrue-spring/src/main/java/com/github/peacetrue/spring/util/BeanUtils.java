@@ -1,15 +1,14 @@
 package com.github.peacetrue.spring.util;
 
 import org.springframework.beans.BeansException;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.beans.FatalBeanException;
+import org.springframework.util.*;
 
 import javax.annotation.Nullable;
 import java.beans.FeatureDescriptor;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -110,6 +109,40 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         ReflectionUtils.invokeMethod(propertyDescriptor.getWriteMethod(), bean, propertyValue);
     }
 
+    public static void copyProperties(Object source, Object target, BiPredicate<String, Object> excludedProperty) throws BeansException {
+        Assert.notNull(source, "Source must not be null");
+        Assert.notNull(target, "Target must not be null");
+
+        PropertyDescriptor[] targetPds = getPropertyDescriptors(target.getClass());
+
+        for (PropertyDescriptor targetPd : targetPds) {
+            Method writeMethod = targetPd.getWriteMethod();
+            if (writeMethod != null) {
+                PropertyDescriptor sourcePd = getPropertyDescriptor(source.getClass(), targetPd.getName());
+                if (sourcePd != null) {
+                    Method readMethod = sourcePd.getReadMethod();
+                    if (readMethod != null && ClassUtils.isAssignable(writeMethod.getParameterTypes()[0], readMethod.getReturnType())) {
+                        try {
+                            if (!Modifier.isPublic(readMethod.getDeclaringClass().getModifiers())) {
+                                readMethod.setAccessible(true);
+                            }
+                            Object value = readMethod.invoke(source);
+                            if (excludedProperty == null || !excludedProperty.test(sourcePd.getName(), value)) {
+                                if (!Modifier.isPublic(writeMethod.getDeclaringClass().getModifiers())) {
+                                    writeMethod.setAccessible(true);
+                                }
+                                writeMethod.invoke(target, value);
+                            }
+                        } catch (Throwable ex) {
+                            throw new FatalBeanException(
+                                    "Could not copy property '" + targetPd.getName() + "' from source to target", ex);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * convert to {@link Map}, property name as key, property value as value
      *
@@ -199,7 +232,7 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
     /**
      * convert to a instance of targetClass
      *
-     * @deprecated
+     * @deprecated use {@link #map(Object, Class)} instead
      */
     public static <T> T toSubclass(Object source, Class<T> targetClass) {
         return map(source, targetClass);

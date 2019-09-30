@@ -4,5 +4,5 @@ dependencies {
     compile project(':peacetrue-core')
     compile 'ch.qos.logback:logback-classic'
     compile 'org.projectlombok:lombok'
-    provided 'com.fasterxml.jackson.core:jackson-databind'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
 }
