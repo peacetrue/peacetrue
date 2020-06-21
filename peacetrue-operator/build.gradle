@@ -1,0 +1,7 @@
+dependencies {
+    implementation "org.slf4j:slf4j-api"
+    implementation project(':peacetrue-core')
+    implementation 'org.aspectj:aspectjweaver'
+    compileOnly "org.springframework.boot:spring-boot-autoconfigure"
+}
+
