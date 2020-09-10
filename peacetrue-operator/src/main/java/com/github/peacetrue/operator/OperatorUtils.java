@@ -12,10 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class OperatorUtils {
 
-    public static final OperatorCapableImpl<String> OPERATOR = new OperatorCapableImpl<>();
+    public static final OperatorCapableImpl<Long> OPERATOR = new OperatorCapableImpl<>();
 
     static {
-        OPERATOR.setOperatorId("system");
+        OPERATOR.setOperatorId(1L);
         OPERATOR.setOperatorName("系统");
     }
 

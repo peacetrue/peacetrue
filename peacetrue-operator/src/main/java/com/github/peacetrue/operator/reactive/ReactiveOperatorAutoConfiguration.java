@@ -1,8 +1,8 @@
 package com.github.peacetrue.operator.reactive;
 
+import com.github.peacetrue.core.IdCapable;
 import com.github.peacetrue.core.OperatorCapable;
 import com.github.peacetrue.core.OperatorCapableImpl;
-import com.github.peacetrue.operator.OperatorUtils;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.PointcutAdvisor;
@@ -28,18 +28,25 @@ import org.springframework.security.core.context.SecurityContext;
 @ComponentScan(basePackageClasses = ReactiveOperatorAutoConfiguration.class)
 public class ReactiveOperatorAutoConfiguration {
 
+    @SuppressWarnings("unchecked")
     @Bean
     @ConditionalOnMissingBean(ReactiveOperatorSupplier.class)
     public ReactiveOperatorSupplier reactiveOperatorSupplier() {
         return () -> ReactiveSecurityContextHolder.getContext()
                 .map(SecurityContext::getAuthentication)
-                .<OperatorCapable<?>>map(authentication -> {
+                .map(authentication -> {
+                    if (authentication.getPrincipal() instanceof IdCapable) {
+                        OperatorCapableImpl<Long> operator = new OperatorCapableImpl<>();
+                        operator.setOperatorId(((IdCapable<Long>) authentication.getPrincipal()).getId());
+                        operator.setOperatorName(authentication.getName());
+                        return operator;
+                    }
+
                     OperatorCapableImpl<String> operator = new OperatorCapableImpl<>();
                     operator.setOperatorId(authentication.getName());
-                    operator.setOperatorName(authentication.getPrincipal().toString());
+//                    operator.setOperatorName(authentication.getPrincipal().toString());
                     return operator;
-                })
-                .defaultIfEmpty(OperatorUtils.OPERATOR);
+                });
     }
 
     @Bean
