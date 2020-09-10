@@ -1,0 +1,9 @@
+
+---
+
+spring.profiles: exist
+
+peacetrue:
+  static-resources:
+    '[/test/**]': file:/Users/xiayx/Documents/Projects/peacetrue-microservice/docs/antora/modules/ROOT/pages/
+    '[/summarize/**]': file:/root/peacetrue/document-antora/public/

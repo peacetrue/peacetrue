@@ -234,6 +234,7 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
      *
      * @deprecated use {@link #map(Object, Class)} instead
      */
+    @Deprecated
     public static <T> T toSubclass(Object source, Class<T> targetClass) {
         return map(source, targetClass);
     }

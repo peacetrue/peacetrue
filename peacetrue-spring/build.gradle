@@ -1,19 +1,25 @@
 description 'An extension module of Spring'
-version '1.1.2-SNAPSHOT'
 
 dependencies {
-    implementation project(':peacetrue-core')
-    implementation "com.google.code.findbugs:jsr305"
+    api project(':peacetrue-core')
+    api "com.google.code.findbugs:jsr305"
     compileOnly "org.springframework:spring-beans"
     compileOnly "org.springframework:spring-context"
     compileOnly "org.springframework:spring-web"
+    compileOnly "org.springframework:spring-tx"
     compileOnly "org.springframework:spring-webmvc"// used by ServletModelAttributeMethodProcessor
+    compileOnly "org.springframework:spring-webflux"// used by StaticResourceAutoConfiguration
     compileOnly "javax.servlet:javax.servlet-api"  // used by ServletModelAttributeMethodProcessor
+    compileOnly "org.springframework.data:spring-data-relational" //used by ConcreteClassArgumentResolver
     compileOnly "org.springframework.boot:spring-boot-autoconfigure" //used by ConcreteClassArgumentResolver
+    compileOnly "org.springframework.security:spring-security-web" //used by WebFilterExchangeUtils
+    compileOnly 'io.projectreactor:reactor-core' //used by WebFilterExchangeUtils
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-    testCompile "org.apache.commons:commons-lang3"
-    testCompile "org.springframework:spring-beans"
-    testCompile "org.springframework:spring-context"
-    testCompile "org.springframework:spring-web"
+    testImplementation "org.apache.commons:commons-lang3"
+    testImplementation "org.springframework:spring-beans"
+    testImplementation "org.springframework:spring-context"
+    testImplementation "org.springframework:spring-web"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework:spring-webflux"
 }

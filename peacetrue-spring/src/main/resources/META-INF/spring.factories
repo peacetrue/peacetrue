@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.github.peacetrue.spring.web.method.support.ConcreteClassAutoConfiguration
+  com.github.peacetrue.spring.web.method.support.ConcreteClassAutoConfiguration,\
+  com.github.peacetrue.spring.staticresources.StaticResourceAutoConfiguration
