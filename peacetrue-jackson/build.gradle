@@ -1,11 +1,10 @@
-version '1.2.2-SNAPSHOT'
 
 dependencies {
-    compile project(":peacetrue-core")
-    compile "com.google.code.findbugs:jsr305"//@Nullable注解
-    compile 'com.fasterxml.jackson.core:jackson-databind'
+    implementation project(":peacetrue-core")
+    implementation "com.google.code.findbugs:jsr305"//@Nullable注解
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'org.springframework:spring-beans'
     compileOnly 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
 
-    testCompile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+    testImplementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
 }

@@ -185,7 +185,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.peacetrue:peacetrue-associate:1.0-RELEASE'
+    implementation 'com.github.peacetrue:peacetrue-associate:1.0-RELEASE'
 }
 ----
 

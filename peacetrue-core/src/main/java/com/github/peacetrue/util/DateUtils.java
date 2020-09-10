@@ -3,10 +3,12 @@ package com.github.peacetrue.util;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 /**
  * 日期工具类
@@ -18,6 +20,9 @@ import java.util.function.Consumer;
  * @see LocalDateTime
  */
 public abstract class DateUtils extends DateTimeFormatterUtils {
+
+    public static final UnaryOperator<LocalDateTime> DATE_FLOOR_INCLUDE = localDateTime -> localDateTime.truncatedTo(ChronoUnit.DAYS);
+    public static final UnaryOperator<LocalDateTime> DATE_CELL_EXCLUDE = localDateTime -> localDateTime.truncatedTo(ChronoUnit.DAYS).plusDays(1);
 
     public static Date fromLocalDateTime(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
@@ -44,6 +49,7 @@ public abstract class DateUtils extends DateTimeFormatterUtils {
         calendar.setTime(date);
         return calendar;
     }
+
 
     /**
      * 获取起止范围之间的日期

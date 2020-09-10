@@ -1,4 +1,4 @@
-package com.github.peacetrue.security;
+package com.github.peacetrue.spring.security;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;

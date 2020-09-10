@@ -1,9 +1,9 @@
 description 'An extension module of JPA'
 
 dependencies {
-    compile "com.google.code.findbugs:jsr305"
-    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api"
-    testCompile 'org.hibernate:hibernate-core'
-    testCompile 'com.h2database:h2'
-    testCompile project(':peacetrue-core')
+    implementation "com.google.code.findbugs:jsr305"
+    implementation "org.hibernate.javax.persistence:hibernate-jpa-2.1-api"
+    testImplementation 'org.hibernate:hibernate-core'
+    testImplementation 'com.h2database:h2'
+    testImplementation project(':peacetrue-core')
 }

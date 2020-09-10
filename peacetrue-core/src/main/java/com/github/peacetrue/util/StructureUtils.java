@@ -92,10 +92,10 @@ public abstract class StructureUtils {
         return containsName(Arrays.asList(array), name);
     }
 
-    public boolean equals(IdCapable source, @Nullable Object target) {
+    public boolean equals(IdCapable<?> source, @Nullable Object target) {
         if (source == target) return true;
         if (!(target instanceof IdCapable)) return false;
-        return equals(source, (IdCapable) target);
+        return equals(source, (IdCapable<?>) target);
     }
 
     public boolean equals(@Nullable IdCapable<?> source, @Nullable IdCapable<?> target) {

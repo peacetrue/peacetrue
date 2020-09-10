@@ -1,12 +1,12 @@
 dependencies {
-    compile "org.projectlombok:lombok"
-    compile "javax.annotation:javax.annotation-api"
-    compile 'org.springframework.data:spring-data-redis'
-    compile 'redis.clients:jedis'
-    compile 'org.springframework.boot:spring-boot-starter-aop'
+    implementation "org.projectlombok:lombok"
+    implementation "javax.annotation:javax.annotation-api"
+    implementation 'org.springframework.data:spring-data-redis'
+    implementation 'redis.clients:jedis'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
     annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
 
-    testCompile 'org.springframework:spring-test'
-    testCompile 'org.springframework.boot:spring-boot-test'
-    testCompile 'org.springframework.boot:spring-boot-starter-data-redis'
+    testImplementation 'org.springframework:spring-test'
+    testImplementation 'org.springframework.boot:spring-boot-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }

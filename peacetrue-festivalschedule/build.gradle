@@ -1,9 +1,9 @@
 description 'to provide festival schedule published by chinese government'
 
 dependencies {
-    compile project(':peacetrue-core')
-    compile "org.springframework:spring-core"
-    compile "org.slf4j:slf4j-api"
-    testCompile "ch.qos.logback:logback-classic"
+    implementation project(':peacetrue-core')
+    implementation "org.springframework:spring-core"
+    implementation "org.slf4j:slf4j-api"
+    testImplementation "ch.qos.logback:logback-classic"
 
 }

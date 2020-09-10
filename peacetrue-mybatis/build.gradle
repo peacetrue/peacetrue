@@ -1,27 +1,25 @@
 description 'extend mybatis'
 
-version '1.1.4-SNAPSHOT'
-
 dependencies {
 
     compileOnly project(':peacetrue-core')
     compileOnly 'org.springframework:spring-core'
-    compile 'com.google.guava:guava'
+    implementation 'com.google.guava:guava'
     compileOnly 'org.mybatis:mybatis'
     compileOnly 'org.mybatis.dynamic-sql:mybatis-dynamic-sql'
     compileOnly 'com.github.pagehelper:pagehelper'
-    compileOnly 'com.github.peacetrue:spring-data-commons-page:1.0-RELEASE'
+    compileOnly project(':spring-data-commons-page')
 
-    testCompile 'org.mybatis:mybatis'
-    testCompile 'org.mybatis:mybatis-spring'
-    testCompile 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
-    testCompile 'com.github.pagehelper:pagehelper'
-    testCompile 'com.github.pagehelper:pagehelper-spring-boot-starter'
-    testCompile 'org.mybatis.dynamic-sql:mybatis-dynamic-sql'
-    testCompile 'org.springframework.boot:spring-boot-autoconfigure'
-    testCompile 'org.springframework.data:spring-data-commons'
-    testCompile 'com.google.guava:guava'
-    testCompile 'com.h2database:h2'
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mybatis:mybatis'
+    testImplementation 'org.mybatis:mybatis-spring'
+    testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
+    testImplementation 'com.github.pagehelper:pagehelper'
+    testImplementation 'com.github.pagehelper:pagehelper-spring-boot-starter'
+    testImplementation 'org.mybatis.dynamic-sql:mybatis-dynamic-sql'
+    testImplementation 'org.springframework.boot:spring-boot-autoconfigure'
+    testImplementation 'org.springframework.data:spring-data-commons'
+    testImplementation 'com.google.guava:guava'
+    testImplementation 'com.h2database:h2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }

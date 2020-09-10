@@ -6,6 +6,7 @@ package com.github.peacetrue.core;
  * @author xiayx
  * @deprecated 更改了目录，请使用 {@link com.github.peacetrue.flow.Tense}
  */
+@Deprecated
 public enum Tense implements CodeCapable, NameCapable {
 
     TODO("todo", "待执行"),

@@ -1,0 +1,4 @@
+# disable default ReactiveFeignBuilder, if not work copy this into bootstrap.yml or application.yml
+reactive:
+  feign:
+    jetty: true

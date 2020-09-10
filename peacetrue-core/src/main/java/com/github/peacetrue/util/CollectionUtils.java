@@ -13,7 +13,7 @@ import java.util.function.UnaryOperator;
  */
 public abstract class CollectionUtils {
 
-    private static Map<Class, Object[]> EMPTY_ARRAY = new HashMap<>();
+    private static final Map<Class<?>, Object[]> EMPTY_ARRAY = new HashMap<>();
 
     /**
      * Returns an empty array (immutable).

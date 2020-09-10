@@ -15,6 +15,7 @@ public abstract class AssertUtils {
      * @return the throwable
      * @deprecated used {@link #assertException(String, ThrowableExecutor)} instead
      */
+    @Deprecated
     public static Throwable assertException(ThrowableExecutor executor, String message) {
         return assertException(message, executor);
     }

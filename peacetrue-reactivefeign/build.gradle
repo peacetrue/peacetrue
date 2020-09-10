@@ -1,0 +1,8 @@
+dependencies {
+    implementation 'org.springframework.data:spring-data-commons'
+    implementation 'org.springframework.cloud:spring-cloud-openfeign-core'
+    implementation 'org.springframework.boot:spring-boot-starter-json'
+    implementation 'com.playtika.reactivefeign:feign-reactor-core'
+    implementation 'com.playtika.reactivefeign:feign-reactor-webclient'
+    implementation 'com.playtika.reactivefeign:feign-reactor-spring-configuration'
+}

@@ -1,18 +1,18 @@
 description 'used to set associated extend property value'
 
 dependencies {
-    compile "com.google.code.findbugs:jsr305"
-    compile project(':peacetrue-core')//for utils class
-    compile project(':peacetrue-spring')//for BeanUtils
-    compile "org.springframework:spring-beans"//autowire
-    compile "javax.annotation:javax.annotation-api"//autowire
+    api "com.google.code.findbugs:jsr305"
+    implementation project(':peacetrue-core')//for utils class
+    implementation project(':peacetrue-spring')//for BeanUtils
+    implementation "org.springframework:spring-beans"//autowire
+    implementation "javax.annotation:javax.annotation-api"//autowire
     compileOnly project(':peacetrue-jpa')//for jpa support
     compileOnly "org.springframework:spring-expression" //for support
 
-    testCompile project(':peacetrue-jpa')
-    testCompile "org.springframework.boot:spring-boot-starter-test"
-    testCompile "org.springframework.boot:spring-boot-starter-data-jpa"
-    testCompile "org.springframework.boot:spring-boot-starter-validation"
-    testCompile "com.h2database:h2"
+    testImplementation project(':peacetrue-jpa')
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    testImplementation "org.springframework.boot:spring-boot-starter-validation"
+    testImplementation "com.h2database:h2"
 }
 

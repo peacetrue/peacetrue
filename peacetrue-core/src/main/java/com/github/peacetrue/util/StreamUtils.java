@@ -1,5 +1,6 @@
 package com.github.peacetrue.util;
 
+import java.util.Collection;
 import java.util.function.*;
 
 /**
@@ -8,6 +9,7 @@ import java.util.function.*;
  * @author xiayx
  */
 public abstract class StreamUtils {
+
     /**
      * convert {@link Consumer} to {@link BiConsumer}
      *
@@ -79,5 +81,17 @@ public abstract class StreamUtils {
         };
     }
 
+    /** return the same value as first argument */
+    public static <T, U> BiFunction<T, U, T> toBiFunction(BiConsumer<T, U> biConsumer) {
+        return (t, u) -> {
+            biConsumer.accept(t, u);
+            return t;
+        };
+    }
+
+    /** reduce to collection */
+    public static <T extends Collection<U>, U> BiFunction<T, U, T> reduceToCollection() {
+        return toBiFunction(Collection::add);
+    }
 
 }
