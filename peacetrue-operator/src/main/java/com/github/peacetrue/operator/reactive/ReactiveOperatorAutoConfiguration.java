@@ -11,6 +11,7 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,8 +26,15 @@ import org.springframework.security.core.context.SecurityContext;
  **/
 @ConditionalOnClass(name = "reactor.core.publisher.Mono")
 @Configuration(proxyBeanMethods = false)
+@EnableConfigurationProperties(ReactiveOperatorProperties.class)
 @ComponentScan(basePackageClasses = ReactiveOperatorAutoConfiguration.class)
 public class ReactiveOperatorAutoConfiguration {
+
+    private ReactiveOperatorProperties properties;
+
+    public ReactiveOperatorAutoConfiguration(ReactiveOperatorProperties properties) {
+        this.properties = properties;
+    }
 
     @SuppressWarnings("unchecked")
     @Bean
@@ -63,7 +71,7 @@ public class ReactiveOperatorAutoConfiguration {
     @Bean
     public Pointcut reactiveOperatorPointcut() {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        pointcut.setExpression("execution(* com.github.peacetrue..*Service.*(*,..))");
+        pointcut.setExpression(properties.getPointcut().getExpression());
         pointcut.setParameterTypes(OperatorCapable.class);
         return pointcut;
     }

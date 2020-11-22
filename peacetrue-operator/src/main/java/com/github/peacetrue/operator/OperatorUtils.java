@@ -4,6 +4,8 @@ import com.github.peacetrue.core.OperatorCapable;
 import com.github.peacetrue.core.OperatorCapableImpl;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
+
 /**
  * 操作者工具类
  *
@@ -17,6 +19,12 @@ public abstract class OperatorUtils {
     static {
         OPERATOR.setOperatorId(1L);
         OPERATOR.setOperatorName("系统");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void setOperators(Object[] operators, OperatorCapable<?> defaultOperator) {
+        Arrays.stream(operators).filter(arg -> arg instanceof OperatorCapableImpl)
+                .forEach(arg -> OperatorUtils.setOperator((OperatorCapableImpl<Object>) arg, (OperatorCapable<Object>) defaultOperator));
     }
 
     @SuppressWarnings("unchecked")
