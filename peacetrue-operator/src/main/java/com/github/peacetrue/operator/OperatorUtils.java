@@ -17,7 +17,7 @@ public abstract class OperatorUtils {
     public static final OperatorCapableImpl<Long> OPERATOR = new OperatorCapableImpl<>();
 
     static {
-        OPERATOR.setOperatorId(1L);
+        OPERATOR.setOperatorId(0L);
         OPERATOR.setOperatorName("系统");
     }
 
