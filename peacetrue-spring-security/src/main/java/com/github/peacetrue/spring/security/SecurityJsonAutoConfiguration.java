@@ -2,6 +2,7 @@ package com.github.peacetrue.spring.security;
 
 import com.github.peacetrue.spring.web.cors.CorsConfigurationUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,16 +41,15 @@ public class SecurityJsonAutoConfiguration {
         return new SecurityJsonServerHttpSecurityConfigurer();
     }
 
-    @Bean
-    @Order(Ordered.LOWEST_PRECEDENCE - 1)
-    @ConditionalOnMissingBean(name = "anyExchangeAuthenticatedServerHttpSecurityConfigurer")
-    public ServerHttpSecurityConfigurer anyExchangeAuthenticatedServerHttpSecurityConfigurer() {
-        return http -> http
-                .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/favicon.ico").permitAll()
-                        .anyExchange().authenticated()
-                );
-    }
+//    @Bean
+//    @Order(Ordered.LOWEST_PRECEDENCE - 1)
+//    @ConditionalOnMissingBean(name = "anyExchangeAuthenticatedServerHttpSecurityConfigurer")
+//    public ServerHttpSecurityConfigurer anyExchangeAuthenticatedServerHttpSecurityConfigurer() {
+//        return http -> http
+//                .authorizeExchange(exchanges -> exchanges
+//                        .anyExchange().authenticated()
+//                );
+//    }
 
     @EnableWebFluxSecurity
     @ConditionalOnMissingBean(SecurityWebFilterChain.class)

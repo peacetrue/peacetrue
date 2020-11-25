@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
 import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.boot.actuate.info.InfoEndpoint;
+import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.WebAttributes;
@@ -46,12 +47,14 @@ public class SecurityJsonServerHttpSecurityConfigurer implements ServerHttpSecur
         http
                 .authorizeExchange(exchanges -> exchanges
                         .matchers(EndpointRequest.to(HealthEndpoint.class, InfoEndpoint.class)).permitAll()
+                        .matchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .pathMatchers(ignoredUrls.toArray(new String[0])).permitAll()
+                        .anyExchange().authenticated()
                 )
                 .csrf().disable()
                 .cors().configurationSource(corsConfigurationSource)
                 .and()
-                .httpBasic(withDefaults())//for SBA
+//                .httpBasic(withDefaults())//for SBA
                 .formLogin()
                 .authenticationEntryPoint((exchange, e) -> dispatcherHandler.handle(ServerWebExchangeUtils.mutateRequestPath(exchange, properties.getUnauthorizedUrl())))
                 .requiresAuthenticationMatcher(ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, properties.getLoginUrl()))
