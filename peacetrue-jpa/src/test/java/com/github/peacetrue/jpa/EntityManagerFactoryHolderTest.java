@@ -1,8 +1,7 @@
 package com.github.peacetrue.jpa;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * tests for {@link EntityManagerFactoryHolder}
@@ -11,7 +10,6 @@ import org.junit.Test;
  */
 public class EntityManagerFactoryHolderTest extends JpaTest {
 
-    @Before
     public void setUp() throws Exception {
         super.setUp();
         EntityManagerFactoryHolder.setEntityManagerFactory(entityManagerFactory);
@@ -19,7 +17,7 @@ public class EntityManagerFactoryHolderTest extends JpaTest {
 
     @Test
     public void getEntityManagerFactory() throws Exception {
-        Assert.assertEquals(entityManagerFactory, EntityManagerFactoryHolder.getEntityManagerFactory());
+        Assertions.assertEquals(entityManagerFactory, EntityManagerFactoryHolder.getEntityManagerFactory());
     }
 
 }

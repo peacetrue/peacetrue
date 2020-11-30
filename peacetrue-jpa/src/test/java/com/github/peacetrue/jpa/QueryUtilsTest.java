@@ -1,7 +1,7 @@
 package com.github.peacetrue.jpa;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -17,7 +17,7 @@ public class QueryUtilsTest extends JpaTest {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         Query query = entityManager.createQuery("from UnNamed");
         Object result = QueryUtils.getSingleResult(query);
-        Assert.assertNull(result);
+        Assertions.assertNull(result);
     }
 
 }
