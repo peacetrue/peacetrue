@@ -13,8 +13,8 @@ import com.github.peacetrue.jackson.xml.XmlRootSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
@@ -61,7 +61,7 @@ public class XmlRootSerializerTest {
     @Test
     public void xmlBodySerializer() throws Exception {
         String string4 = xmlMapper.writeValueAsString(new Bean1<>(new Bean2("name")));
-        Assert.assertEquals("<?xml version='1.0' encoding='UTF-8'?>\n" +
+        Assertions.assertEquals("<?xml version='1.0' encoding='UTF-8'?>\n" +
                 "<Bean1>\n" +
                 "  <body>\n" +
                 "    <name>name</name>\n" +
@@ -69,7 +69,7 @@ public class XmlRootSerializerTest {
                 "</Bean1>\n", string4);
 
         String string50 = xmlMapper.writeValueAsString(new Bean3<>(new Bean2("name")));
-        Assert.assertEquals("<?xml version='1.0' encoding='UTF-8'?>\n" +
+        Assertions.assertEquals("<?xml version='1.0' encoding='UTF-8'?>\n" +
                 "<Bean3>\n" +
                 "  <body>\n" +
                 "    <Bean2>\n" +
@@ -79,7 +79,7 @@ public class XmlRootSerializerTest {
                 "</Bean3>\n", string50);
 
         String string5 = xmlMapper.writeValueAsString(new Bean3<>(Arrays.asList(new Bean2("name"), new Bean2("name"))));
-        Assert.assertEquals("<?xml version='1.0' encoding='UTF-8'?>\n" +
+        Assertions.assertEquals("<?xml version='1.0' encoding='UTF-8'?>\n" +
                 "<Bean3>\n" +
                 "  <body>\n" +
                 "    <Bean2>\n" +

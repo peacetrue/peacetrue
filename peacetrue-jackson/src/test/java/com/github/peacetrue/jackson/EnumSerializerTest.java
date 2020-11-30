@@ -1,7 +1,9 @@
 package com.github.peacetrue.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
+import lombok.Data;
+import lombok.Getter;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author xiayx
@@ -40,7 +42,7 @@ public class EnumSerializerTest {
     public void objectSerialize() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.addMixIn(Enum.class, EnumMixIn.ObjectSerializer.class);
-        String string = objectMapper.writeValueAsString(RandomEnum.values());
+        String string = objectMapper.writeValueAsString(RandomEnum.values()[0]);
         System.out.println(string);
     }
 
