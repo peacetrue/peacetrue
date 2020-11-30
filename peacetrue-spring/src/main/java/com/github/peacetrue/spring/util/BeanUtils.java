@@ -110,9 +110,6 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
     }
 
     public static void copyProperties(Object source, Object target, BiPredicate<String, Object> excludedProperty) throws BeansException {
-        Assert.notNull(source, "Source must not be null");
-        Assert.notNull(target, "Target must not be null");
-
         PropertyDescriptor[] targetPds = getPropertyDescriptors(target.getClass());
 
         for (PropertyDescriptor targetPd : targetPds) {
