@@ -49,7 +49,7 @@ public class SecurityJsonServerHttpSecurityConfigurer implements ServerHttpSecur
                         .matchers(EndpointRequest.to(HealthEndpoint.class, InfoEndpoint.class)).permitAll()
                         .matchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .pathMatchers(ignoredUrls.toArray(new String[0])).permitAll()
-                        .anyExchange().authenticated()
+//                        .anyExchange().authenticated()
                 )
                 .csrf().disable()
                 .cors().configurationSource(corsConfigurationSource)

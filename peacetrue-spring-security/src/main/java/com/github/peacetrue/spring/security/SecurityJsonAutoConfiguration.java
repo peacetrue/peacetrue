@@ -41,15 +41,15 @@ public class SecurityJsonAutoConfiguration {
         return new SecurityJsonServerHttpSecurityConfigurer();
     }
 
-//    @Bean
-//    @Order(Ordered.LOWEST_PRECEDENCE - 1)
-//    @ConditionalOnMissingBean(name = "anyExchangeAuthenticatedServerHttpSecurityConfigurer")
-//    public ServerHttpSecurityConfigurer anyExchangeAuthenticatedServerHttpSecurityConfigurer() {
-//        return http -> http
-//                .authorizeExchange(exchanges -> exchanges
-//                        .anyExchange().authenticated()
-//                );
-//    }
+    @Bean
+    @Order(Ordered.LOWEST_PRECEDENCE - 1)
+    @ConditionalOnMissingBean(name = "anyExchangeAuthenticatedServerHttpSecurityConfigurer")
+    public ServerHttpSecurityConfigurer anyExchangeAuthenticatedServerHttpSecurityConfigurer() {
+        return http -> http
+                .authorizeExchange(exchanges -> exchanges
+                        .anyExchange().authenticated()
+                );
+    }
 
     @EnableWebFluxSecurity
     @ConditionalOnMissingBean(SecurityWebFilterChain.class)
