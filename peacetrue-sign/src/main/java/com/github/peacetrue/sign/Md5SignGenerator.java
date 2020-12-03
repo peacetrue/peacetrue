@@ -1,6 +1,6 @@
 package com.github.peacetrue.sign;
 
-import com.github.peacetrue.security.MessageDigestUtils;
+import com.github.peacetrue.spring.security.MessageDigestUtils;
 
 /**
  * md5签名生成器

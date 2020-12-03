@@ -1,7 +1,7 @@
 package com.github.peacetrue.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
@@ -16,8 +16,8 @@ public class CollectorUtilsTest {
     public void reducingToLast() throws Exception {
         String[] array = {"1", "2"};
         String defaults = "0";
-        Assert.assertEquals(array[1], Arrays.stream(array).collect(CollectorUtils.reducingToLast(defaults)));
-        Assert.assertEquals(defaults, Arrays.stream(new String[]{}).collect(CollectorUtils.reducingToLast(defaults)));
+        Assertions.assertEquals(array[1], Arrays.stream(array).collect(CollectorUtils.reducingToLast(defaults)));
+        Assertions.assertEquals(defaults, Arrays.stream(new String[]{}).collect(CollectorUtils.reducingToLast(defaults)));
     }
 
 }

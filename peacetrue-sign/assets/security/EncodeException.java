@@ -1,4 +1,4 @@
-package com.github.peacetrue.security;
+package com.github.peacetrue.spring.security;
 
 /**
  * 编码异常

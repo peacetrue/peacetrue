@@ -2,7 +2,7 @@ package com.github.peacetrue.lock;
 
 import com.github.peacetrue.lock.client.DTO;
 import com.github.peacetrue.lock.client.LockClientServiceImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.aop.aspectj.AspectJAdviceParameterNameDiscoverer;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.expression.EvaluationContext;

@@ -1,8 +1,8 @@
 description '请求签名'
 
 dependencies {
-    compile project(':peacetrue-core')
-    compile 'ch.qos.logback:logback-classic'
-    compile 'org.projectlombok:lombok'
+    implementation project(':peacetrue-core')
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.projectlombok:lombok'
     compileOnly 'com.fasterxml.jackson.core:jackson-databind'
 }

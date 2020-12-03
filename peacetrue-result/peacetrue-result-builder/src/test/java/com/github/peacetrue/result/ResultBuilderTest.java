@@ -1,7 +1,7 @@
 package com.github.peacetrue.result;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.MessageSourceAutoConfiguration;
@@ -38,17 +38,17 @@ public class ResultBuilderTest {
     @Test
     public void success() throws Exception {
         Result success = resultBuilder.success();
-        Assert.assertEquals("0", success.getCode());
+        Assertions.assertEquals("0", success.getCode());
         String expected = messageSource.getMessage("Result.success", null, LocaleContextHolder.getLocale());
-        Assert.assertEquals(expected, success.getMessage());
+        Assertions.assertEquals(expected, success.getMessage());
     }
 
     @Test
     public void error() throws Exception {
         Result error = resultBuilder.failure();
-        Assert.assertEquals("1", error.getCode());
+        Assertions.assertEquals("1", error.getCode());
         String expected = messageSource.getMessage("Result.failure", null, LocaleContextHolder.getLocale());
-        Assert.assertEquals(expected, error.getMessage());
+        Assertions.assertEquals(expected, error.getMessage());
     }
 
 }

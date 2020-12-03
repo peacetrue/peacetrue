@@ -1,7 +1,7 @@
 package com.github.peacetrue.festivalschedule;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Year;
 import java.util.List;
@@ -23,7 +23,7 @@ public class PropertiesFestivalScheduleProviderTest {
     @Test
     public void getFestivalSchedules() throws Exception {
         List<FestivalSchedule> festivalSchedules = provider.getFestivalSchedules(Year.of(2018));
-        Assert.assertEquals(7, festivalSchedules.size());
+        Assertions.assertEquals(7, festivalSchedules.size());
     }
 
 }

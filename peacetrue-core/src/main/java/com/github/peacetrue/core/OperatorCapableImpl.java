@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author xiayx
  */
 @Data
-public class OperatorCapableImpl<Id> implements OperatorCapable<Id>, Serializable {
+public class OperatorCapableImpl<Id> implements OperatorCapable<Id>, OperatorAware<Id>, Serializable {
 
     private static final long serialVersionUID = 0L;
 

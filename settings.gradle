@@ -1,45 +1,48 @@
 rootProject.name = 'peacetrue'
 
 include 'peacetrue-core'
-include 'peacetrue-asm' 
+include 'peacetrue-asm'
 include 'peacetrue-jpa'
 include 'peacetrue-spring'
-include 'peacetrue-spring'
-include 'peacetrue-enum'
+//include 'peacetrue-enum'
 include 'peacetrue-lock'
-include 'peacetrue-spring-incubate'
-include 'peacetrue-tree'
+//include 'peacetrue-spring-incubate'
+//include 'peacetrue-tree'
 //include 'peacetrue-configuration'
 
 include 'peacetrue-result'
-include 'peacetrue-result:peacetrue-result-builder'
-include 'peacetrue-result:peacetrue-result-exception'
-include 'peacetrue-result:peacetrue-result-exception-support'
-include 'peacetrue-result:peacetrue-result-web'
-include 'peacetrue-result:peacetrue-result-extend'
+
+//include 'peacetrue-result:peacetrue-result-builder'
+//include 'peacetrue-result:peacetrue-result-exception'
+//include 'peacetrue-result:peacetrue-result-exception-support'
+//include 'peacetrue-result:peacetrue-result-web'
+//include 'peacetrue-result:peacetrue-result-extend'
 
 //include 'peacetrue-uuid'
 //include 'peacetrue-random'
 
-include 'peacetrue-mybatis'
+//include 'peacetrue-mybatis'
 
-include 'peacetrue-associate'
+//include 'peacetrue-associate'
 include 'peacetrue-jackson'
-include 'peacetrue-statistics'
-include 'peacetrue-group'
+//include 'peacetrue-statistics'
+//include 'peacetrue-group'
 
 //include 'peacetrue-festivalschedule'
 //include 'peacetrue-workrest'
-include 'peacetrue-sign'
-include 'peacetrue-sign:peacetrue-sign-appender'
-include 'peacetrue-sign:peacetrue-sign-validator'
+//include 'peacetrue-sign'
+//include 'peacetrue-sign:peacetrue-sign-appender'
+//include 'peacetrue-sign:peacetrue-sign-validator'
 include 'peacetrue-export'
+include 'peacetrue-imports'
 //include 'peacetrue-configuration'
 //include 'peacetrue-hibernate'
 //include 'peacetrue-operation'
 
 include 'peacetrue-dubbo'
-
+include 'peacetrue-operator'
+include 'peacetrue-spring-security'
+include 'peacetrue-reactivefeign'
 //incubate
 
 //deprecation 

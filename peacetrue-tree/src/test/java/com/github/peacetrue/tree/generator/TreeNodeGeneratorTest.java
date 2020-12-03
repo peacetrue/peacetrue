@@ -1,7 +1,7 @@
 package com.github.peacetrue.tree.generator;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class TreeNodeGeneratorTest {
                     }
                 });
         List<Integer> integers = generator.generate();
-        Assert.assertEquals(integers.size(), (int) geometricSum(3, 3));
+        Assertions.assertEquals(integers.size(), (int) geometricSum(3, 3));
     }
 
 }

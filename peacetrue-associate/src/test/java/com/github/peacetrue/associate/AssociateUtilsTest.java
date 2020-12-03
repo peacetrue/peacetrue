@@ -2,9 +2,9 @@ package com.github.peacetrue.associate;
 
 import com.github.peacetrue.associate.support.AssociatedExpressionCollectionAssociatedSource;
 import com.github.peacetrue.associate.support.AssociatedPropertyCollectionAssociatedSource;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -63,7 +63,7 @@ public class AssociateUtilsTest {
         for (int i = 0; i < mains.size(); i++) {
             Associate main = mains.get(i);
             AssociateUtils.setAssociate(main, "associated", forAssociateObject, "associatedId");
-            Assert.assertEquals(associateds.get(i), main.getAssociated());
+            Assertions.assertEquals(associateds.get(i), main.getAssociated());
         }
     }
 
@@ -73,7 +73,7 @@ public class AssociateUtilsTest {
         for (int i = 0; i < mains.size(); i++) {
             Associate main = mains.get(i);
             AssociateUtils.setCollectionAssociate(main, "associateds", forAssociateObject, "associatedIds");
-            Assert.assertEquals(Collections.singletonList(associateds.get(i)), main.getAssociateds());
+            Assertions.assertEquals(Collections.singletonList(associateds.get(i)), main.getAssociateds());
         }
 
     }
@@ -84,7 +84,7 @@ public class AssociateUtilsTest {
         for (int i = 0; i < mains.size(); i++) {
             Associate main = mains.get(i);
             AssociateUtils.setAssociate(main, "associatedName", forAssociateName, "associatedId");
-            Assert.assertEquals(associateds.get(i).getName(), main.getAssociatedName());
+            Assertions.assertEquals(associateds.get(i).getName(), main.getAssociatedName());
         }
 
     }
@@ -95,7 +95,7 @@ public class AssociateUtilsTest {
         for (int i = 0; i < mains.size(); i++) {
             Associate main = mains.get(i);
             AssociateUtils.setCollectionAssociate(main, "associatedNames", forAssociateName, "associatedIds");
-            Assert.assertEquals(Collections.singletonList(associateds.get(i).getName()), main.getAssociatedNames());
+            Assertions.assertEquals(Collections.singletonList(associateds.get(i).getName()), main.getAssociatedNames());
         }
     }
 
@@ -106,7 +106,7 @@ public class AssociateUtilsTest {
         AssociateUtils.setAssociate(mains, "associated", forAssociateObject, "associatedId");
         for (int i = 0; i < mains.size(); i++) {
             Associate main = mains.get(i);
-            Assert.assertEquals(associateds.get(i), main.getAssociated());
+            Assertions.assertEquals(associateds.get(i), main.getAssociated());
         }
     }
 
@@ -116,7 +116,7 @@ public class AssociateUtilsTest {
         AssociateUtils.setCollectionAssociate(mains, "associateds", forAssociateObject, "associatedIds");
         for (int i = 0; i < mains.size(); i++) {
             Associate main = mains.get(i);
-            Assert.assertEquals(Collections.singletonList(associateds.get(i)), main.getAssociateds());
+            Assertions.assertEquals(Collections.singletonList(associateds.get(i)), main.getAssociateds());
         }
 
     }
@@ -127,7 +127,7 @@ public class AssociateUtilsTest {
         AssociateUtils.setAssociate(mains, "associatedName", forAssociateName, "associatedId");
         for (int i = 0; i < mains.size(); i++) {
             Associate main = mains.get(i);
-            Assert.assertEquals(associateds.get(i).getName(), main.getAssociatedName());
+            Assertions.assertEquals(associateds.get(i).getName(), main.getAssociatedName());
         }
     }
 
@@ -137,7 +137,7 @@ public class AssociateUtilsTest {
         AssociateUtils.setCollectionAssociate(mains, "associatedNames", forAssociateName, "associatedIds");
         for (int i = 0; i < mains.size(); i++) {
             Associate main = mains.get(i);
-            Assert.assertEquals(Collections.singletonList(associateds.get(i).getName()), main.getAssociatedNames());
+            Assertions.assertEquals(Collections.singletonList(associateds.get(i).getName()), main.getAssociatedNames());
         }
     }
 
@@ -151,7 +151,7 @@ public class AssociateUtilsTest {
         AssociateUtils.setCollectionAssociate(mains, "associatedNames", associatedExpressionCollectionAssociatedSource, "associatedIds");
         for (int i = 0; i < mains.size(); i++) {
             Associate main = mains.get(i);
-            Assert.assertEquals(Collections.singletonList(associateds.get(i).getName()), main.getAssociatedNames());
+            Assertions.assertEquals(Collections.singletonList(associateds.get(i).getName()), main.getAssociatedNames());
         }
     }
 
@@ -164,7 +164,7 @@ public class AssociateUtilsTest {
         AssociateUtils.setCollectionAssociate(mains, "associatedNames", associatedPropertyCollectionAssociatedSource, "associatedIds");
         for (int i = 0; i < mains.size(); i++) {
             Associate main = mains.get(i);
-            Assert.assertEquals(Collections.singletonList(associateds.get(i).getName()), main.getAssociatedNames());
+            Assertions.assertEquals(Collections.singletonList(associateds.get(i).getName()), main.getAssociatedNames());
         }
     }
 

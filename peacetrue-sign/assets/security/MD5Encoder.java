@@ -1,4 +1,4 @@
-package com.github.peacetrue.security;
+package com.github.peacetrue.spring.security;
 
 import java.security.MessageDigest;
 import java.util.Base64;

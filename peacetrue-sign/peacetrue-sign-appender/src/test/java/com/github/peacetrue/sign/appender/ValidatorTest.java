@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.peacetrue.result.DataResultImpl;
 import com.github.peacetrue.result.ResultType;
 import com.github.peacetrue.spring.util.BeanUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,7 +44,7 @@ public class ValidatorTest {
         if (response.getCode().equals(ResultType.success.name())) {
             ReflectionAssert.assertReflectionEquals(request, objectMapper.convertValue(response.getData(), Appender.class));
         } else {
-            Assert.assertEquals("000002", response.getCode());
+            Assertions.assertEquals("000002", response.getCode());
         }
     }
 

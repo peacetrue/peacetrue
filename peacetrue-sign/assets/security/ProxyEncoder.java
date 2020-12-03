@@ -1,4 +1,4 @@
-package com.github.peacetrue.security;
+package com.github.peacetrue.spring.security;
 
 import java.util.Objects;
 import java.util.function.Function;

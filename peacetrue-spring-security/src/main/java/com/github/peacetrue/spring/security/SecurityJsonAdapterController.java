@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,14 +34,7 @@ public class SecurityJsonAdapterController {
     public Mono<Object> loginSuccess(ServerWebExchange exchange) {
         log.debug("请求[{}]登陆成功", exchange.getRequest().getURI());
         return ReactiveSecurityContextHolder.getContext()
-                .map(context -> context.getAuthentication().getPrincipal())
-                .map(principal -> {
-                    if (principal instanceof User) {
-                        return User.withUserDetails((User) principal).password("fake").build();
-                    } else {
-                        return principal;
-                    }
-                });
+                .map(context -> context.getAuthentication().getPrincipal());
     }
 
     @RequestMapping("${peacetrue.spring.security.login-failure-url:/login/failure}")

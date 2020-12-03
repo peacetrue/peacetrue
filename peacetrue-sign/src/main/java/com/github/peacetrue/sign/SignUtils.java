@@ -1,6 +1,6 @@
 package com.github.peacetrue.sign;
 
-import com.github.peacetrue.security.MessageDigestUtils;
+import com.github.peacetrue.spring.security.MessageDigestUtils;
 
 import java.util.*;
 import java.util.function.BinaryOperator;

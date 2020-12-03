@@ -2,7 +2,7 @@ package com.github.peacetrue.spring.registercontroller;
 
 import org.springframework.aop.support.AopUtils;
 import org.springframework.core.MethodIntrospector;
-import org.springframework.util.Assert;
+import org.springframework.util.Assertions;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -24,7 +24,7 @@ public class ControllerRegistrableRMHM extends RequestMappingHandlerMapping {
 
     /** @see #detectHandlerMethods(Object) */
     public void registerController(Object controller, RequestMappingInfo requestMappingInfo) {
-        Assert.notNull(requestMappingInfo, "requestMappingInfo must not be null");
+        Assertions.notNull(requestMappingInfo, "requestMappingInfo must not be null");
 //      //TODO spring 5
 //        Class<?> handlerType = (controller instanceof String ?
 //                obtainApplicationContext().getType((String) controller) : controller.getClass());

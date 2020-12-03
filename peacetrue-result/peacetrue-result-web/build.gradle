@@ -1,21 +1,24 @@
 description 'used to provide web support'
 
 dependencies {
-    compile project(':peacetrue-spring')
-    compile project(':peacetrue-result:peacetrue-result-builder')
-    compile 'org.springframework:spring-webmvc'
-    compile "org.springframework.boot:spring-boot-autoconfigure"
+    api 'org.slf4j:slf4j-api'
+    implementation project(':peacetrue-result')
+    implementation "org.springframework:spring-context"
+    implementation project(':peacetrue-spring')
+    implementation project(':peacetrue-result:peacetrue-result-builder')
+    implementation 'org.springframework:spring-webmvc'
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-    compile "ch.qos.logback:logback-classic"
+    implementation "ch.qos.logback:logback-classic"
 
     compileOnly project(':peacetrue-result:peacetrue-result-exception')
     compileOnly "com.fasterxml.jackson.core:jackson-databind"
     compileOnly 'javax.servlet:javax.servlet-api'
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    testCompile 'javax.servlet:javax.servlet-api'
-    testCompile project(':peacetrue-result:peacetrue-result-exception')
-    testCompile project(':peacetrue-result:peacetrue-result-exception-support')
-    testCompile "org.springframework.boot:spring-boot-starter-tomcat"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    testImplementation 'javax.servlet:javax.servlet-api'
+    testImplementation project(':peacetrue-result:peacetrue-result-exception')
+    testImplementation project(':peacetrue-result:peacetrue-result-exception-support')
+    testImplementation "org.springframework.boot:spring-boot-starter-tomcat"
 }

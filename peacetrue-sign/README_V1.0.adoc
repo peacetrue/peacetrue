@@ -77,7 +77,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.peacetrue:peacetrue-sign-appender:1.2-RELEASE'
+    implementation 'com.github.peacetrue:peacetrue-sign-appender:1.2-RELEASE'
 }
 ----
 
@@ -126,7 +126,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.peacetrue:peacetrue-sign-validator:1.2-RELEASE'
+    implementation 'com.github.peacetrue:peacetrue-sign-validator:1.2-RELEASE'
 }
 ----
 

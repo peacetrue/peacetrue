@@ -1,7 +1,7 @@
 package com.github.peacetrue.dubbo;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +27,7 @@ public class DubboContextFilterTestForXML {
 
     @Test
     public void getConsumerApplicationName() throws Exception {
-        Assert.assertEquals(
+        Assertions.assertEquals(
                 environment.getProperty("dubbo.application.name"),
                 someService.getConsumerApplicationName()
         );

@@ -4,8 +4,8 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.peacetrue.dubbo.multipleregistry.provider1.Provider1Service;
 import com.github.peacetrue.dubbo.multipleregistry.provider2.Provider2Service;
 import com.github.peacetrue.dubbo.multipleregistry.providerconsumer.ProviderConsumerService;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -30,9 +30,9 @@ public class ConsumerProperties {
     @Test
     public void doSomething() throws Exception {
         String something = "something";
-        Assert.assertEquals(something, provider1Service.doSomething(something));
-        Assert.assertEquals(something, provider2Service.doSomething(something));
-//        Assert.assertEquals(something, providerConsumerService.doSomething(something));
+        Assertions.assertEquals(something, provider1Service.doSomething(something));
+        Assertions.assertEquals(something, provider2Service.doSomething(something));
+//        Assertions.assertEquals(something, providerConsumerService.doSomething(something));
     }
 
 }

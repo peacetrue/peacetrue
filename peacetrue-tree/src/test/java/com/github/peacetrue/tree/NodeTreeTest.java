@@ -6,7 +6,7 @@ import com.github.peacetrue.tree.generator.TreeNodeBuilder;
 import com.github.peacetrue.tree.generator.TreeNodeGenerator;
 import com.github.peacetrue.tree.iterate.ConsumerIterator;
 import com.github.peacetrue.tree.menu.NodeMenu;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;

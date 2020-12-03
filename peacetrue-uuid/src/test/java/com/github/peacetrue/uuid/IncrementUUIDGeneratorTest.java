@@ -1,7 +1,7 @@
 package com.github.peacetrue.uuid;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,7 +20,7 @@ public class IncrementUUIDGeneratorTest {
     public void next() throws Exception {
         Stream.iterate(0, integer -> integer + 1).limit(1000).forEach(integer -> {
             List<Long> values = Stream.generate(() -> generator.next()).limit(1000).collect(Collectors.toList());
-            Assert.assertEquals(values.size(), new HashSet<>(values).size());
+            Assertions.assertEquals(values.size(), new HashSet<>(values).size());
         });
     }
 
@@ -29,15 +29,15 @@ public class IncrementUUIDGeneratorTest {
         System.out.println(generator.next());
         //yyMMddHHmmssSSS
         //1531541635737
-        Assert.assertEquals(generator.get(), generator.get());
+        Assertions.assertEquals(generator.get(), generator.get());
     }
 
     @Test
     public void reset() throws Exception {
         Long value = generator.next();
-        Assert.assertNotEquals(value, generator.next());
+        Assertions.assertNotEquals(value, generator.next());
         generator.reset();
-        Assert.assertEquals(value, generator.next());
+        Assertions.assertEquals(value, generator.next());
 
     }
 

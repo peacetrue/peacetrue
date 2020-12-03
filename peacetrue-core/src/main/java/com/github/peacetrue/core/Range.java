@@ -84,8 +84,26 @@ public class Range<T> implements Serializable {
         }
     }
 
+    public static class Long extends Comparable<java.lang.Long> {
+
+        private static final long serialVersionUID = 0L;
+        public static final Long DEFAULT = new Long();
+
+        public Long() {
+        }
+
+        public Long(java.lang.Long lowerBound, java.lang.Long upperBound) {
+            super(lowerBound, upperBound);
+        }
+
+        public Long(java.lang.Long lowerBound, java.lang.Long upperBound, boolean lowerInclusive, boolean upperInclusive) {
+            super(lowerBound, upperBound, lowerInclusive, upperInclusive);
+        }
+    }
+
+
     /** 类型设置为日期，spring参数注入时不能使用泛化参数类型 */
-    public static class Date extends Comparable<java.util.Date> {
+    public static class Date extends Comparable<java.lang.Long> {
 
         private static final long serialVersionUID = 0L;
         public static final Date DEFAULT = new Date();
@@ -93,11 +111,11 @@ public class Range<T> implements Serializable {
         public Date() {
         }
 
-        public Date(java.util.Date lowerBound, java.util.Date upperBound) {
+        public Date(java.lang.Long lowerBound, java.lang.Long upperBound) {
             super(lowerBound, upperBound);
         }
 
-        public Date(java.util.Date lowerBound, java.util.Date upperBound, boolean lowerInclusive, boolean upperInclusive) {
+        public Date(java.lang.Long lowerBound, java.lang.Long upperBound, boolean lowerInclusive, boolean upperInclusive) {
             super(lowerBound, upperBound, lowerInclusive, upperInclusive);
         }
     }

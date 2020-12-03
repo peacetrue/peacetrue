@@ -1,7 +1,7 @@
 package com.github.peacetrue.result.exception.web.multipart;
 
 import com.github.peacetrue.result.exception.SimplifiedExceptionConverter;
-import org.apache.tomcat.util.http.fileupload.FileUploadBase;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 
 import javax.annotation.Nullable;
 
@@ -10,11 +10,11 @@ import javax.annotation.Nullable;
  *
  * @author xiayx
  */
-public class FileSizeLimitExceededExceptionConverter extends SimplifiedExceptionConverter<FileUploadBase.FileSizeLimitExceededException> {
+public class FileSizeLimitExceededExceptionConverter extends SimplifiedExceptionConverter<FileSizeLimitExceededException> {
 
     @Nullable
     @Override
-    protected Object[] resolveData(FileUploadBase.FileSizeLimitExceededException exception) {
+    protected Object[] resolveData(FileSizeLimitExceededException exception) {
         return new Object[]{exception.getFileName(), MaxUploadSizeExceededExceptionConverter.humanReadableByteCount(exception.getPermittedSize(), false)};
     }
 

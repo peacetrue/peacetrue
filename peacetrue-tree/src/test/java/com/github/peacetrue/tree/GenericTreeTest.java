@@ -4,8 +4,8 @@ import com.github.peacetrue.tree.extractor.Extractor;
 import com.github.peacetrue.tree.extractor.StringExtractor;
 import com.github.peacetrue.tree.iterate.ConsumerIterator;
 import com.github.peacetrue.util.AssertUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -60,13 +60,13 @@ public class GenericTreeTest {
 
     @Test
     public void getRoot() throws Exception {
-        Assert.assertTrue(tree.getRoot().isPresent());
-        Assert.assertEquals(tree.getRoot().get(), Object.class);
+        Assertions.assertTrue(tree.getRoot().isPresent());
+        Assertions.assertEquals(tree.getRoot().get(), Object.class);
     }
 
     @Test
     public void contains() throws Exception {
-        classes.forEach(aClass -> Assert.assertTrue(tree.contains(aClass)));
+        classes.forEach(aClass -> Assertions.assertTrue(tree.contains(aClass)));
     }
 
     public static List<Class> getSuperClasses(Class clazz) {
@@ -81,33 +81,33 @@ public class GenericTreeTest {
     @Test
     public void findParent() throws Exception {
         classes.forEach(aClass -> {
-            Assert.assertEquals(aClass.getSuperclass(), tree.findParent(aClass).orElse(null));
+            Assertions.assertEquals(aClass.getSuperclass(), tree.findParent(aClass).orElse(null));
         });
     }
 
     @Test
     public void findParents() throws Exception {
         classes.forEach(aClass -> {
-            Assert.assertEquals(getSuperClasses(aClass), tree.findParents(aClass));
+            Assertions.assertEquals(getSuperClasses(aClass), tree.findParents(aClass));
         });
     }
 
     @Test
     public void findSameParents() throws Exception {
         List<Class> sameParents = tree.findSameParents(Arrays.asList(NullPointerException.class, CloneNotSupportedException.class));
-        Assert.assertEquals(Arrays.asList(Object.class, Throwable.class, Exception.class), sameParents);
+        Assertions.assertEquals(Arrays.asList(Object.class, Throwable.class, Exception.class), sameParents);
     }
 
     @Test
     public void findSameParent() throws Exception {
         Optional<Class> parent = tree.findSameParent(Arrays.asList(NullPointerException.class, CloneNotSupportedException.class));
-        Assert.assertTrue(parent.isPresent());
-        Assert.assertEquals(parent.get(), Exception.class);
+        Assertions.assertTrue(parent.isPresent());
+        Assertions.assertEquals(parent.get(), Exception.class);
     }
 
     @Test
     public void findChildren() throws Exception {
-        Assert.assertEquals(Arrays.asList(
+        Assertions.assertEquals(Arrays.asList(
                 IndexOutOfBoundsException.class,
                 ArithmeticException.class,
                 ClassCastException.class,
@@ -119,7 +119,7 @@ public class GenericTreeTest {
 
     @Test
     public void findYounger() throws Exception {
-        Assert.assertEquals(Arrays.asList(
+        Assertions.assertEquals(Arrays.asList(
                 CloneNotSupportedException.class,
                 ReflectiveOperationException.class,
                 RuntimeException.class,
@@ -136,7 +136,7 @@ public class GenericTreeTest {
 
     @Test
     public void getAllNodes() throws Exception {
-        Assert.assertEquals(classes, new ArrayList<>(tree.getAllNodes()));
+        Assertions.assertEquals(classes, new ArrayList<>(tree.getAllNodes()));
     }
 
     @Test
@@ -161,17 +161,17 @@ public class GenericTreeTest {
                 (parent, child) -> parent.equals(child.getSuperclass()),
                 classes
         );
-        Assert.assertFalse(tree.removeNode(Long.class));
-        Assert.assertTrue(tree.removeNode(NullPointerException.class));
-        Assert.assertTrue(tree.removeNode(RuntimeException.class));
-        Assert.assertFalse(tree.removeNode(IllegalArgumentException.class));
+        Assertions.assertFalse(tree.removeNode(Long.class));
+        Assertions.assertTrue(tree.removeNode(NullPointerException.class));
+        Assertions.assertTrue(tree.removeNode(RuntimeException.class));
+        Assertions.assertFalse(tree.removeNode(IllegalArgumentException.class));
     }
 
     @Test
     public void subtree() throws Exception {
         AssertUtils.assertException(() -> tree.subtree(Long.class));
         Tree<Class> subtree = tree.subtree(Exception.class);
-        Assert.assertEquals(Arrays.asList(
+        Assertions.assertEquals(Arrays.asList(
                 Exception.class,
                 CloneNotSupportedException.class,
                 ReflectiveOperationException.class,
@@ -190,7 +190,7 @@ public class GenericTreeTest {
     public void localTree() throws Exception {
         AssertUtils.assertException(() -> tree.localTree(Collections.singleton(Long.class)));
         Tree<Class> localTree = tree.localTree(Arrays.asList(Error.class, IndexOutOfBoundsException.class));
-        Assert.assertEquals(Arrays.asList(
+        Assertions.assertEquals(Arrays.asList(
                 Object.class,
                 Throwable.class,
                 Error.class,

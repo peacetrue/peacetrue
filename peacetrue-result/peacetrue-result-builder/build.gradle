@@ -9,12 +9,12 @@ sourceSets {
 }
 
 dependencies {
-    compile project(':peacetrue-spring')
-    compile project(':peacetrue-result')
-    compile 'org.springframework:spring-context'
-    compile "org.springframework.boot:spring-boot-autoconfigure"
+    implementation project(':peacetrue-spring')
+    implementation project(':peacetrue-result')
+    implementation 'org.springframework:spring-context'
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-    compile 'org.springframework.boot:spring-boot-starter-logging'
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

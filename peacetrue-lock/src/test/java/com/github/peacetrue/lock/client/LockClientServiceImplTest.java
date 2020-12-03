@@ -1,7 +1,7 @@
 package com.github.peacetrue.lock.client;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -57,7 +57,7 @@ public class LockClientServiceImplTest {
             });
         }
         downLatch.await();
-        Assert.assertEquals(1, lockSuccessCount.get());
-        Assert.assertEquals(totalCount - 1, lockFailureCount.get());
+        Assertions.assertEquals(1, lockSuccessCount.get());
+        Assertions.assertEquals(totalCount - 1, lockFailureCount.get());
     }
 }

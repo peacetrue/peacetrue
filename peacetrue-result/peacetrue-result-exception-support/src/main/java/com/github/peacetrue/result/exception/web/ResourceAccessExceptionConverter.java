@@ -39,7 +39,7 @@ public class ResourceAccessExceptionConverter extends ResolveExceptionConverter<
     @Override
     protected Pattern[] getPatterns() {
         return new Pattern[]{
-                Pattern.compile("I/O error on ([^ ]+) request for \"(.*)\"")
+                Pattern.implementation("I/O error on ([^ ]+) request for \"(.*)\"")
         };
     }
 

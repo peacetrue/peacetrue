@@ -1,7 +1,7 @@
 package com.github.peacetrue.workrest;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.MonthDay;
@@ -41,12 +41,12 @@ public class WeekWorkRestServiceTest {
     public void isWorkday() throws Exception {
         for (LocalDate weekday : weekdays) {
             //weekday is workday
-            Assert.assertTrue(weekWorkRestService.isWorkday(weekday));
+            Assertions.assertTrue(weekWorkRestService.isWorkday(weekday));
         }
 
         for (LocalDate weekend : weekends) {
             //weekend is not workday
-            Assert.assertFalse(weekWorkRestService.isWorkday(weekend));
+            Assertions.assertFalse(weekWorkRestService.isWorkday(weekend));
         }
     }
 
@@ -54,12 +54,12 @@ public class WeekWorkRestServiceTest {
     public void isRestday() throws Exception {
         for (LocalDate weekday : weekdays) {
             //weekday is not restday
-            Assert.assertFalse(weekWorkRestService.isRestday(weekday));
+            Assertions.assertFalse(weekWorkRestService.isRestday(weekday));
         }
 
         for (LocalDate weekend : weekends) {
             //weekend is restday
-            Assert.assertTrue(weekWorkRestService.isRestday(weekend));
+            Assertions.assertTrue(weekWorkRestService.isRestday(weekend));
         }
     }
 
@@ -68,13 +68,13 @@ public class WeekWorkRestServiceTest {
         weekdayYears.forEach((year, date) -> {
             List<MonthDay> workdays = weekWorkRestService.getWorkdays(Year.of(year));
             //workdays contains all weekdays
-            Assert.assertTrue(workdays.containsAll(date.stream().map(MonthDay::from).collect(Collectors.toList())));
+            Assertions.assertTrue(workdays.containsAll(date.stream().map(MonthDay::from).collect(Collectors.toList())));
         });
 
         weekendYears.forEach((year, date) -> {
             List<MonthDay> workdays = weekWorkRestService.getWorkdays(Year.of(year));
             //workdays contains none weekends
-            Assert.assertFalse(workdays.removeAll(date.stream().map(MonthDay::from).collect(Collectors.toList())));
+            Assertions.assertFalse(workdays.removeAll(date.stream().map(MonthDay::from).collect(Collectors.toList())));
         });
     }
 
@@ -83,13 +83,13 @@ public class WeekWorkRestServiceTest {
         weekdayYears.forEach((year, date) -> {
             List<MonthDay> restdays = weekWorkRestService.getRestdays(Year.of(year));
             //restdays contains none weekdays
-            Assert.assertFalse(restdays.removeAll(date.stream().map(MonthDay::from).collect(Collectors.toList())));
+            Assertions.assertFalse(restdays.removeAll(date.stream().map(MonthDay::from).collect(Collectors.toList())));
         });
 
         weekendYears.forEach((year, date) -> {
             List<MonthDay> restdays = weekWorkRestService.getRestdays(Year.of(year));
             //restdays contains all weekends
-            Assert.assertTrue(restdays.containsAll(date.stream().map(MonthDay::from).collect(Collectors.toList())));
+            Assertions.assertTrue(restdays.containsAll(date.stream().map(MonthDay::from).collect(Collectors.toList())));
         });
     }
 

@@ -1,0 +1,11 @@
+dependencies {
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'javax.validation:validation-api:1.1.0.Final'
+    implementation 'org.hibernate:hibernate-validator:5.4.1.Final'
+    annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
+    compileOnly 'javax.servlet:javax.servlet-api'
+
+    testImplementation 'org.springframework:spring-test'
+    testImplementation 'org.springframework.boot:spring-boot-test'
+}

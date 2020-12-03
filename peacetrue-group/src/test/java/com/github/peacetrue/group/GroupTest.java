@@ -1,6 +1,6 @@
 package com.github.peacetrue.group;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -35,7 +35,7 @@ public class GroupTest {
     public void basic() throws Exception {
         List<GroupedRow> groupRows = jdbcTemplate.query("SELECT creator_id id, max(created_time) value FROM shop_apply GROUP BY creator_id", new BeanPropertyRowMapper<>(GroupedRow.class));
         System.out.println(groupRows);
-        
+
         GroupUtils.Where where = GroupUtils.buildWhere(new String[]{"creator_id", "created_time"}, groupRows.get(0));
         System.out.println(where);
         List<ShopApply> shopApplies = jdbcTemplate.query("select * from shop_apply where " + where.getSql(), where.getArgs(), new BeanPropertyRowMapper<>(ShopApply.class));

@@ -2,7 +2,7 @@ package com.github.peacetrue.workrest;
 
 import com.github.peacetrue.festivalschedule.FestivalScheduleUtils;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.MonthDay;

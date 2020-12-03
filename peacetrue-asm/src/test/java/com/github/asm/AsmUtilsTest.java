@@ -1,7 +1,7 @@
 package com.github.asm;
 
 import com.github.peacetrue.util.ClassLoaderUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AdviceAdapter;
 import org.objectweb.asm.commons.Method;

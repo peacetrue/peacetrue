@@ -1,7 +1,7 @@
 package com.github.peacetrue.util;
 
 /**
- * a util class for {@link org.junit.Assert}
+ * a util class for {@link org.junit.Assertions}
  *
  * @author xiayx
  */

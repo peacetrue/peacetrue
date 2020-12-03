@@ -9,8 +9,8 @@ import com.github.peacetrue.result.exception.ExceptionConvertService;
 import com.github.peacetrue.result.exception.ResultExceptionAutoConfiguration;
 import com.github.peacetrue.result.exception.mysql.User;
 import com.github.peacetrue.result.exception.Parameter;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.MessageSourceAutoConfiguration;
@@ -53,12 +53,12 @@ public class JacksonExceptionTest {
     public void jsonParseExceptionConverter() throws Exception {
         try {
             objectMapper.readValue("{id:1}", User.class);
-            Assert.fail();
+            Assertions.fail();
         } catch (IOException e) {
-            Assert.assertTrue(e instanceof JsonParseException);
+            Assertions.assertTrue(e instanceof JsonParseException);
             DataResult<Object[]> result = (DataResult<Object[]>) exceptionConvertService.convert(e);
-            Assert.assertEquals("JsonParseException", result.getCode());
-            Assert.assertEquals(
+            Assertions.assertEquals("JsonParseException", result.getCode());
+            Assertions.assertEquals(
                     messageSource.getMessage("Result." + result.getCode(), result.getData(), LocaleContextHolder.getLocale()),
                     result.getMessage()
             );
@@ -66,12 +66,12 @@ public class JacksonExceptionTest {
 
         try {
             objectMapper.readValue("{\"id\":a}", User.class);
-            Assert.fail();
+            Assertions.fail();
         } catch (IOException e) {
-            Assert.assertTrue(e instanceof JsonParseException);
+            Assertions.assertTrue(e instanceof JsonParseException);
             DataResult<Object[]> result = (DataResult<Object[]>) exceptionConvertService.convert(e);
-            Assert.assertEquals("JsonParseException", result.getCode());
-            Assert.assertEquals(
+            Assertions.assertEquals("JsonParseException", result.getCode());
+            Assertions.assertEquals(
                     messageSource.getMessage("Result." + result.getCode(), result.getData(), LocaleContextHolder.getLocale()),
                     result.getMessage()
             );
@@ -83,11 +83,11 @@ public class JacksonExceptionTest {
     public void invalidFormatExceptionConverter() throws Exception {
         try {
             objectMapper.readValue("{\"createdTime\":\"a\"}", User.class);
-            Assert.fail();
+            Assertions.fail();
         } catch (IOException e) {
-            Assert.assertTrue(e instanceof InvalidFormatException);
+            Assertions.assertTrue(e instanceof InvalidFormatException);
             DataResult<Parameter> result = (DataResult<Parameter>) exceptionConvertService.convert(e);
-            Assert.assertEquals("argument_format_mismatch", result.getCode());
+            Assertions.assertEquals("argument_format_mismatch", result.getCode());
             System.out.println(result);
         }
 

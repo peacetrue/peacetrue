@@ -7,8 +7,8 @@ import com.github.peacetrue.result.DataResult;
 import com.github.peacetrue.result.DataResultImpl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author xiayx
@@ -35,13 +35,13 @@ public class DataResultMixInTest {
 
         DataResultImpl<Object> result = new DataResultImpl<>("code", "message", new Bean1("1"));
         String value = objectMapper.writerWithView(Bean1.View1.class).writeValueAsString(result);
-        Assert.assertEquals("{}", value);
+        Assertions.assertEquals("{}", value);
 
         value = objectMapper.writerWithView(Bean1.View2.class).writeValueAsString(result);
-        Assert.assertEquals("{\"code\":\"code\",\"message\":\"message\",\"data\":{\"name\":\"1\"}}", value);
+        Assertions.assertEquals("{\"code\":\"code\",\"message\":\"message\",\"data\":{\"name\":\"1\"}}", value);
 
         result.setData(null);
         value = objectMapper.writerWithView(Bean1.View2.class).writeValueAsString(result);
-        Assert.assertEquals("{\"code\":\"code\",\"message\":\"message\",\"data\":null}", value);
+        Assertions.assertEquals("{\"code\":\"code\",\"message\":\"message\",\"data\":null}", value);
     }
 }

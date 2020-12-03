@@ -1,5 +1,5 @@
 description 'define the result structure, used for api'
 
 dependencies {
-    compile project(':peacetrue-core')
+    api project(':peacetrue-core')
 }

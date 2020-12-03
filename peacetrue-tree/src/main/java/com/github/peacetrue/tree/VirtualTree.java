@@ -180,7 +180,7 @@ public abstract class VirtualTree<N extends Material<M> & Tree.ChildrenNode<N>, 
 
     @Override
     public Tree<M> localTree(Collection<M> nodes) {
-//        Assert.notEmpty(nodes, "nodes must not be empty");
+//        Assertions.notEmpty(nodes, "nodes must not be empty");
         VirtualTree<N, M> virtualTree = initTree();
         Extractor.extractSome(PredicateIterator.ASC_PROGRESSIVE_GREEDY, root,
                 new PredicateCollectionExtractor<>(node -> isElderOf(node.getMaterial(), nodes), new LinkedHashSet<>())

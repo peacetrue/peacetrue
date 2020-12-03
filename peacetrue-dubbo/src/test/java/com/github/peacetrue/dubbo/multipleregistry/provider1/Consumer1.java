@@ -1,8 +1,8 @@
 package com.github.peacetrue.dubbo.multipleregistry.provider1;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,7 +23,7 @@ public class Consumer1 {
     @Test
     public void doSomething() throws Exception {
         String something = "something";
-        Assert.assertEquals(something, provider1Service.doSomething(something));
+        Assertions.assertEquals(something, provider1Service.doSomething(something));
     }
 
 }

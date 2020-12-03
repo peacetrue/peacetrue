@@ -1,7 +1,7 @@
 package com.github.peacetrue.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * tests for {@link RegexUtils}
@@ -16,7 +16,7 @@ public class RegexUtilsTest {
         String message = String.format(format, arguments);
         String regex = String.format(format, "([^']+)", "([^']+)");
         String[] extractValue = RegexUtils.extractValue(regex, message);
-        Assert.assertArrayEquals(arguments, extractValue);
+        Assertions.assertArrayEquals(arguments, extractValue);
     }
 
 }

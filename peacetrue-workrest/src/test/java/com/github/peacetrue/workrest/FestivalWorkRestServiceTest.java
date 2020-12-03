@@ -1,9 +1,9 @@
 package com.github.peacetrue.workrest;
 
 import com.github.peacetrue.festivalschedule.FestivalScheduleUtils;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.MonthDay;
@@ -29,25 +29,25 @@ public class FestivalWorkRestServiceTest {
 
     @Test
     public void isWorkday() throws Exception {
-        Assert.assertFalse(festivalWorkRestService.isWorkday(LocalDate.parse("2018-06-12")));
+        Assertions.assertFalse(festivalWorkRestService.isWorkday(LocalDate.parse("2018-06-12")));
     }
 
     @Test
     public void isRestday() throws Exception {
-        Assert.assertFalse(festivalWorkRestService.isRestday(LocalDate.parse("2018-06-12")));
+        Assertions.assertFalse(festivalWorkRestService.isRestday(LocalDate.parse("2018-06-12")));
     }
 
     @Test
     public void getWorkdays() throws Exception {
         List<MonthDay> workdays = festivalWorkRestService.getWorkdays(Year.of(2018));
-        //TODO finish Assert
+        //TODO finish Assertions
     }
 
     @Test
     public void getRestdays() throws Exception {
         List<MonthDay> restdays = festivalWorkRestService.getRestdays(Year.of(2018));
         List<MonthDay> collect = Arrays.stream(yearOf2018.split(",")).map(s -> MonthDay.parse("--" + s.substring(5))).collect(Collectors.toList());
-        Assert.assertTrue(restdays.containsAll(collect));
+        Assertions.assertTrue(restdays.containsAll(collect));
     }
 
 }

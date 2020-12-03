@@ -18,7 +18,6 @@ package com.github.peacetrue.lock.service;
 import lombok.Setter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisOperations;
-import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -53,7 +52,6 @@ public class RedisLockService implements LockService {
     }
 
     public RedisLockService(RedisConnectionFactory redisConnectionFactory) {
-        Assert.notNull(redisConnectionFactory, "RedisConnectionFactory must not be null");
         this.redisOperations = RedisUtils.stringTemplate(redisConnectionFactory);
     }
 

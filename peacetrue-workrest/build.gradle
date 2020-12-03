@@ -2,8 +2,8 @@ description 'to provide judgment that a date is workday or restday '
 
 
 dependencies {
-    compile project(':peacetrue-festivalschedule')
-    compile "org.slf4j:slf4j-api"
-    testCompile "ch.qos.logback:logback-classic"
+    implementation project(':peacetrue-festivalschedule')
+    implementation "org.slf4j:slf4j-api"
+    testImplementation "ch.qos.logback:logback-classic"
 
 }

@@ -2,8 +2,8 @@ package com.github.peacetrue.dubbo.multipleregistry;
 
 import com.github.peacetrue.dubbo.multipleregistry.provider1.Provider1Service;
 import com.github.peacetrue.dubbo.multipleregistry.provider2.Provider2Service;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,8 +29,8 @@ public class ConsumerXml {
     @Test
     public void doSomething() throws Exception {
         String something = "something";
-        Assert.assertEquals(something, provider1Service.doSomething(something));
-        Assert.assertEquals(something, provider2Service.doSomething(something));
+        Assertions.assertEquals(something, provider1Service.doSomething(something));
+        Assertions.assertEquals(something, provider2Service.doSomething(something));
     }
 
 }

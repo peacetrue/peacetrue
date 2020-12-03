@@ -1,7 +1,7 @@
 package com.github.peacetrue.festivalschedule;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Year;
 import java.util.HashMap;
@@ -30,9 +30,9 @@ public class FestivalScheduleUtilsTest {
         FestivalSchedule festivalSchedule = festivalSchedules.stream()
                 .filter(_festivalSchedule -> _festivalSchedule.getFestival().equals(Festival.NEW_YEAR))
                 .findFirst().orElseThrow(IllegalArgumentException::new);
-        Assert.assertEquals(FestivalScheduleUtils.resolveTemporal(date), festivalSchedule.getDate());
-        Assert.assertArrayEquals(FestivalScheduleUtils.resolveTemporalArray(restdays), festivalSchedule.getRestdays());
-        Assert.assertArrayEquals(FestivalScheduleUtils.resolveTemporalArray(workdays), festivalSchedule.getWorkdays());
+        Assertions.assertEquals(FestivalScheduleUtils.resolveTemporal(date), festivalSchedule.getDate());
+        Assertions.assertArrayEquals(FestivalScheduleUtils.resolveTemporalArray(restdays), festivalSchedule.getRestdays());
+        Assertions.assertArrayEquals(FestivalScheduleUtils.resolveTemporalArray(workdays), festivalSchedule.getWorkdays());
     }
 
 

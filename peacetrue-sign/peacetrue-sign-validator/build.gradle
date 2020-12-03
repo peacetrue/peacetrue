@@ -1,15 +1,15 @@
 description '接收请求时，验证签名'
 
 dependencies {
-    compile project(":peacetrue-sign")
-    compile project(":peacetrue-spring")
-    compile 'org.springframework:spring-webmvc'
-    compile 'com.fasterxml.jackson.core:jackson-databind'
-    compile "org.springframework.boot:spring-boot-autoconfigure"
+    implementation project(":peacetrue-sign")
+    implementation project(":peacetrue-spring")
+    implementation 'org.springframework:spring-webmvc'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
     compileOnly "javax.servlet:javax.servlet-api"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-    testCompile "org.springframework.boot:spring-boot-starter-web"
-    testCompile "org.springframework.boot:spring-boot-starter-test"
-    testCompile project(":peacetrue-result:peacetrue-result-web")
-    testCompile project(":peacetrue-result:peacetrue-result-exception")
+    testImplementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation project(":peacetrue-result:peacetrue-result-web")
+    testImplementation project(":peacetrue-result:peacetrue-result-exception")
 }

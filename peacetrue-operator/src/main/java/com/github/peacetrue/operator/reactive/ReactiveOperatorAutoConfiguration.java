@@ -17,6 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
+import reactor.core.publisher.Mono;
 
 /**
  * 切面自动配置
@@ -36,6 +37,18 @@ public class ReactiveOperatorAutoConfiguration {
         this.properties = properties;
     }
 
+    final static OperatorCapable<?> EMPTY = new OperatorCapable<Object>() {
+        @Override
+        public Object getOperatorId() {
+            return null;
+        }
+
+        @Override
+        public String getOperatorName() {
+            return null;
+        }
+    };
+
     @SuppressWarnings("unchecked")
     @Bean
     @ConditionalOnMissingBean(ReactiveOperatorSupplier.class)
@@ -54,7 +67,8 @@ public class ReactiveOperatorAutoConfiguration {
                     operator.setOperatorId(authentication.getName());
 //                    operator.setOperatorName(authentication.getPrincipal().toString());
                     return operator;
-                });
+                })
+                .switchIfEmpty((Mono) Mono.just(EMPTY));
     }
 
     @Bean

@@ -5,8 +5,8 @@ import com.github.peacetrue.result.Result;
 import com.github.peacetrue.result.ResultBuilderAutoConfiguration;
 import com.github.peacetrue.result.exception.ExceptionConvertService;
 import com.github.peacetrue.result.exception.ResultExceptionAutoConfiguration;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.MessageSourceAutoConfiguration;
@@ -58,12 +58,12 @@ public class MysqlExceptionConverterTest {
         try {
             entityManager.persist(getUser());
             entityManager.persist(getUser());
-            Assert.fail();
+            Assertions.fail();
         } catch (Exception e) {
-            Assert.assertTrue(e instanceof PersistenceException);
+            Assertions.assertTrue(e instanceof PersistenceException);
             Result result = exceptionConvertService.convert(e);
             System.out.println(result);
-            Assert.assertEquals(FailureType.server_error.name(), result.getCode());
+            Assertions.assertEquals(FailureType.server_error.name(), result.getCode());
         }
     }
 

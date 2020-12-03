@@ -1,4 +1,4 @@
 dependencies {
-    compile 'org.projectlombok:lombok'
-    compile 'com.google.code.findbugs:jsr305'
+    implementation 'org.projectlombok:lombok'
+    implementation 'com.google.code.findbugs:jsr305'
 }

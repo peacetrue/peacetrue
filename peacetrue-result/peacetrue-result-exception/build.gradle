@@ -1,10 +1,15 @@
 description 'used to handle exception and convert exception to result'
 
 dependencies {
-    compile project(':peacetrue-spring')
-    compile project(':peacetrue-result:peacetrue-result-builder')
-    compile "javax.annotation:javax.annotation-api"
+    api 'org.slf4j:slf4j-api'
+    implementation project(':peacetrue-result')
+    implementation project(':peacetrue-spring')
+    implementation "org.springframework:spring-context"
+    implementation "org.springframework:spring-web"
+    implementation "javax.annotation:javax.annotation-api"
+    implementation project(':peacetrue-result:peacetrue-result-builder')
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

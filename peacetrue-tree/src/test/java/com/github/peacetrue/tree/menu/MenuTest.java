@@ -3,7 +3,7 @@ package com.github.peacetrue.tree.menu;
 import com.github.peacetrue.tree.GenericTree;
 import com.github.peacetrue.tree.generator.TreeNodeBuilder;
 import com.github.peacetrue.tree.generator.TreeNodeGenerator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * 讲述树节点在菜单中的应用

@@ -5,7 +5,7 @@ import com.github.peacetrue.result.exception.jackson.ResultJacksonExceptionAutoC
 import com.github.peacetrue.result.exception.mysql.ResultMysqlExceptionAutoConfiguration;
 import com.github.peacetrue.result.exception.Parameter;
 import com.github.peacetrue.result.exception.web.ResultWebExceptionAutoConfiguration;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.MessageSourceAutoConfiguration;

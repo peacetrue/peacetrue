@@ -1,8 +1,8 @@
 package com.github.peacetrue.printer;
 
 import com.github.peacetrue.util.AssertUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -69,8 +69,8 @@ public class MessageSourceClassPrinterTest {
     public static class HasObject extends Abstract {
         @Test
         public void print() throws Exception {
-            Assert.assertEquals("<未知类型>", messageSourceClassPrinter.print(MessageSourceClassPrinterTest.class));
-            Assert.assertEquals("<未知类型>", messageSourceClassPrinter.print(Abstract.class));
+            Assertions.assertEquals("<未知类型>", messageSourceClassPrinter.print(MessageSourceClassPrinterTest.class));
+            Assertions.assertEquals("<未知类型>", messageSourceClassPrinter.print(Abstract.class));
         }
     }
 
@@ -80,13 +80,13 @@ public class MessageSourceClassPrinterTest {
         @Test
         public void print() throws Exception {
             String number = "数值";
-            Assert.assertEquals(number, messageSourceClassPrinter.print(Long.class));
-            Assert.assertEquals(number, messageSourceClassPrinter.print(Integer.class));
-            Assert.assertEquals(number, messageSourceClassPrinter.print(Float.class));
+            Assertions.assertEquals(number, messageSourceClassPrinter.print(Long.class));
+            Assertions.assertEquals(number, messageSourceClassPrinter.print(Integer.class));
+            Assertions.assertEquals(number, messageSourceClassPrinter.print(Float.class));
             String date = "日期";
-            Assert.assertEquals(date, messageSourceClassPrinter.print(java.sql.Time.class));
-            Assert.assertEquals(date, messageSourceClassPrinter.print(java.sql.Date.class));
-            Assert.assertEquals(date, messageSourceClassPrinter.print(Date.class));
+            Assertions.assertEquals(date, messageSourceClassPrinter.print(java.sql.Time.class));
+            Assertions.assertEquals(date, messageSourceClassPrinter.print(java.sql.Date.class));
+            Assertions.assertEquals(date, messageSourceClassPrinter.print(Date.class));
             AssertUtils.assertException(() -> messageSourceClassPrinter.print(MessageSourceClassPrinterTest.class));
         }
     }

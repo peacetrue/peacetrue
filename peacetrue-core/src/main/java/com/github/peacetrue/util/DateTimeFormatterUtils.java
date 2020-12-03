@@ -1,5 +1,6 @@
 package com.github.peacetrue.util;
 
+import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.SignStyle;
@@ -75,6 +76,16 @@ public abstract class DateTimeFormatterUtils {
             .append(COMMON_DATE)
             .appendLiteral(' ')
             .append(ISO_LOCAL_TIME)
+            .toFormatter();
+
+    /** formatter: yyyy/MM/dd */
+    public static DateTimeFormatter SEPARATOR_DATE_TIME = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .append(YEAR)
+            .appendLiteral(File.separatorChar)
+            .append(MONTH)
+            .appendLiteral(File.separatorChar)
+            .append(DATE)
             .toFormatter();
 
 
