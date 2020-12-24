@@ -1,4 +1,4 @@
-package com.github.peacetrue.spring.security;
+package com.github.peacetrue.security;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
@@ -8,7 +8,6 @@ import java.security.NoSuchAlgorithmException;
  * a util class for {@link MessageDigest}
  *
  * @author xiayx
- * @deprecated use {@link com.github.peacetrue.security.MessageDigestUtils}
  */
 public abstract class MessageDigestUtils {
 

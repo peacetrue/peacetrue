@@ -17,6 +17,8 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
  */
 public abstract class DateTimeFormatterUtils {
 
+    /*------ 单个单位 -------*/
+
     /** formatter: yyyy */
     public static DateTimeFormatter YEAR = new DateTimeFormatterBuilder()
             .parseCaseInsensitive()
@@ -35,13 +37,32 @@ public abstract class DateTimeFormatterUtils {
             .appendValue(ChronoField.DAY_OF_MONTH, 2)
             .toFormatter();
 
+    /** formatter: HH */
+    public static DateTimeFormatter HOUR = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendValue(ChronoField.HOUR_OF_DAY, 2)
+            .toFormatter();
+
+    /** formatter: mm */
+    public static DateTimeFormatter MINUTE = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
+            .toFormatter();
+
+    /** formatter: ss */
+    public static DateTimeFormatter SECOND = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendValue(ChronoField.SECOND_OF_MINUTE, 2)
+            .toFormatter();
+
+    /*------无分割符串联-------*/
+
     /** formatter: yyyyMM */
     public static DateTimeFormatter SHORT_MONTH = new DateTimeFormatterBuilder()
             .parseCaseInsensitive()
             .append(YEAR)
             .append(MONTH)
             .toFormatter();
-
 
     /** formatter: MMdd */
     public static DateTimeFormatter SHORT_MONTH_DAY = new DateTimeFormatterBuilder()
@@ -53,10 +74,26 @@ public abstract class DateTimeFormatterUtils {
     /** formatter: yyyyMMdd */
     public static DateTimeFormatter SHORT_DATE = new DateTimeFormatterBuilder()
             .parseCaseInsensitive()
-            .appendValue(ChronoField.YEAR, 4)
+            .append(YEAR)
             .append(SHORT_MONTH_DAY)
             .toFormatter();
 
+    /** formatter: HHmmss */
+    public static DateTimeFormatter SHORT_TIME = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .append(HOUR)
+            .append(MINUTE)
+            .append(SECOND)
+            .toFormatter();
+
+    /** formatter: yyyyMMddHHmmss */
+    public static DateTimeFormatter SHORT_DATE_TIME = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .append(SHORT_DATE)
+            .append(SHORT_TIME)
+            .toFormatter();
+
+    /*-------中划线分隔符串联-----------------------*/
 
     /** formatter: yyyy-MM */
     public static DateTimeFormatter COMMON_MONTH = new DateTimeFormatterBuilder()
@@ -65,7 +102,6 @@ public abstract class DateTimeFormatterUtils {
             .appendLiteral('-')
             .append(MONTH)
             .toFormatter();
-
 
     /** formatter: yyyy-MM-dd */
     public static DateTimeFormatter COMMON_DATE = ISO_LOCAL_DATE;
@@ -77,6 +113,8 @@ public abstract class DateTimeFormatterUtils {
             .appendLiteral(' ')
             .append(ISO_LOCAL_TIME)
             .toFormatter();
+
+    /*-------左划线分隔符串联-----------------------*/
 
     /** formatter: yyyy/MM/dd */
     public static DateTimeFormatter SEPARATOR_DATE_TIME = new DateTimeFormatterBuilder()

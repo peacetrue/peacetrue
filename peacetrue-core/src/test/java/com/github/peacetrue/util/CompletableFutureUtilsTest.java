@@ -33,49 +33,6 @@ class CompletableFutureUtilsTest {
         new Thread(() -> consumer.accept(sumBlock(a, b))).start();
     }
 
-    public static Promise sumCallback(int a, int b) {
-        return new Promise(new BiConsumer<Consumer<Object>, Consumer<Object>>() {
-            @Override
-            public void accept(Consumer<Object> consumer, Consumer<Object> consumer2) {
-                sumCallback(a, b, new Consumer<Integer>() {
-                    @Override
-                    public void accept(Integer integer) {
-                        consumer.accept(integer);
-                    }
-                });
-            }
-        });
-    }
-
-    public static class Promise {
-
-        private BiConsumer<Consumer<Object>, Consumer<Object>> processor;
-
-        public Promise(BiConsumer<Consumer<Object>, Consumer<Object>> processor) {
-            this.processor = processor;
-        }
-
-        public Promise then(Consumer<Object> consumer) {
-            this.processor.accept(consumer, null);
-            return this;
-        }
-
-        public Promise catch_(Consumer<?> consumer) {
-            return this;
-        }
-
-        public Promise finally_(Consumer<?> consumer) {
-            return this;
-        }
-    }
-
-    @Test
-    void promise() throws Exception {
-        sumCallback(1, 2)
-                .then(o -> System.out.println("1:" + o));
-        Thread.sleep(1_000L);
-    }
-
     public static class ValueWrapper<T> {
         private volatile boolean over;
         private T value;
